@@ -1,11 +1,5 @@
 spring:
   application:
     name: registry
-
-eureka:
-  client:
-    register-with-eureka: false
-    fetch-registry: false
-
-server:
-  port: 8761
+  config:
+    import: configserver:http://user:${CONFIG_PASSWORD}@config:8888
