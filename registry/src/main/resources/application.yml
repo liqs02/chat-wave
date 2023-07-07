@@ -1,4 +1,5 @@
 spring:
   application:
     name: registry
-
+  config:
+    import: configserver:http://user:${CONFIG_PASSWORD}@config:8888
