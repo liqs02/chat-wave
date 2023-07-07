@@ -2,10 +2,3 @@ spring:
   application:
     name: registry
 
-eureka:
-  client:
-    register-with-eureka: false
-    fetch-registry: false
-
-server:
-  port: 8761
