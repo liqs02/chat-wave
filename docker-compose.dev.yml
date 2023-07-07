@@ -1,0 +1,22 @@
+version: "3.8"
+services:
+  config:
+    build: config
+    environment:
+      CONFIG_PASSWORD: $CONFIG_PASSWORD
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./config/target/config-0.0.1-SNAPSHOT.jar:/app.jar
+
+  registry:
+    build: registry
+    environment:
+      CONFIG_PASSWORD: $CONFIG_PASSWORD
+    depends_on:
+      config:
+        condition: service_healthy
+    ports:
+      - "8761:8761"
+    volumes:
+      - ./registry/target/registry-0.0.1-SNAPSHOT.jar:/app.jar
