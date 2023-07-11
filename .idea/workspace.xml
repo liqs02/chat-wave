@@ -70,8 +70,8 @@
       <recent name="com.chatwave.authservice.domain.dto" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.Auth Service Tests">
-    <configuration name="Auth Service Tests" type="JUnit" factoryName="JUnit" temporary="true">
+  <component name="RunManager" selected="JUnit.Auth Service">
+    <configuration name="Auth Service" type="JUnit" factoryName="JUnit" temporary="true">
       <module name="auth-service" />
       <extension name="net.ashald.envfile">
         <option name="IS_ENABLED" value="false" />
@@ -104,6 +104,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="AuthServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="auth-service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.chatwave.authservice.AuthServiceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ConfigApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="config" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.chatwave.config.ConfigApplication" />
@@ -118,30 +125,40 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="RegistryApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="registry" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.chatwave.registry.RegistryApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
       <deployment type="docker-compose.yml">
         <settings />
       </deployment>
       <method v="2" />
     </configuration>
-    <configuration name="docker-compose.dev.yml: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+    <configuration name="development" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
       <deployment type="docker-compose.yml">
         <settings>
+          <option name="envFilePath" value="" />
           <option name="sourceFilePath" value="docker-compose.dev.yml" />
         </settings>
       </deployment>
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Docker.docker-compose.dev.yml: Compose Deployment" />
-      <item itemvalue="JUnit.Auth Service Tests" />
+      <item itemvalue="Docker.development" />
+      <item itemvalue="JUnit.Auth Service" />
+      <item itemvalue="Spring Boot.AuthServiceApplication" />
       <item itemvalue="Spring Boot.ConfigApplication" />
       <item itemvalue="Spring Boot.GatewayApplication" />
+      <item itemvalue="Spring Boot.RegistryApplication" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.Auth Service Tests" />
-        <item itemvalue="Docker.docker-compose.dev.yml: Compose Deployment" />
+        <item itemvalue="JUnit.Auth Service" />
+        <item itemvalue="Docker.development" />
       </list>
     </recent_temporary>
   </component>
