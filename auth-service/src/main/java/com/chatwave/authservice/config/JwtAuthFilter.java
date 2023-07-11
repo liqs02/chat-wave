@@ -20,7 +20,7 @@ import static org.apache.http.util.Asserts.notNull;
 
 @Component
 @Slf4j
-public class TokenAuthFilter  extends OncePerRequestFilter {
+public class JwtAuthFilter extends OncePerRequestFilter {
         private JwtService jwtService;
 
         private UserDetailsService userDetailsService;
@@ -43,7 +43,7 @@ public class TokenAuthFilter  extends OncePerRequestFilter {
                 if(jwtService.isTokenValid(token, userDetails)) {
 
                     var authToken = new UsernamePasswordAuthenticationToken(
-                            userDetails, null, userDetails.getAuthorities()
+                            userDetails.getUsername(), null, userDetails.getAuthorities()
                     );
 
                     authToken.setDetails(
