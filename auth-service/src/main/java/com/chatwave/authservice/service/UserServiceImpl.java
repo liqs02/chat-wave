@@ -10,9 +10,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-
-import java.util.UUID;
-
 import static org.apache.http.util.Asserts.notNull;
 import static org.springframework.http.HttpStatus.CONFLICT;
 

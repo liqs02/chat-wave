@@ -1,7 +1,6 @@
 package com.chatwave.authservice.service;
 
 import io.jsonwebtoken.Claims;
-import com.chatwave.authservice.domain.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.HashMap;

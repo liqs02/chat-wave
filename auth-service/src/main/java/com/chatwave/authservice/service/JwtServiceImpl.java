@@ -7,7 +7,6 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import com.chatwave.authservice.domain.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -16,7 +15,6 @@ import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 
-import static java.lang.Integer.parseInt;
 import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
 
 @Service
