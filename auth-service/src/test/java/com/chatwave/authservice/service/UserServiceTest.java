@@ -11,6 +11,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -33,6 +35,10 @@ public class UserServiceTest {
     private RefreshTokenService refreshTokenService;
     @Mock
     private JwtService jwtService;
+    @Mock
+    private AuthenticationManager authManager;
+
+    private final UUID uuid0 = UUID.fromString("00000000-0000-0000-0000-000000000000");
 
     @Nested
     @DisplayName("create( user )")
@@ -45,25 +51,25 @@ public class UserServiceTest {
             user.setPassword("pass");
 
             var refreshToken = new RefreshToken();
-            refreshToken.setId( UUID.fromString("00000000-0000-0000-0000-000000000000") );
+            refreshToken.setId( uuid0 );
 
             when(
                 passwordEncoder.encode("pass")
             ).thenReturn("encoded");
 
             when(
-                refreshTokenService.create( eq(user) )
+                refreshTokenService.create( user )
             ).thenReturn(refreshToken);
 
             when(
-                    jwtService.generateToken( eq(user) )
+                    jwtService.generateToken( user )
             ).thenReturn("accessToken");
 
             var tokens = service.create(user);
 
             assertEquals("accessToken", tokens.getAccessToken());
             assertEquals(
-                    UUID.fromString("00000000-0000-0000-0000-000000000000"),
+                    uuid0,
                     tokens.getRefreshToken()
                     );
 
@@ -84,7 +90,7 @@ public class UserServiceTest {
             var user = new User();
             user.setId(1);
 
-            when(repository.findById(1))
+            when(repository.findById( eq(1) ))
                     .thenReturn(Optional.of(user));
 
             var thrown = assertThrows(
@@ -94,6 +100,74 @@ public class UserServiceTest {
 
             assertTrue(thrown.getMessage().contains("id"));
             assertTrue(thrown.getMessage().contains("exists"));
+        }
+    }
+
+    @Nested
+    @DisplayName("authenticate( user )")
+    class authenticate {
+        @Test
+        @DisplayName("should authenticate a user and return tokens")
+        public void t1() {
+            var user = new User();
+            user.setId(1);
+            user.setPassword("pass");
+
+            var refreshToken = new RefreshToken();
+            refreshToken.setId(uuid0);
+
+            when(
+                    refreshTokenService.create(user)
+            ).thenReturn(refreshToken);
+
+            when(
+                    jwtService.generateToken(user)
+            ).thenReturn("accessToken");
+
+            var tokens = service.authenticate(user);
+
+            assertEquals("accessToken", tokens.getAccessToken());
+
+            assertEquals(
+                    uuid0,
+                    tokens.getRefreshToken()
+            );
+
+            verify(
+                    authManager, times(1)
+            ).authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            1,
+                           "pass"
+                    )
+            );
+        }
+    }
+
+    @Nested
+    @DisplayName("refreshToken( refreshTokenId )")
+    class refreshToken {
+        @Test
+        @DisplayName("should return new jwt and refresh token")
+        public void t1() {
+            var refreshToken = new RefreshToken();
+            var user = new User();
+            refreshToken.setId(UUID.randomUUID());
+            refreshToken.setUser(user);
+
+            when(
+                    refreshTokenService.refresh(uuid0)
+            ).thenReturn(refreshToken);
+
+            when(
+                    jwtService.generateToken(user)
+            ).thenReturn("JWT");
+
+            var result = service.refreshToken(uuid0);
+
+            assertNotNull(result);
+            assertEquals(refreshToken.getId(), result.getRefreshToken());
+            assertEquals("JWT", result.getAccessToken());
         }
     }
 
