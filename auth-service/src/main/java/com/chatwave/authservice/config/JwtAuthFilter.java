@@ -16,7 +16,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-import static org.apache.http.util.Asserts.notNull;
+import static org.apache.commons.lang.Validate.notNull;
 
 @Component
 @Slf4j
