@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static lombok.AccessLevel.NONE;
@@ -27,9 +28,23 @@ public class RefreshToken {
 
     @Column(nullable = false, updatable = false, columnDefinition = "DATE")
     @Setter(NONE)
-    private LocalDate expirationAt; // TODO: add scheduling to delete entities if is expired
+    private LocalDate expirationAt;
+
+    @Column(nullable = false, updatable = false)
+    @Setter(NONE)
+    private LocalDateTime createdAt;
 
     public RefreshToken() {
         this.expirationAt = LocalDate.now().plusMonths(1);
+        this.createdAt = LocalDateTime.now();
+    }
+
+    /**
+     * @return boolean represents that token is ready for refresh.
+     */
+    public boolean isActive() {
+        var now = LocalDateTime.now();
+        var limit = createdAt.plusMinutes(2); // equal to jwt expiration time
+        return now.isAfter(limit);
     }
 }
