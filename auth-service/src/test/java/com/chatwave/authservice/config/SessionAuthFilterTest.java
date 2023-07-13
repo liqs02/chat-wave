@@ -1,7 +1,9 @@
 package com.chatwave.authservice.config;
 
+import com.chatwave.authservice.domain.Session;
 import com.chatwave.authservice.domain.User;
-import com.chatwave.authservice.service.JwtService;
+import com.chatwave.authservice.service.SessionService;
+import com.chatwave.authservice.service.SessionServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,22 +19,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-@DisplayName("JwtAuthFilter")
-public class JwtAuthFilterTest {
+@DisplayName("SessionAuthFilter")
+public class SessionAuthFilterTest {
     @InjectMocks
-    private JwtAuthFilter jwtAuthFilter;
-
-    @Mock
-    private JwtService jwtService;
-
-    @Mock
-    private UserDetailsService userDetailsService;
+    private SessionAuthFilter sessionAuthFilter;
 
     @Mock
     private HttpServletRequest request;
@@ -43,41 +40,39 @@ public class JwtAuthFilterTest {
     @Mock
     private FilterChain filterChain;
 
+    @Mock
+    private SessionService sessionService;
+
     @Test
-    @DisplayName("should")
+    @DisplayName("should authenticate a user")
     public void t1() throws ServletException, IOException {
         var user = new User();
         user.setId(1);
         user.setPassword("pass");
         var userDetails = (UserDetails) user;
 
+        var session = new Session(user);
+        session.setId(2L);
+
         when(
                 request.getHeader( "Authorization")
         ).thenReturn("Bearer token");
 
         when(
-                jwtService.extractUsername( "token")
-        ).thenReturn("1");
+                sessionService.getActiveSession("token")
+        ).thenReturn(Optional.of(session));
 
-        when(
-                userDetailsService.loadUserByUsername("1")
-        ).thenReturn(userDetails);
 
-        when(
-                jwtService.isTokenValid("token", userDetails)
-        ).thenReturn(true);
-
-        jwtAuthFilter.doFilterInternal(request, response, filterChain);
+        sessionAuthFilter.doFilterInternal(request, response, filterChain);
 
         verify(filterChain)
                 .doFilter(request, response);
 
-        verify(jwtService)
-                .isTokenValid( "token" , userDetails );
-
         var authentication =  SecurityContextHolder.getContext().getAuthentication();
 
-        assertEquals("1", authentication.getPrincipal());
+        assertEquals(1, authentication.getPrincipal());
+        assertEquals(2L, authentication.getCredentials());
+        assertEquals(0, authentication.getAuthorities().size());
     }
 
     @Test
@@ -87,7 +82,7 @@ public class JwtAuthFilterTest {
                 request.getHeader( "Authorization" )
         ).thenReturn(null);
 
-        jwtAuthFilter.doFilterInternal(request, response, filterChain);
+        sessionAuthFilter.doFilterInternal(request, response, filterChain);
 
         verify(filterChain).doFilter(request, response);
     }

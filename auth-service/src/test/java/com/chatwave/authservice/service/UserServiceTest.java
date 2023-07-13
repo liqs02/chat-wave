@@ -1,6 +1,6 @@
 package com.chatwave.authservice.service;
 
-import com.chatwave.authservice.domain.RefreshToken;
+import com.chatwave.authservice.domain.Session;
 import com.chatwave.authservice.domain.User;
 import com.chatwave.authservice.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -17,7 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -32,46 +31,35 @@ public class UserServiceTest {
     @Mock
     private PasswordEncoder passwordEncoder;
     @Mock
-    private RefreshTokenService refreshTokenService;
-    @Mock
-    private JwtService jwtService;
+    private SessionService sessionService;
     @Mock
     private AuthenticationManager authManager;
 
-    private final UUID uuid0 = UUID.fromString("00000000-0000-0000-0000-000000000000");
 
     @Nested
-    @DisplayName("create( user )")
-    class create {
+    @DisplayName("createUser( user )")
+    class createUser {
         @Test
-        @DisplayName("should create user")
+        @DisplayName("should create user, return new session")
         public void t1() {
             var user = new User();
             user.setId(1);
             user.setPassword("pass");
 
-            var refreshToken = new RefreshToken();
-            refreshToken.setId( uuid0 );
+            var session = new Session(user);
+            session.setId(1L);
 
             when(
                 passwordEncoder.encode("pass")
             ).thenReturn("encoded");
 
             when(
-                refreshTokenService.create( user )
-            ).thenReturn(refreshToken);
+                sessionService.createSession(user)
+            ).thenReturn(session);
 
-            when(
-                    jwtService.generateToken( user )
-            ).thenReturn("accessToken");
+            var result = service.createUser(user);
 
-            var tokens = service.create(user);
-
-            assertEquals("accessToken", tokens.getAccessToken());
-            assertEquals(
-                    uuid0,
-                    tokens.getRefreshToken()
-                    );
+            assertEquals(session, result);
 
             var captor = ArgumentCaptor.forClass(User.class);
 
@@ -95,7 +83,7 @@ public class UserServiceTest {
 
             var thrown = assertThrows(
                     ResponseStatusException.class,
-                    () -> service.create(user)
+                    () -> service.createUser(user)
             );
 
             assertTrue(thrown.getMessage().contains("id"));
@@ -104,34 +92,25 @@ public class UserServiceTest {
     }
 
     @Nested
-    @DisplayName("authenticate( user )")
-    class authenticate {
+    @DisplayName("authenticateUser( user )")
+    class authenticateUser {
         @Test
-        @DisplayName("should authenticate a user and return tokens")
+        @DisplayName("should authenticate a user and return new session")
         public void t1() {
             var user = new User();
             user.setId(1);
             user.setPassword("pass");
 
-            var refreshToken = new RefreshToken();
-            refreshToken.setId(uuid0);
+            var session = new Session();
+            session.setId(1L);
 
             when(
-                    refreshTokenService.create(user)
-            ).thenReturn(refreshToken);
+                    sessionService.createSession(user)
+            ).thenReturn(session);
 
-            when(
-                    jwtService.generateToken(user)
-            ).thenReturn("accessToken");
+            var result = service.authenticateUser(user);
 
-            var tokens = service.authenticate(user);
-
-            assertEquals("accessToken", tokens.getAccessToken());
-
-            assertEquals(
-                    uuid0,
-                    tokens.getRefreshToken()
-            );
+            assertEquals(1L, result.getId());
 
             verify(
                     authManager, times(1)
@@ -141,33 +120,6 @@ public class UserServiceTest {
                            "pass"
                     )
             );
-        }
-    }
-
-    @Nested
-    @DisplayName("refreshToken( refreshTokenId )")
-    class refreshToken {
-        @Test
-        @DisplayName("should return new jwt and refresh token")
-        public void t1() {
-            var refreshToken = new RefreshToken();
-            var user = new User();
-            refreshToken.setId(UUID.randomUUID());
-            refreshToken.setUser(user);
-
-            when(
-                    refreshTokenService.refresh(uuid0)
-            ).thenReturn(refreshToken);
-
-            when(
-                    jwtService.generateToken(user)
-            ).thenReturn("JWT");
-
-            var result = service.refreshToken(uuid0);
-
-            assertNotNull(result);
-            assertEquals(refreshToken.getId(), result.getRefreshToken());
-            assertEquals("JWT", result.getAccessToken());
         }
     }
 

@@ -1,37 +1,24 @@
 package com.chatwave.authservice.service;
 
+import com.chatwave.authservice.domain.Session;
 import com.chatwave.authservice.domain.User;
-import com.chatwave.authservice.domain.dto.UserTokenSet;
-
-import java.util.UUID;
 
 public interface UserService {
     /**
-     * Creates new user if id is not occupied.
-     * Creates tokens.
+     * Creates a new user.
+     * Creates session for user.
      *
      * @param user
-     * @return refresh and access token
-     * */
-    UserTokenSet create(User user);
+     * @return new session
+     */
+    Session createUser(User user);
 
     /**
      * Authenticates a user.
-     * Creates tokens.
+     * Creates session for user.
      *
      * @param user
-     * @return refresh and access token
-     * */
-    UserTokenSet authenticate(User user);
-
-
-    /**
-     * Checks provided refresh token.
-     * Creates new access token.
-     * Create new refresh token.
-     *
-     * @param refreshTokenId
-     * @return new refresh and access token
+     * @return new session
      */
-    UserTokenSet refreshToken(UUID refreshTokenId);
+    Session authenticateUser(User user);
 }

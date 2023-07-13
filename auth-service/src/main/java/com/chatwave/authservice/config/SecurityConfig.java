@@ -26,7 +26,6 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import java.util.UUID;
 
-import static java.lang.Integer.parseInt;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.security.config.Customizer.withDefaults;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
@@ -35,8 +34,6 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
-    private UserRepository userRepository;
-
     @Bean
     @Order(1)
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
@@ -93,11 +90,5 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return username -> userRepository.findById( parseInt(username) )
-                .orElseThrow(() -> new UsernameNotFoundException("User not found.")); // TODO: handle exception
     }
 }

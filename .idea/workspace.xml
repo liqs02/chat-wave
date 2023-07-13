@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2e9016f7-44a1-48c0-b1dc-e06b76c4aa5d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/config/JwtAuthFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/config/JwtAuthFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/service/UserServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/service/UserServiceTest.java" afterDir="false" />
+    <list default="true" id="2e9016f7-44a1-48c0-b1dc-e06b76c4aa5d" name="Changes" comment="Change implementation of authentication. Now authentication is session-based with randomly generated access and refresh tokens.">
+      <change beforePath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/service/SessionServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/service/SessionServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,6 +22,19 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="9c2c1131-f645-4205-b76b-8e926bd58705" />
+        <option name="url" value="https://github.com/blackydev/ChatWave.git" />
+      </UrlAndAccount>
+    </option>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -184,5 +195,9 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Change implementation of authentication. Now authentication is session-based with randomly generated access and refresh tokens." />
+    <option name="LAST_COMMIT_MESSAGE" value="Change implementation of authentication. Now authentication is session-based with randomly generated access and refresh tokens." />
   </component>
 </project>
