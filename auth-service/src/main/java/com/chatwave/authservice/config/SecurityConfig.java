@@ -1,6 +1,6 @@
 package com.chatwave.authservice.config;
 
-import com.chatwave.authservice.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -10,8 +10,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -23,17 +21,24 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.util.UUID;
 
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.security.config.Customizer.withDefaults;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
+import static org.apache.commons.lang.Validate.notNull;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
+
+    PasswordEncoder passwordEncoder;
+    SessionAuthFilter sessionAuthFilter;
+
+
     @Bean
     @Order(1)
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
@@ -44,10 +49,9 @@ public class SecurityConfig {
 
         http.oauth2ResourceServer(rs ->
                 rs.jwt(withDefaults()) // Accept access tokens for User Info and/or Client Registration
-        )
-        .sessionManagement(session ->
-                session.sessionCreationPolicy(STATELESS)
         );
+
+        http.addFilterBefore(sessionAuthFilter, UsernamePasswordAuthenticationFilter.class );
 
         return http.build();
     }
@@ -70,7 +74,7 @@ public class SecurityConfig {
     public RegisteredClientRepository registeredClientRepository() {
         var accountClient = RegisteredClient.withId(UUID.randomUUID().toString())
                 .clientId("account-client")
-                .clientSecret(passwordEncoder().encode("secret")) // TODO: inject secret from environment variables
+                .clientSecret(passwordEncoder.encode("secret")) // TODO: inject secret from environment variables
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
@@ -82,13 +86,15 @@ public class SecurityConfig {
         return new InMemoryRegisteredClientRepository(accountClient);
     }
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        notNull(passwordEncoder, "PasswordEncoder can not be null!");
+        this.passwordEncoder = passwordEncoder;
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    @Autowired
+    public void setSessionAuthFilter(SessionAuthFilter sessionAuthFilter) {
+        notNull(sessionAuthFilter, "SessionAuthFilter can not be null!");
+        this.sessionAuthFilter = sessionAuthFilter;
     }
 }

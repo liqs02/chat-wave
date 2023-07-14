@@ -1,5 +1,6 @@
 package com.chatwave.authservice.domain;
 
+import com.chatwave.authservice.domain.dto.AuthenticateUserRequest;
 import com.chatwave.authservice.domain.dto.CreateUserRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -11,4 +12,7 @@ public interface UserMapper {
 
     @Mapping(target = "authorities", ignore = true)
     User toUser(CreateUserRequest createUserRequest);
+
+    @Mapping(target = " authorities", ignore = true)
+    User toUser(AuthenticateUserRequest authenticateUserRequest);
 }

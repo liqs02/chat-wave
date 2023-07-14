@@ -16,8 +16,8 @@ public class UserRepositoryTest {
     private UserRepository repository;
 
     @Test
-    @DisplayName("should save and find user by id")
-    public void saveAndFindUserById() {
+    @DisplayName("save() and findById()")
+    public void findUserById() {
         var user = new User();
         user.setId(1);
         user.setPassword("pass");

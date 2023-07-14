@@ -5,7 +5,7 @@ import com.chatwave.authservice.domain.User;
 
 public interface UserService {
     /**
-     * Creates a new user.
+     * Creates a new user by provided id and password.
      * Creates session for user.
      *
      * @param user
@@ -14,7 +14,8 @@ public interface UserService {
     Session createUser(User user);
 
     /**
-     * Authenticates a user.
+     * Authenticates a user by id and password.
+     * Downloads user from database.
      * Creates session for user.
      *
      * @param user

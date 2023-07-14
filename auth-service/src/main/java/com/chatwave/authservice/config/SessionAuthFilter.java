@@ -34,7 +34,6 @@ public class SessionAuthFilter extends OncePerRequestFilter {
             var accessToken = authHeader.substring(7);
             var optionalSession = sessionService.getActiveSession(accessToken);
 
-
             if(optionalSession.isPresent() && SecurityContextHolder.getContext().getAuthentication() == null) {
                 var session = optionalSession.get();
                 var user = session.getUser();
