@@ -1,10 +1,10 @@
 package com.chatwave.authservice.controller;
 
-import com.chatwave.authservice.domain.SessionMapper;
 import com.chatwave.authservice.domain.UserMapper;
 import com.chatwave.authservice.domain.dto.AuthenticateUserRequest;
 import com.chatwave.authservice.domain.dto.CreateUserRequest;
 import com.chatwave.authservice.domain.dto.TokenSetResponse;
+import com.chatwave.authservice.domain.session.SessionMapper;
 import com.chatwave.authservice.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +36,7 @@ public class UserController {
         var session = service.authenticateUser(user);
         return sessionMapper.toTokenSetResponse(session);
     }
-
-
+    
     @Autowired
     public void setService(UserService service) {
         notNull(service, "UserService can not be null!");

@@ -1,10 +1,10 @@
 package com.chatwave.authservice.controller;
 
-import com.chatwave.authservice.domain.Session;
 import com.chatwave.authservice.domain.User;
 import com.chatwave.authservice.domain.UserMapper;
 import com.chatwave.authservice.domain.dto.AuthenticateUserRequest;
 import com.chatwave.authservice.domain.dto.CreateUserRequest;
+import com.chatwave.authservice.domain.session.Session;
 import com.chatwave.authservice.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -47,8 +46,8 @@ public class UserControllerTest {
         private ResultActions exec(CreateUserRequest createUserRequest) throws Exception {
             return mvc.perform(
                     post("/users")
-                        .contentType(APPLICATION_JSON)
-                        .content(objMapper.writeValueAsString(createUserRequest))
+                            .contentType(APPLICATION_JSON)
+                            .content(objMapper.writeValueAsString(createUserRequest))
             );
         }
 
@@ -64,7 +63,7 @@ public class UserControllerTest {
             session.setRefreshToken("refresh");
 
             when(
-                userMapper.toUser(createUserRequest)
+                    userMapper.toUser(createUserRequest)
             ).thenReturn(user);
 
             when(
@@ -72,13 +71,13 @@ public class UserControllerTest {
             ).thenReturn(session);
 
             exec(createUserRequest)
-                .andExpect(status().isCreated())
-                .andExpect(
-                        jsonPath("$.refreshToken").value("refresh")
-                )
-                .andExpect(
-                        jsonPath("$.accessToken").value("access")
-                );
+                    .andExpect(status().isCreated())
+                    .andExpect(
+                            jsonPath("$.refreshToken").value("refresh")
+                    )
+                    .andExpect(
+                            jsonPath("$.accessToken").value("access")
+                    );
         }
 
         @Test
@@ -103,8 +102,8 @@ public class UserControllerTest {
         private ResultActions exec(AuthenticateUserRequest authenticateUserRequest) throws Exception {
             return mvc.perform(
                     post("/users/authenticate")
-                        .contentType(APPLICATION_JSON)
-                        .content(objMapper.writeValueAsString(authenticateUserRequest))
+                            .contentType(APPLICATION_JSON)
+                            .content(objMapper.writeValueAsString(authenticateUserRequest))
             );
         }
 
@@ -120,21 +119,21 @@ public class UserControllerTest {
             session.setRefreshToken("refresh");
 
             when(
-                userMapper.toUser(authenticateUserRequest)
+                    userMapper.toUser(authenticateUserRequest)
             ).thenReturn(user);
 
             when(
-                service.authenticateUser(user)
+                    service.authenticateUser(user)
             ).thenReturn(session);
 
             exec(authenticateUserRequest)
-                .andExpect(status().isOk())
-                .andExpect(
-                        jsonPath("$.refreshToken").value("refresh")
-                )
-                .andExpect(
-                        jsonPath("$.accessToken").value("access")
-                );
+                    .andExpect(status().isOk())
+                    .andExpect(
+                            jsonPath("$.refreshToken").value("refresh")
+                    )
+                    .andExpect(
+                            jsonPath("$.accessToken").value("access")
+                    );
         }
 
         @Test
