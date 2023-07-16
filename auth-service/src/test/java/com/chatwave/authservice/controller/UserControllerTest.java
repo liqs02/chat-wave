@@ -34,11 +34,11 @@ public class UserControllerTest {
     @Autowired
     private MockMvc mvc;
     @Autowired
-    private ObjectMapper objMapper;
+    private ObjectMapper objectMapper;
     @MockBean
     private UserService service;
     @MockBean
-    private UserMapper userMapper;
+    private UserMapper mapper;
 
     @Nested
     @DisplayName("POST /users")
@@ -47,7 +47,7 @@ public class UserControllerTest {
             return mvc.perform(
                     post("/users")
                             .contentType(APPLICATION_JSON)
-                            .content(objMapper.writeValueAsString(createUserRequest))
+                            .content(objectMapper.writeValueAsString(createUserRequest))
             );
         }
 
@@ -63,7 +63,7 @@ public class UserControllerTest {
             session.setRefreshToken("refresh");
 
             when(
-                    userMapper.toUser(createUserRequest)
+                    mapper.toUser(createUserRequest)
             ).thenReturn(user);
 
             when(
@@ -103,7 +103,7 @@ public class UserControllerTest {
             return mvc.perform(
                     post("/users/authenticate")
                             .contentType(APPLICATION_JSON)
-                            .content(objMapper.writeValueAsString(authenticateUserRequest))
+                            .content(objectMapper.writeValueAsString(authenticateUserRequest))
             );
         }
 
@@ -119,7 +119,7 @@ public class UserControllerTest {
             session.setRefreshToken("refresh");
 
             when(
-                    userMapper.toUser(authenticateUserRequest)
+                    mapper.toUser(authenticateUserRequest)
             ).thenReturn(user);
 
             when(
