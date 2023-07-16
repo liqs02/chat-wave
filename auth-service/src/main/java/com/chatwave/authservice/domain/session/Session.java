@@ -1,5 +1,6 @@
-package com.chatwave.authservice.domain;
+package com.chatwave.authservice.domain.session;
 
+import com.chatwave.authservice.domain.User;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.apache.commons.lang.RandomStringUtils;
@@ -12,8 +13,8 @@ import java.time.LocalDateTime;
 @Entity
 @Table( name = "sessions",
     indexes = {
-        @Index(name = "session_user_index", columnList = "user_id"),
-            @Index(name = "session_access_token_index", columnList = "accessToken"),
+        @Index(name = "session_user_index", columnList = "userId"),
+        @Index(name = "session_access_token_index", columnList = "accessToken"),
         @Index(name = "session_refresh_token_index", columnList = "refreshToken")
     }
 )
@@ -23,22 +24,23 @@ public class Session {
     private Long id;
 
     @ManyToOne(optional = false)
+    @JoinColumn(name="userId", nullable=false, updatable = false)
     private User user;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String accessToken;
 
     @Column(nullable = false)
     private LocalDateTime accessTokenExpireDate;  // then we have to refresh token.
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String refreshToken;
 
     @Column(nullable = false, columnDefinition = "DATE")
     private LocalDate expireDate; // then we can not use access and refresh token!
 
     @Column(nullable = false, updatable = false)
-    private final LocalDateTime createdAt;
+    private LocalDateTime createdAt;
 
     public Session() {
         this.createdAt = LocalDateTime.now();
@@ -57,12 +59,15 @@ public class Session {
 
     public boolean isAccessTokenExpired() {
         var now = LocalDateTime.now();
-        return now.isAfter(accessTokenExpireDate);
+        return now.isAfter(accessTokenExpireDate) || isExpired();
     }
 
-    public void deactivate() {
-        expireDate = LocalDate.now();
-        accessTokenExpireDate = LocalDateTime.now();
+     public void expire() {
+         if(!isExpired())
+            expireDate = LocalDate.now();
+
+        accessToken = null;
+        refreshToken = null;
     }
 
     public void refreshTokens() {
