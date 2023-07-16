@@ -1,9 +1,9 @@
 package com.chatwave.authservice.service;
 
-import com.chatwave.authservice.domain.Session;
 import com.chatwave.authservice.domain.User;
+import com.chatwave.authservice.domain.session.Session;
 
-import java.util.Optional;
+import java.util.List;
 
 public interface SessionService {
     /**
@@ -15,15 +15,6 @@ public interface SessionService {
     Session createSession(User user);
 
     /**
-     * Gets sessions by accessToken.
-     * If session is expired, throws exception.
-     *
-     * @param accessToken
-     * @return session
-     */
-    Optional<Session> getActiveSession(String accessToken);
-
-    /**
      * Searches session by refresh token.
      * Creates new refresh and access tokens.
      *
@@ -33,9 +24,26 @@ public interface SessionService {
     Session refreshSession(String refreshToken);
 
     /**
-     * Deactivates session.
-     * 
-     * @param sessionId
+     * Gets all not expired user's sessions.
+     *
+     * @param userId
+     * @return user's sessions
      */
-    void deactivateSession(Long sessionId);
+    List<Session> getUserCurrentSessions(Integer userId);
+
+    /**
+     * Finds not expired session of specified users.
+     * Expires these sessions.
+     *
+     * @param userId
+     */
+    void expireAllUserSessions(Integer userId);
+
+    /**
+     * Expires session of specified user.
+     *
+     * @param sessionId
+     * @param userId check value used to ensure that the session is owned by the user
+     */
+    void expireUserSession(Integer userId, Long sessionId);
 }

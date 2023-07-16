@@ -1,7 +1,7 @@
 package com.chatwave.authservice.service;
 
-import com.chatwave.authservice.domain.Session;
 import com.chatwave.authservice.domain.User;
+import com.chatwave.authservice.domain.session.Session;
 import com.chatwave.authservice.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,13 +48,6 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public Session authenticateUser(User user) {
-        authenticateCredentials(user);
-        log.info("user has been authenticated: " + user.getId());
-
-        return sessionService.createSession(user);
-    }
-
-    private void authenticateCredentials(User user) {
         try {
             authManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -65,8 +58,10 @@ public class UserServiceImpl implements UserService {
         } catch(Exception e) {
             throw new ResponseStatusException(UNAUTHORIZED, "Invalid username or password.");
         }
-    }
 
+        log.info("user has been authenticated: " + user.getId());
+        return sessionService.createSession(user);
+    }
 
     @Autowired
     public void setPasswordEncoder(PasswordEncoder passwordEncoder) {

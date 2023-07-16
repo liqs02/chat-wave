@@ -1,7 +1,7 @@
 package com.chatwave.authservice.service;
 
-import com.chatwave.authservice.domain.Session;
 import com.chatwave.authservice.domain.User;
+import com.chatwave.authservice.domain.session.Session;
 import com.chatwave.authservice.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -34,7 +34,6 @@ public class UserServiceTest {
     private SessionService sessionService;
     @Mock
     private AuthenticationManager authManager;
-
 
     @Nested
     @DisplayName("createUser( user )")
@@ -122,5 +121,4 @@ public class UserServiceTest {
             );
         }
     }
-
 }

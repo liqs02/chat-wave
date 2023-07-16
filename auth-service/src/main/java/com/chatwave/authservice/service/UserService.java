@@ -1,7 +1,7 @@
 package com.chatwave.authservice.service;
 
-import com.chatwave.authservice.domain.Session;
 import com.chatwave.authservice.domain.User;
+import com.chatwave.authservice.domain.session.Session;
 
 public interface UserService {
     /**
@@ -22,4 +22,5 @@ public interface UserService {
      * @return new session
      */
     Session authenticateUser(User user);
+
 }
