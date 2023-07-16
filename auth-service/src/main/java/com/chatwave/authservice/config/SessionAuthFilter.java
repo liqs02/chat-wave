@@ -22,7 +22,7 @@ public class SessionAuthFilter extends OncePerRequestFilter {
         private SessionRepository repository;
 
         @Override
-        protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
             var authHeader = request.getHeader("Authorization");
 
             if(authHeader == null || !authHeader.startsWith("Bearer ")) {

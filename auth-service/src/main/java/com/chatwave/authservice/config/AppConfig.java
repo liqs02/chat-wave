@@ -1,7 +1,7 @@
 package com.chatwave.authservice.config;
 
-import com.chatwave.authservice.domain.SessionMapper;
 import com.chatwave.authservice.domain.UserMapper;
+import com.chatwave.authservice.domain.session.SessionMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

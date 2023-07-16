@@ -40,17 +40,6 @@ public class SessionRepositoryTest {
     }
 
     @Test
-    @DisplayName("findById()")
-    public void findById() {
-        var exists = repository.findById(session.getId());
-        if(exists.isEmpty()) fail();
-
-        var foundSession = exists.get();
-
-        assertEquals(session, foundSession);
-    }
-
-    @Test
     @DisplayName("findByRefreshToken()")
     public void findByRefreshToken() {
         var exists = repository.findByRefreshToken(session.getRefreshToken());

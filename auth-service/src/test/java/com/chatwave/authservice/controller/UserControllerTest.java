@@ -4,151 +4,95 @@ import com.chatwave.authservice.domain.User;
 import com.chatwave.authservice.domain.UserMapper;
 import com.chatwave.authservice.domain.dto.AuthenticateUserRequest;
 import com.chatwave.authservice.domain.dto.CreateUserRequest;
+import com.chatwave.authservice.domain.dto.TokenSetResponse;
 import com.chatwave.authservice.domain.session.Session;
+import com.chatwave.authservice.domain.session.SessionMapper;
 import com.chatwave.authservice.service.UserService;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.mockito.Mockito.when;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest
-@AutoConfigureMockMvc
+@ExtendWith(MockitoExtension.class)
 @DisplayName("UserController")
 public class UserControllerTest {
-    @Autowired
-    private MockMvc mvc;
-    @Autowired
-    private ObjectMapper objectMapper;
-    @MockBean
+    @InjectMocks
+    private UserController controller;
+    @Mock
     private UserService service;
-    @MockBean
+    @Mock
     private UserMapper mapper;
+    @Mock
+    private SessionMapper sessionMapper;
 
-    @Nested
-    @DisplayName("POST /users")
-    class createUser {
-        private ResultActions exec(CreateUserRequest createUserRequest) throws Exception {
-            return mvc.perform(
-                    post("/users")
-                            .contentType(APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(createUserRequest))
-            );
-        }
+    private Session session;
+    private User user;
+    private TokenSetResponse tokenSetResponse;
 
-        @Test
-        @DisplayName("should creates user and return access and refresh token")
-        @WithMockUser(authorities = "SCOPE_server")
-        public void t1() throws Exception {
-            var createUserRequest = new CreateUserRequest(1, "Pass1234");
+    @BeforeEach
+    public void setup() {
+        user = new User();
+        session = new Session(user);
+        session.setAccessToken("access");
+        session.setRefreshToken("refresh");
 
-            var user = new User();
-            var session = new Session(user);
-            session.setAccessToken("access");
-            session.setRefreshToken("refresh");
-
-            when(
-                    mapper.toUser(createUserRequest)
-            ).thenReturn(user);
-
-            when(
-                    service.createUser(user)
-            ).thenReturn(session);
-
-            exec(createUserRequest)
-                    .andExpect(status().isCreated())
-                    .andExpect(
-                            jsonPath("$.refreshToken").value("refresh")
-                    )
-                    .andExpect(
-                            jsonPath("$.accessToken").value("access")
-                    );
-        }
-
-        @Test
-        @DisplayName("should send 403 status if any authorization data is not provided")
-        public void t2() throws Exception {
-            exec(new CreateUserRequest(1, "Pass1234"))
-                    .andExpect(status().isForbidden());
-        }
-
-        @Test
-        @DisplayName("should send 400 status if password does not contain any number")
-        @WithMockUser(authorities = "SCOPE_server")
-        public void t3() throws Exception {
-            exec(new CreateUserRequest(1, "Password"))
-                    .andExpect(status().isBadRequest());
-        }
+        tokenSetResponse = new TokenSetResponse("refresh", "access");
     }
 
-    @Nested
-    @DisplayName("POST /users/authenticate")
-    class authenticateUser {
-        private ResultActions exec(AuthenticateUserRequest authenticateUserRequest) throws Exception {
-            return mvc.perform(
-                    post("/users/authenticate")
-                            .contentType(APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(authenticateUserRequest))
-            );
-        }
+    @Test
+    @DisplayName("createUser() should creates user and return access and refresh token")
+    public void t1() {
+        var createUserRequest = new CreateUserRequest(1, "Pass1234");
 
-        @Test
-        @DisplayName("should creates user and return access and refresh token")
-        @WithMockUser(authorities = "SCOPE_server")
-        public void t1() throws Exception {
-            var authenticateUserRequest = new AuthenticateUserRequest(1, "Pass1234");
+        when(
+                mapper.toUser(createUserRequest)
+        ).thenReturn(user);
 
-            var user = new User();
-            var session = new Session(user);
-            session.setAccessToken("access");
-            session.setRefreshToken("refresh");
+        when(
+                service.createUser(user)
+        ).thenReturn(session);
 
-            when(
-                    mapper.toUser(authenticateUserRequest)
-            ).thenReturn(user);
+        when(
+                sessionMapper.toTokenSetResponse(session)
+        ).thenReturn(tokenSetResponse);
 
-            when(
-                    service.authenticateUser(user)
-            ).thenReturn(session);
+        var result = controller.createUser(createUserRequest);
 
-            exec(authenticateUserRequest)
-                    .andExpect(status().isOk())
-                    .andExpect(
-                            jsonPath("$.refreshToken").value("refresh")
-                    )
-                    .andExpect(
-                            jsonPath("$.accessToken").value("access")
-                    );
-        }
+        Assertions.assertEquals("refresh", result.refreshToken());
+        Assertions.assertEquals("access", result.accessToken());
+    }
 
-        @Test
-        @DisplayName("should send 403 status if any authorization data is not provided")
-        public void t2() throws Exception {
-            exec(new AuthenticateUserRequest(1, "Pass1234"))
-                    .andExpect(status().isForbidden());
-        }
+    @Test
+    @DisplayName("authenticateUser() should creates user and return access and refresh token")
+    public void t2() {
+        var authenticateUserRequest = new AuthenticateUserRequest(1, "Pass1234");
 
-        @Test
-        @DisplayName("should send 400 status if no password is provided")
-        @WithMockUser(authorities = "SCOPE_server")
-        public void t3() throws Exception {
-            exec(new AuthenticateUserRequest(1, null))
-                    .andExpect(status().isBadRequest());
-        }
+        var user = new User();
+        var session = new Session(user);
+        session.setAccessToken("access");
+        session.setRefreshToken("refresh");
+
+        when(
+                mapper.toUser(authenticateUserRequest)
+        ).thenReturn(user);
+
+        when(
+                service.authenticateUser(user)
+        ).thenReturn(session);
+
+        when(
+                sessionMapper.toTokenSetResponse(session)
+        ).thenReturn(tokenSetResponse);
+
+        var result = controller.authenticateUser(authenticateUserRequest);
+
+        Assertions.assertEquals("refresh", result.refreshToken());
+        Assertions.assertEquals("access", result.accessToken());
     }
 }

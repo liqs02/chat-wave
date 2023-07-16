@@ -3,6 +3,7 @@ package com.chatwave.authservice.service;
 import com.chatwave.authservice.domain.User;
 import com.chatwave.authservice.domain.session.Session;
 import com.chatwave.authservice.repository.SessionRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -31,24 +32,19 @@ public class SessionServiceTest {
     private SessionServiceImpl service;
     @Mock
     private SessionRepository repository;
+    private User user;
+    private Session session;
 
-    User createUser() {
-        var user = new User();
+    @BeforeEach
+    void setup() {
+        // setup User
+        user = new User();
         user.setId(1);
         user.setPassword("pass");
 
-        return user;
-    }
-
-    Session createSession() {
-        var user = createUser();
-
-        var session = new Session();
-        session.setId(1L);
-        session.setUser(user);
-        session.setRefreshToken("refresh");
-
-        return session;
+        session = new Session(user);
+        session.setAccessToken("access");
+        session.setRefreshToken("access");
     }
 
     @Nested
@@ -57,13 +53,11 @@ public class SessionServiceTest {
         @Test
         @DisplayName("should create and return session")
         public void t1() {
-            var user = createUser();
-
             when(
                 repository.save( isA(Session.class) )
             ).thenAnswer(invocation -> {
                 Session invSession = invocation.getArgument(0);
-                invSession.setId(1L);
+                invSession.setId(2L);
                 return invSession;
             });
 
@@ -73,7 +67,7 @@ public class SessionServiceTest {
                     .save( isA(Session.class) );
 
             assertNotNull(session);
-            assertEquals(1L, session.getId());
+            assertEquals(2L, session.getId());
             assertEquals(user, session.getUser());
         }
     }
@@ -84,7 +78,6 @@ public class SessionServiceTest {
         @Test
         @DisplayName("should refresh session")
         public void t1() {
-            var session = createSession();
             session.setAccessTokenExpireDate(LocalDateTime.now().minusMinutes(1));
 
             when(
@@ -102,7 +95,7 @@ public class SessionServiceTest {
             assertNotEquals("refresh", session.getRefreshToken());
             assertNotEquals("access", session.getAccessToken());
 
-            assertEquals(createUser(), result.getUser());
+            assertEquals(user, result.getUser());
         }
 
         @Test
@@ -119,7 +112,6 @@ public class SessionServiceTest {
         @Test
         @DisplayName("should throw BAD_REQUEST if session is expired")
         public void t3() {
-            var session = createSession();
             session.setExpireDate(LocalDate.now());
             session.setAccessTokenExpireDate(LocalDateTime.now().minusDays(1));
 
@@ -138,7 +130,6 @@ public class SessionServiceTest {
         @Test
         @DisplayName("should throw BAD_REQUEST if session access token is not expired")
         public void t4() {
-            var session = createSession();
             session.setExpireDate(LocalDate.now());
 
             when(
@@ -228,14 +219,14 @@ public class SessionServiceTest {
             user.setId(1);
 
             when(
-                    repository.findById(1L)
+                    repository.findById(2L)
             ).thenReturn(Optional.of(session));
 
             when(
                     session.getUser()
             ).thenReturn(user);
 
-            service.expireUserSession(1, 1L);
+            service.expireUserSession(1, 2L);
 
             verify(session, times(1))
                     .expire();
@@ -249,7 +240,7 @@ public class SessionServiceTest {
         public void t2() {
             var thrown = assertThrows(
                     ResponseStatusException.class,
-                    () -> service.expireUserSession(1, 1L)
+                    () -> service.expireUserSession(1, 2L)
             );
 
             assertEquals(NOT_FOUND, thrown.getStatusCode());
@@ -263,7 +254,7 @@ public class SessionServiceTest {
             user.setId(2);
 
             when(
-                    repository.findById(1L)
+                    repository.findById(2L)
             ).thenReturn(Optional.of(session));
 
             when(
@@ -272,7 +263,7 @@ public class SessionServiceTest {
 
             var thrown = assertThrows(
                     ResponseStatusException.class,
-                    () -> service.expireUserSession(1, 1L)
+                    () -> service.expireUserSession(1, 2L)
             );
 
             assertEquals(NOT_FOUND, thrown.getStatusCode());
@@ -289,7 +280,7 @@ public class SessionServiceTest {
             user.setId(1);
 
             when(
-                    repository.findById(1L)
+                    repository.findById(2L)
             ).thenReturn(Optional.of(session));
 
             when(
@@ -302,7 +293,7 @@ public class SessionServiceTest {
 
             var thrown = assertThrows(
                     ResponseStatusException.class,
-                    () -> service.expireUserSession(1, 1L)
+                    () -> service.expireUserSession(1, 2L)
             );
 
             assertEquals(BAD_REQUEST, thrown.getStatusCode());

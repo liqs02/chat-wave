@@ -71,14 +71,14 @@ public class Session {
     }
 
     public void refreshTokens() {
-        accessToken = generateToken();
+        accessToken = generateToken(128);
         accessTokenExpireDate = LocalDateTime.now().plusHours(1);
 
-        refreshToken = generateToken();
+        refreshToken = generateToken(255);
         expireDate = LocalDate.now().plusMonths(3);
     }
 
-    private String generateToken() {
-        return RandomStringUtils.random(128, 0, 0, true, true, null, new SecureRandom());
+    private String generateToken(int count) {
+        return RandomStringUtils.random(count, 0, 0, true, true, null, new SecureRandom());
     }
 }

@@ -36,7 +36,7 @@ public class UserController {
         var session = service.authenticateUser(user);
         return sessionMapper.toTokenSetResponse(session);
     }
-    
+
     @Autowired
     public void setService(UserService service) {
         notNull(service, "UserService can not be null!");
