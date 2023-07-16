@@ -1,15 +1,14 @@
 package com.chatwave.authservice.config;
 
-import com.chatwave.authservice.service.SessionService;
+import com.chatwave.authservice.domain.session.SessionAuthentication;
+import com.chatwave.authservice.repository.SessionRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -20,7 +19,7 @@ import static org.apache.commons.lang.Validate.notNull;
 @Component
 @Slf4j
 public class SessionAuthFilter extends OncePerRequestFilter {
-        private SessionService sessionService;
+        private SessionRepository repository;
 
         @Override
         protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -32,30 +31,22 @@ public class SessionAuthFilter extends OncePerRequestFilter {
             }
 
             var accessToken = authHeader.substring(7);
-            var optionalSession = sessionService.getActiveSession(accessToken);
+            var optionalSession = repository.findNotExpiredByAccessToken(accessToken);
 
             if(optionalSession.isPresent() && SecurityContextHolder.getContext().getAuthentication() == null) {
                 var session = optionalSession.get();
-                var user = session.getUser();
 
-                var authToken = new UsernamePasswordAuthenticationToken(
-                        user.getId(), session.getId(), user.getAuthorities()
-                );
+                var sessionAuth = new SessionAuthentication(session, request);
+                SecurityContextHolder.getContext().setAuthentication(sessionAuth);
 
-                authToken.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request)
-                );
-
-                SecurityContextHolder.getContext().setAuthentication(authToken);
-                log.trace("Session auth filter successfully authorized user. SessionId: " + session.getId());
+                log.trace("Session auth filter successfully authorized user. Session: " + session);
                 filterChain.doFilter(request, response);
-
             }
         }
 
         @Autowired
-        public void setSessionService(SessionService sessionService) {
-            notNull(sessionService, "SessionService can not be null!");
-            this.sessionService = sessionService;
+        public void setRepository(SessionRepository repository) {
+            notNull(repository, "SessionRepository can not be null!");
+            this.repository = repository;
         }
 }

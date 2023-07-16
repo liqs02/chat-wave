@@ -1,9 +1,9 @@
 package com.chatwave.authservice.config;
 
-import com.chatwave.authservice.domain.Session;
 import com.chatwave.authservice.domain.User;
-import com.chatwave.authservice.service.SessionService;
-import com.chatwave.authservice.service.SessionServiceImpl;
+import com.chatwave.authservice.domain.session.Session;
+import com.chatwave.authservice.domain.session.SessionAuthentication;
+import com.chatwave.authservice.repository.SessionRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,8 +15,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -41,7 +39,7 @@ public class SessionAuthFilterTest {
     private FilterChain filterChain;
 
     @Mock
-    private SessionService sessionService;
+    private SessionRepository repository;
 
     @Test
     @DisplayName("should authenticate a user")
@@ -49,30 +47,34 @@ public class SessionAuthFilterTest {
         var user = new User();
         user.setId(1);
         user.setPassword("pass");
-        var userDetails = (UserDetails) user;
 
         var session = new Session(user);
         session.setId(2L);
+        session.setAccessToken("access");
 
         when(
                 request.getHeader( "Authorization")
         ).thenReturn("Bearer token");
 
         when(
-                sessionService.getActiveSession("token")
+                repository.findNotExpiredByAccessToken("token")
         ).thenReturn(Optional.of(session));
-
 
         sessionAuthFilter.doFilterInternal(request, response, filterChain);
 
         verify(filterChain)
                 .doFilter(request, response);
 
-        var authentication =  SecurityContextHolder.getContext().getAuthentication();
+        var authentication = (SessionAuthentication) SecurityContextHolder.getContext().getAuthentication();
 
+        // check principals
         assertEquals(1, authentication.getPrincipal());
-        assertEquals(2L, authentication.getCredentials());
+        assertEquals("1", authentication.getName());
         assertEquals(0, authentication.getAuthorities().size());
+        // check credentials
+        assertEquals("access", authentication.getCredentials());
+        // check details
+        assertEquals(2L, authentication.getDetails().getSessionId());
     }
 
     @Test
