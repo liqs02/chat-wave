@@ -40,8 +40,8 @@ public class SessionAuthFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(sessionAuth);
 
                 log.trace("Session auth filter successfully authorized user. Session: " + session);
-                filterChain.doFilter(request, response);
             }
+            filterChain.doFilter(request, response);
         }
 
         @Autowired

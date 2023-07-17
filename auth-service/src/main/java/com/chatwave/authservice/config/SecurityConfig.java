@@ -24,6 +24,7 @@ import java.util.UUID;
 
 import static org.apache.commons.lang.Validate.notNull;
 import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
@@ -56,11 +57,14 @@ public class SecurityConfig {
     @Order(2)
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable)
+                .csrf(csrf ->
+                        csrf.ignoringRequestMatchers("/users", "/users/authenticate")
+                )
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers(GET, "/actuator/health").permitAll()
                                 .requestMatchers("/error").permitAll()
-                                .anyRequest().authenticated()
+                                .requestMatchers("/users", "/users/**").permitAll()
+                                .anyRequest().permitAll()
                 );
 
         return http.build();

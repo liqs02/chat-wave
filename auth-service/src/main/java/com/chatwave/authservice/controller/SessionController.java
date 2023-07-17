@@ -19,7 +19,6 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @RestController
 @RequestMapping("/users")
-@PreAuthorize("hasAuthority('SCOPE_ui')")
 public class SessionController {
     private SessionService service;
     private SessionMapper mapper;
