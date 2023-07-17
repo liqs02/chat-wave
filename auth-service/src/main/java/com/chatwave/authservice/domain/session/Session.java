@@ -71,7 +71,7 @@ public class Session {
     }
 
     public void refreshTokens() {
-        accessToken = generateToken(128);
+        accessToken = generateToken(192);
         accessTokenExpireDate = LocalDateTime.now().plusHours(1);
 
         refreshToken = generateToken(255);
