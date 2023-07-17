@@ -8,7 +8,6 @@ import com.chatwave.authservice.service.SessionService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,8 +29,8 @@ public class SessionController {
     }
 
     @GetMapping("/{userId}/sessions")
-    @PreAuthorize("#principalId == #userId") // TODO: change all PreAuthorize in SessionController to PreFilter
-    public List<SessionResponse> getUserCurrentSessions(@AuthenticationPrincipal Integer principalId, @PathVariable Integer userId) {
+    @PreAuthorize("#userId == authentication.principal")
+    public List<SessionResponse> getUserCurrentSessions(@PathVariable Integer userId) {
         var sessionList = service.getUserCurrentSessions(userId);
         return sessionList
                 .stream()
@@ -41,19 +40,15 @@ public class SessionController {
 
     @DeleteMapping("/{userId}/sessions")
     @ResponseStatus(NO_CONTENT)
-    @PreAuthorize("#principalId == #userId")
-    public void expireAllUserSessions(@AuthenticationPrincipal Integer principalId, @PathVariable Integer userId) {
+    @PreAuthorize("#userId == authentication.principal")
+    public void expireAllUserSessions(@PathVariable Integer userId) {
         service.expireAllUserSessions(userId);
     }
 
     @DeleteMapping("/{userId}/sessions/{sessionId}")
     @ResponseStatus(NO_CONTENT)
-    @PreAuthorize("#principalId == #userId")
-    public void expireUserSession(
-            @AuthenticationPrincipal Integer principalId,
-            @PathVariable Integer userId,
-            @PathVariable Long sessionId
-    ) {
+    @PreAuthorize("#userId == authentication.principal")
+    public void expireUserSession(@PathVariable Integer userId, @PathVariable Long sessionId) {
         service.expireUserSession(userId, sessionId);
     }
 

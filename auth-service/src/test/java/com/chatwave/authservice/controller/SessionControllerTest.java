@@ -79,7 +79,7 @@ public class SessionControllerTest {
                 mapper.toSessionResponse(session)
         ).thenReturn(sessionResponse);
 
-        var result = controller.getUserCurrentSessions(1, 1);
+        var result = controller.getUserCurrentSessions(1);
 
         assertEquals(List.of(sessionResponse), result);
     }
@@ -87,7 +87,7 @@ public class SessionControllerTest {
     @Test
     @DisplayName("expireAllUserSessions() should expire all user sessions")
     public void t3() {
-        controller.expireAllUserSessions(1, 1);
+        controller.expireAllUserSessions(1);
         verify(service).expireAllUserSessions(1);
     }
 
@@ -95,7 +95,7 @@ public class SessionControllerTest {
     @DisplayName("expireUserSession() should expire user session")
     @WithMockUser(username = "user", authorities = "SCOPE_ui")
     public void t4() {
-        controller.expireUserSession(1, 1, 2L);
+        controller.expireUserSession(1,  2L);
         verify(service).expireUserSession(1, 2L);
     }
 }
