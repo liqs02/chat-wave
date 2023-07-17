@@ -99,7 +99,7 @@ public class SessionTest {
         assertNotEquals("access", session.getAccessToken());
         assertNotEquals("refresh", session.getRefreshToken());
 
-        assertEquals(128, session.getAccessToken().length());
+        assertEquals(192, session.getAccessToken().length());
         assertEquals(255, session.getRefreshToken().length());
 
         assertNotEquals(tomorrow, session.getAccessTokenExpireDate());
