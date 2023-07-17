@@ -30,7 +30,7 @@ public class SessionController {
     }
 
     @GetMapping("/{userId}/sessions")
-    @PreAuthorize("#principalId == #userId")
+    @PreAuthorize("#principalId == #userId") // TODO: change all PreAuthorize in SessionController to PreFilter
     public List<SessionResponse> getUserCurrentSessions(@AuthenticationPrincipal Integer principalId, @PathVariable Integer userId) {
         var sessionList = service.getUserCurrentSessions(userId);
         return sessionList
