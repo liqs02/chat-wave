@@ -1,0 +1,39 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://account-postgres:5432/chatwave
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: ${POSTGRES_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://auth-service:8081
+      client:
+        provider:
+          spring:
+            issuer-uri: http://auth-service:8081
+        registration:
+          spring:
+            client-id: account-client
+            client-secret: secret
+            authorization-grant-type: CLIENT_CREDENTIALS
+            client-authentication-method: CLIENT_SECRET_BASIC
+            redirect-uri:  {baseUrl}/login/oauth2/code/{registrationId}
+            scope:
+              - openid
+              - server
+
+server:
+  port: 8082
