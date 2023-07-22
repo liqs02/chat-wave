@@ -20,4 +20,32 @@ public class AccountMapperTest {
         assertEquals("login", account.getLoginName());
         assertEquals("nick", account.getDisplayName());
     }
+
+    @Test
+    @DisplayName("should map Account entity to AccountShowcase")
+    public void accountToAccountShowcase() {
+        var account = new Account();
+        account.setId(1);
+        account.setDisplayName("display");
+
+        var showcase = mapper.toAccountShowcase(account);
+
+        assertEquals(1, showcase.id());
+        assertEquals("display", showcase.displayName());
+    }
+
+    @Test
+    @DisplayName("should map Account entity to AccountDetails")
+    public void accountToAccountDetails() {
+        var account = new Account();
+        account.setId(1);
+        account.setLoginName("login");
+        account.setDisplayName("display");
+
+        var showcase = mapper.toAccountDetails(account);
+
+        assertEquals(1, showcase.id());
+        assertEquals("login", showcase.loginName());
+        assertEquals("display", showcase.displayName());
+    }
 }

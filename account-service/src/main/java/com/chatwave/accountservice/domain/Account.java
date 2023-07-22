@@ -18,7 +18,4 @@ public class Account {
 
     @Column(nullable = false, length = 30)
     String displayName;
-
-    @ManyToMany
-    List<Account> followed;
 }

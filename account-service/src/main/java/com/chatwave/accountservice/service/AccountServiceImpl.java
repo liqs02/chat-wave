@@ -4,7 +4,7 @@ import com.chatwave.accountservice.client.AuthService;
 import com.chatwave.accountservice.domain.Account;
 import com.chatwave.accountservice.domain.dto.AuthenticateUserRequest;
 import com.chatwave.accountservice.domain.dto.CreateUserRequest;
-import com.chatwave.accountservice.domain.dto.TokenSetResponse;
+import com.chatwave.accountservice.domain.dto.TokenSet;
 import com.chatwave.accountservice.repository.AccountRepository;
 import feign.FeignException;
 import jakarta.transaction.Transactional;
@@ -23,9 +23,12 @@ public class AccountServiceImpl implements AccountService {
     AccountRepository repository;
     AuthService authService;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
-    public TokenSetResponse createAccount(Account account, String password) {
+    public TokenSet createAccount(Account account, String password) {
         var optional = repository.findByLoginName(account.getLoginName());
         if(optional.isPresent())
             throw new ResponseStatusException(CONFLICT, "Account with given loginName already exists.");
@@ -40,8 +43,11 @@ public class AccountServiceImpl implements AccountService {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public TokenSetResponse authenticateAccount(String loginName, String password) {
+    public TokenSet authenticateAccount(String loginName, String password) {
         var account = repository.findByLoginName(loginName)
                 .orElseThrow( () ->
                         new ResponseStatusException(BAD_REQUEST, "Invalid loginName or password.")
@@ -49,5 +55,16 @@ public class AccountServiceImpl implements AccountService {
 
         var authenticateUserRequest = new AuthenticateUserRequest(account.getId(), password);
         return authService.authenticateUser(authenticateUserRequest);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Account getAccount(Integer accountId) {
+        return repository.findById(accountId)
+                .orElseThrow( () ->
+                        new ResponseStatusException(NOT_FOUND, "User with given id does not exist.")
+                );
     }
 }

@@ -1,7 +1,7 @@
 package com.chatwave.accountservice.service;
 
 import com.chatwave.accountservice.domain.Account;
-import com.chatwave.accountservice.domain.dto.TokenSetResponse;
+import com.chatwave.accountservice.domain.dto.TokenSet;
 
 public interface AccountService {
     /**
@@ -11,7 +11,7 @@ public interface AccountService {
      * @param createAccountRequest
      * @return access and refresh token from auth-service.
      */
-    TokenSetResponse createAccount(Account account, String password);
+    TokenSet createAccount(Account account, String password);
 
     /**
      * Searches account with given loginName.
@@ -20,5 +20,13 @@ public interface AccountService {
      * @param authenticateUserRequest
      * @return access and refresh token from auth-service.
      */
-    TokenSetResponse authenticateAccount(String loginName, String password);
+    TokenSet authenticateAccount(String loginName, String password);
+
+    /**
+     * Searches an account with given id.
+     *
+     * @param accountId
+     * @return account
+     */
+    Account getAccount(Integer accountId);
 }

@@ -4,7 +4,7 @@ import com.chatwave.accountservice.client.AuthService;
 import com.chatwave.accountservice.domain.Account;
 import com.chatwave.accountservice.domain.dto.AuthenticateUserRequest;
 import com.chatwave.accountservice.domain.dto.CreateUserRequest;
-import com.chatwave.accountservice.domain.dto.TokenSetResponse;
+import com.chatwave.accountservice.domain.dto.TokenSet;
 import com.chatwave.accountservice.repository.AccountRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -30,11 +30,11 @@ public class AccountServiceTest {
     @Mock
     AuthService authService;
 
-    private static TokenSetResponse tokenSet;
+    private static TokenSet tokenSet;
 
     @BeforeAll
     public static void setup() {
-        tokenSet = new TokenSetResponse("refresh", "access");
+        tokenSet = new TokenSet("refresh", "access");
     }
 
     @Nested
@@ -83,6 +83,25 @@ public class AccountServiceTest {
             var result = service.authenticateAccount("login", "pass");
 
             assertEquals(tokenSet, result);
+        }
+    }
+
+
+    @Nested
+    @DisplayName("getAccount()")
+    class GetAccount {
+        @Test
+        @DisplayName("should get an account")
+        public void t1() {
+            var account = new Account();
+
+            when(
+                    repository.findById(1)
+            ).thenReturn(Optional.of(account));
+
+            var result = service.getAccount(1);
+
+            assertEquals(account, result);
         }
     }
 }

@@ -2,9 +2,7 @@ package com.chatwave.accountservice.controller;
 
 import com.chatwave.accountservice.domain.Account;
 import com.chatwave.accountservice.domain.AccountMapper;
-import com.chatwave.accountservice.domain.dto.AuthenticateAccountRequest;
-import com.chatwave.accountservice.domain.dto.CreateAccountRequest;
-import com.chatwave.accountservice.domain.dto.TokenSetResponse;
+import com.chatwave.accountservice.domain.dto.*;
 import com.chatwave.accountservice.service.AccountService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -27,7 +25,7 @@ public class AccountControllerTest {
         @Mock
         private AccountMapper mapper;
 
-        private TokenSetResponse tokenSet = new TokenSetResponse("refresh", "access");
+        private final TokenSet tokenSet = new TokenSet("refresh", "access");
 
         @Nested
         @DisplayName("createAccount()")
@@ -68,6 +66,50 @@ public class AccountControllerTest {
 
                         var result = controller.authenticateAccount(authenticateAccountRequest);
                         assertEquals(tokenSet, result);
+                }
+        }
+
+        @Nested
+        @DisplayName("getAccountDetails()")
+        class GetAccountDetails {
+                @Test
+                @DisplayName("should return an AccountDetails")
+                public void t1() {
+                        var account = new Account();
+                        var accountDetails = new AccountDetails(1, "login", "display");
+
+                        when(
+                                service.getAccount(1)
+                        ).thenReturn(account);
+
+                        when(
+                                mapper.toAccountDetails(account)
+                        ).thenReturn(accountDetails);
+
+                        var result = controller.getAccountDetails(1);
+                        assertEquals(accountDetails, result);
+                }
+        }
+
+        @Nested
+        @DisplayName("getAccountShowcase()")
+        class GetAccountShowcase {
+                @Test
+                @DisplayName("should return an AccountShowcase")
+                public void t1() {
+                        var account = new Account();
+                        var accountShowcase = new AccountShowcase(1, "display");
+
+                        when(
+                                service.getAccount(1)
+                        ).thenReturn(account);
+
+                        when(
+                                mapper.toAccountShowcase(account)
+                        ).thenReturn(accountShowcase);
+
+                        var result = controller.getAccountShowcase(1);
+                        assertEquals(accountShowcase, result);
                 }
         }
 }
