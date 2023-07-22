@@ -29,9 +29,16 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional
     public TokenSet createAccount(Account account, String password) {
-        var optional = repository.findByLoginName(account.getLoginName());
-        if(optional.isPresent())
-            throw new ResponseStatusException(CONFLICT, "Account with given loginName already exists.");
+        var optional = repository.findByLoginOrDisplayName(account.getLoginName(), account.getDisplayName());
+
+        if(optional.isPresent()) {
+            var found = optional.get();
+            if(found.getLoginName().equals( account.getLoginName() ))
+                throw new ResponseStatusException(CONFLICT, "Account with given loginName already exists.");
+            else
+                throw new ResponseStatusException(CONFLICT, "Account with given displayName already exists.");
+        }
+
         repository.save(account);
 
         var createUserRequest = new CreateUserRequest(account.getId(), password);

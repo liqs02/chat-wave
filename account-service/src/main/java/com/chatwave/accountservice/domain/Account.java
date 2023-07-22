@@ -16,6 +16,6 @@ public class Account {
     @Column(nullable = false, unique = true, updatable = false, length = 30)
     String loginName;
 
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, unique = true, length = 30)
     String displayName;
 }
