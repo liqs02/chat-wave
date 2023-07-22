@@ -1,10 +1,10 @@
 package com.chatwave.authservice.config;
 
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,19 +17,18 @@ import org.springframework.security.oauth2.server.authorization.client.InMemoryR
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
-import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.util.UUID;
 
-import static org.apache.commons.lang.Validate.notNull;
 import static org.springframework.http.HttpMethod.GET;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@Setter(onMethod_=@Autowired)
 public class SecurityConfig {
     PasswordEncoder passwordEncoder;
     SessionAuthFilter sessionAuthFilter;
@@ -77,17 +76,5 @@ public class SecurityConfig {
                 .build();
 
         return new InMemoryRegisteredClientRepository(accountClient);
-    }
-
-    @Autowired
-    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
-        notNull(passwordEncoder, "PasswordEncoder can not be null!");
-        this.passwordEncoder = passwordEncoder;
-    }
-
-    @Autowired
-    public void setSessionAuthFilter(SessionAuthFilter sessionAuthFilter) {
-        notNull(sessionAuthFilter, "SessionAuthFilter can not be null!");
-        this.sessionAuthFilter = sessionAuthFilter;
     }
 }
