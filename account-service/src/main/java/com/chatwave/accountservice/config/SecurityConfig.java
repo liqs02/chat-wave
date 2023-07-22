@@ -14,15 +14,12 @@ import static org.springframework.http.HttpMethod.POST;
 public class SecurityConfig {
     @Bean
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf ->
-                        csrf.disable()
-                )
-                .authorizeHttpRequests(auth ->
-                        auth.requestMatchers(GET, "/actuator/health").permitAll()
-                            .requestMatchers("/error").permitAll()
-                            .requestMatchers(POST, "/accounts").permitAll()
-                            .anyRequest().authenticated()
-                );
+        http.authorizeHttpRequests(auth ->
+                    auth.requestMatchers(GET, "/actuator/health").permitAll()
+                        .requestMatchers("/error").permitAll()
+                        .requestMatchers(POST, "/accounts").permitAll()
+                        .anyRequest().authenticated()
+            );
 
         return http.build();
     }
