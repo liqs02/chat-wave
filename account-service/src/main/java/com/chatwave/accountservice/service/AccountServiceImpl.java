@@ -2,6 +2,7 @@ package com.chatwave.accountservice.service;
 
 import com.chatwave.accountservice.client.AuthService;
 import com.chatwave.accountservice.domain.Account;
+import com.chatwave.accountservice.domain.dto.AuthenticateUserRequest;
 import com.chatwave.accountservice.domain.dto.CreateUserRequest;
 import com.chatwave.accountservice.domain.dto.TokenSetResponse;
 import com.chatwave.accountservice.repository.AccountRepository;
@@ -13,8 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import static org.springframework.http.HttpStatus.CONFLICT;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.*;
 
 @Service
 @Setter(onMethod_=@Autowired)
@@ -42,6 +42,12 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public TokenSetResponse authenticateAccount(String loginName, String password) {
-        return null;
+        var account = repository.findByLoginName(loginName)
+                .orElseThrow( () ->
+                        new ResponseStatusException(BAD_REQUEST, "Invalid loginName or password.")
+                );
+
+        var authenticateUserRequest = new AuthenticateUserRequest(account.getId(), password);
+        return authService.authenticateUser(authenticateUserRequest);
     }
 }

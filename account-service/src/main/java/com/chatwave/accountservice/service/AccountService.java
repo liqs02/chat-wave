@@ -14,7 +14,7 @@ public interface AccountService {
     TokenSetResponse createAccount(Account account, String password);
 
     /**
-     * Searches user with given loginName.
+     * Searches account with given loginName.
      * Authenticates user in auth-service.
      *
      * @param authenticateUserRequest

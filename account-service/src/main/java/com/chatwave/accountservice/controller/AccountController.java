@@ -1,6 +1,7 @@
 package com.chatwave.accountservice.controller;
 
 import com.chatwave.accountservice.domain.AccountMapper;
+import com.chatwave.accountservice.domain.dto.AuthenticateAccountRequest;
 import com.chatwave.accountservice.domain.dto.CreateAccountRequest;
 import com.chatwave.accountservice.domain.dto.TokenSetResponse;
 import com.chatwave.accountservice.service.AccountService;
@@ -23,5 +24,10 @@ public class AccountController {
     public TokenSetResponse createAccount(@Valid @RequestBody CreateAccountRequest createAccountRequest) { // TODO: add validation exception message to response (in auth-service too)!
         var account = mapper.toAccount(createAccountRequest);
         return service.createAccount(account, createAccountRequest.password());
+    }
+
+    @PostMapping("/authenticate")
+    public TokenSetResponse authenticateAccount(@Valid @RequestBody AuthenticateAccountRequest authenticateAccountRequest) {
+        return service.authenticateAccount(authenticateAccountRequest.loginName(), authenticateAccountRequest.password());
     }
 }
