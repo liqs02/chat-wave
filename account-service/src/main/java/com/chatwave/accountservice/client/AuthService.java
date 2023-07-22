@@ -6,11 +6,11 @@ import com.chatwave.accountservice.domain.dto.TokenSetResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 
-@FeignClient(name = "auth-service")
+@FeignClient("auth-service")
 public interface AuthService {
-    @PostMapping("/users")
+    @PostMapping(value = "/users", consumes = "application/json")
     TokenSetResponse createUser(CreateUserRequest createUserRequest);
 
-    @PostMapping("/users/authenticate")
+    @PostMapping(value = "/users/authenticate", consumes = "application/json")
     TokenSetResponse authenticateUser(AuthenticateUserRequest authenticateUserRequest);
 }

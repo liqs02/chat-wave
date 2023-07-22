@@ -11,14 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import static lombok.AccessLevel.NONE;
 import static org.springframework.http.HttpStatus.CONFLICT;
 
 @Service
 @Setter(onMethod_=@Autowired)
 public class AccountServiceImpl implements AccountService {
     AccountRepository repository;
-    @Setter(NONE)
     AuthService authService;
 
     @Override
