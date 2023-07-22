@@ -17,7 +17,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(auth ->
                     auth.requestMatchers(GET, "/actuator/health").permitAll()
                         .requestMatchers("/error").permitAll()
-                        .requestMatchers(POST, "/accounts").permitAll()
+                        .requestMatchers(POST, "/accounts", "/accounts/authenticate").permitAll()
                         .anyRequest().authenticated()
             );
 
