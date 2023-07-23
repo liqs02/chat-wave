@@ -4,6 +4,7 @@ import com.chatwave.accountservice.client.AuthService;
 import com.chatwave.accountservice.domain.Account;
 import com.chatwave.accountservice.domain.dto.AuthenticateUserRequest;
 import com.chatwave.accountservice.domain.dto.CreateUserRequest;
+import com.chatwave.accountservice.domain.dto.PatchPasswordRequest;
 import com.chatwave.accountservice.domain.dto.TokenSet;
 import com.chatwave.accountservice.repository.AccountRepository;
 import feign.FeignException;
@@ -84,5 +85,13 @@ public class AccountServiceImpl implements AccountService {
                 .orElseThrow(() ->
                         new ResponseStatusException(NOT_FOUND, "User with given displayName does not exist.")
                         );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void patchAccountPassword(Integer accountId, PatchPasswordRequest patchPasswordRequest) {
+        authService.patchUserPassword(accountId, patchPasswordRequest);
     }
 }

@@ -1,8 +1,8 @@
 package com.chatwave.authservice.domain;
 
 import com.chatwave.authservice.domain.dto.AuthenticateUserRequest;
-import com.chatwave.authservice.domain.dto.PatchPasswordRequest;
 import com.chatwave.authservice.domain.dto.CreateUserRequest;
+import com.chatwave.authservice.domain.dto.PatchPasswordRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

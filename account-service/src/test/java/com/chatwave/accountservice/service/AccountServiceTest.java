@@ -4,6 +4,7 @@ import com.chatwave.accountservice.client.AuthService;
 import com.chatwave.accountservice.domain.Account;
 import com.chatwave.accountservice.domain.dto.AuthenticateUserRequest;
 import com.chatwave.accountservice.domain.dto.CreateUserRequest;
+import com.chatwave.accountservice.domain.dto.PatchPasswordRequest;
 import com.chatwave.accountservice.domain.dto.TokenSet;
 import com.chatwave.accountservice.repository.AccountRepository;
 import org.junit.jupiter.api.BeforeAll;
@@ -20,7 +21,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @ExtendWith(MockitoExtension.class)
@@ -40,55 +41,46 @@ public class AccountServiceTest {
         tokenSet = new TokenSet("refresh", "access");
     }
 
-    @Nested
-    @DisplayName("createAccount()")
-    class createAccount {
-        @Test
-        @DisplayName("should create an account")
-        public void t1() {
-            var account = new Account();
-            account.setLoginName("login");
-            account.setDisplayName("display");
+    @Test
+    @DisplayName("createAccount() should create an account")
+    public void t1() {
+        var account = new Account();
+        account.setLoginName("login");
+        account.setDisplayName("display");
 
-            var accountWithId = account;
-            accountWithId.setId(1);
+        var accountWithId = account;
+        accountWithId.setId(1);
 
-            when(
-                    repository.save(account)
-            ).thenReturn(accountWithId);
+        when(
+                repository.save(account)
+        ).thenReturn(accountWithId);
 
-            when(
-                authService.createUser(new CreateUserRequest(1, "pass"))
-            ).thenReturn(tokenSet);
+        when(
+            authService.createUser(new CreateUserRequest(1, "pass"))
+        ).thenReturn(tokenSet);
 
-            var result = service.createAccount(account, "pass");
-            assertEquals(tokenSet, result);
-        }
+        var result = service.createAccount(account, "pass");
+        assertEquals(tokenSet, result);
     }
 
-    @Nested
-    @DisplayName("authenticateAccount()")
-    class authenticateAccount {
-        @Test
-        @DisplayName("should authenticate an account")
-        public void t1() {
-            var account = new Account();
-            account.setId(1);
+    @Test
+    @DisplayName("authenticateAccount() should authenticate an account")
+    public void t2() {
+        var account = new Account();
+        account.setId(1);
 
-            when(
-                    repository.findByLoginName("login")
-            ).thenReturn(Optional.of(account));
+        when(
+                repository.findByLoginName("login")
+        ).thenReturn(Optional.of(account));
 
-            when(
-                    authService.authenticateUser(new AuthenticateUserRequest(1, "pass"))
-            ).thenReturn(tokenSet);
+        when(
+                authService.authenticateUser(new AuthenticateUserRequest(1, "pass"))
+        ).thenReturn(tokenSet);
 
-            var result = service.authenticateAccount("login", "pass");
+        var result = service.authenticateAccount("login", "pass");
 
-            assertEquals(tokenSet, result);
-        }
+        assertEquals(tokenSet, result);
     }
-
 
     @Nested
     @DisplayName("getAccountById()")
@@ -145,5 +137,18 @@ public class AccountServiceTest {
 
             assertEquals(NOT_FOUND, thrown.getStatusCode());
         }
+    }
+
+
+    @Test
+    @DisplayName("patchAccountPassword() should change password in auth service")
+    public void t3() {
+        var patchPasswordRequest = new PatchPasswordRequest("pass", "new");
+
+        service.patchAccountPassword(1, patchPasswordRequest);
+
+        verify(
+                authService, times(1)
+        ).patchUserPassword(1, patchPasswordRequest);
     }
 }

@@ -1,6 +1,7 @@
 package com.chatwave.accountservice.service;
 
 import com.chatwave.accountservice.domain.Account;
+import com.chatwave.accountservice.domain.dto.PatchPasswordRequest;
 import com.chatwave.accountservice.domain.dto.TokenSet;
 
 public interface AccountService {
@@ -37,4 +38,12 @@ public interface AccountService {
      * @return account
      */
     Account getAccountByDisplayName(String displayName);
+
+    /**
+     * Changes password of user with given id.
+     *
+     * @param accountId
+     * @param patchPasswordRequest
+     */
+    void patchAccountPassword(Integer accountId, PatchPasswordRequest patchPasswordRequest);
 }

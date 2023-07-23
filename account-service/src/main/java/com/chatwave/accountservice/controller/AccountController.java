@@ -37,9 +37,9 @@ public class AccountController {
         return mapper.toAccountDetails(account);
     }
 
-    @GetMapping("/{id}/showcase")
-    public AccountShowcase getAccountShowcase(@PathVariable Integer id) {
-        var account = service.getAccountById(id);
+    @GetMapping("/{accountId}/showcase")
+    public AccountShowcase getAccountShowcase(@PathVariable Integer accountId) {
+        var account = service.getAccountById(accountId);
         return mapper.toAccountShowcase(account);
     }
 
@@ -47,5 +47,11 @@ public class AccountController {
     public AccountShowcase getAccountByDisplayName(@RequestBody String displayName) {
         var account = service.getAccountByDisplayName(displayName);
         return mapper.toAccountShowcase(account);
+    }
+
+    @PatchMapping("/{accountId}/password")
+    @PreAuthorize("#accountId == authentication.principal")
+    public void patchAccountPassword(@PathVariable Integer accountId, @Valid @RequestBody PatchPasswordRequest patchPasswordRequest) {
+        service.patchAccountPassword(accountId, patchPasswordRequest);
     }
 }
