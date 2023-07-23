@@ -4,8 +4,8 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 public record AuthenticateUserRequest (
-        @NotNull
+        @NotNull(message = "The id can not be null.")
         Integer id,
-        @NotEmpty
+        @NotEmpty(message = "The password can not be empty.")
         String password
 ){}

@@ -3,6 +3,6 @@ package com.chatwave.authservice.domain.dto;
 import jakarta.validation.constraints.NotEmpty;
 
 public record RefreshSessionRequest(
-        @NotEmpty
+        @NotEmpty(message = "The refreshToken can not be empty.")
         String refreshToken
 ){}

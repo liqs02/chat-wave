@@ -20,7 +20,7 @@ public class AccountController {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public TokenSet createAccount(@Valid @RequestBody CreateAccountRequest createAccountRequest) { // TODO: add validation exception message to response (in auth-service too)!
+    public TokenSet createAccount(@Valid @RequestBody CreateAccountRequest createAccountRequest) {
         var account = mapper.toAccount(createAccountRequest);
         return service.createAccount(account, createAccountRequest.password());
     }

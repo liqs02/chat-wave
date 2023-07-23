@@ -44,9 +44,9 @@ public class AccountServiceImpl implements AccountService {
         var createUserRequest = new CreateUserRequest(account.getId(), password);
         try {
             return authService.createUser(createUserRequest);
-        } catch(FeignException.FeignServerException.Conflict conflict) {
+        } catch(FeignException.Conflict e) {
             log.warn("Inconsistency in data. Conflict when tried to create user with id " + account.getId());
-            throw new ResponseStatusException(INTERNAL_SERVER_ERROR);
+            throw new ResponseStatusException(INTERNAL_SERVER_ERROR, "An unexpected error occurred.");
         }
     }
 
