@@ -121,4 +121,36 @@ public class UserServiceTest {
             );
         }
     }
+
+    @Nested
+    @DisplayName("patchUserPassword( user, new password )")
+    class patchUserPassword {
+        @Test
+        @DisplayName("should authenticate user and change password")
+        public void t1() {
+            var user = new User();
+            user.setId(1);
+            user.setPassword("pass");
+
+            when(
+                    repository.findById(1)
+            ).thenReturn(Optional.of(user));
+
+            when(
+                    passwordEncoder.encode("new")
+            ).thenReturn("encoded");
+
+            service.patchUserPassword(user, "new");
+
+            var captor = ArgumentCaptor.forClass(User.class);
+
+            verify(passwordEncoder, times(1))
+                    .encode("new");
+
+            verify(repository, times(1))
+                    .save(captor.capture());
+
+            assertEquals("encoded", captor.getValue().getPassword());
+        }
+    }
 }

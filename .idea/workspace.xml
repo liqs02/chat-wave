@@ -4,11 +4,30 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b52ce3e4-3047-4dc8-a854-88fa60a134df" name="Changes" comment="" />
+    <list default="true" id="b52ce3e4-3047-4dc8-a854-88fa60a134df" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/domain/dto/ChangePasswordRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/main/java/com/chatwave/accountservice/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/account-service/src/main/java/com/chatwave/accountservice/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/domain/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/domain/UserMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/domain/dto/CreateUserRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/domain/dto/CreateUserRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/service/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/service/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/controller/UserControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/controller/UserControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/domain/UserMapperTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/domain/UserMapperTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/service/UserServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/service/UserServiceTest.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -30,8 +49,8 @@
     "node.js.selected.package.tslint": "(autodetect)"
   }
 }]]></component>
-  <component name="RunManager" selected="Docker.development">
-    <configuration name="account-service" type="JUnit" factoryName="JUnit" temporary="true">
+  <component name="RunManager" selected="JUnit.auth service">
+    <configuration name="account service" type="JUnit" factoryName="JUnit" temporary="true">
       <module name="account-service" />
       <extension name="net.ashald.envfile">
         <option name="IS_ENABLED" value="false" />
@@ -51,7 +70,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="authservice" type="JUnit" factoryName="JUnit" temporary="true">
+    <configuration name="auth service" type="JUnit" factoryName="JUnit" temporary="true">
       <module name="auth-service" />
       <extension name="net.ashald.envfile">
         <option name="IS_ENABLED" value="false" />
@@ -142,19 +161,19 @@
     </configuration>
     <list>
       <item itemvalue="Docker.development" />
-      <item itemvalue="JUnit.account-service" />
-      <item itemvalue="JUnit.authservice" />
+      <item itemvalue="JUnit.account service" />
+      <item itemvalue="JUnit.auth service" />
       <item itemvalue="JUnit.config" />
       <item itemvalue="JUnit.gateway" />
       <item itemvalue="JUnit.registry" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.account-service" />
+        <item itemvalue="JUnit.auth service" />
+        <item itemvalue="JUnit.account service" />
         <item itemvalue="JUnit.registry" />
         <item itemvalue="JUnit.gateway" />
         <item itemvalue="JUnit.config" />
-        <item itemvalue="JUnit.authservice" />
       </list>
     </recent_temporary>
   </component>
