@@ -3,12 +3,12 @@ package com.chatwave.authservice.controller;
 import com.chatwave.authservice.domain.User;
 import com.chatwave.authservice.domain.UserMapper;
 import com.chatwave.authservice.domain.dto.AuthenticateUserRequest;
+import com.chatwave.authservice.domain.dto.PatchPasswordRequest;
 import com.chatwave.authservice.domain.dto.CreateUserRequest;
 import com.chatwave.authservice.domain.dto.TokenSetResponse;
 import com.chatwave.authservice.domain.session.Session;
 import com.chatwave.authservice.domain.session.SessionMapper;
 import com.chatwave.authservice.service.UserService;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,7 +17,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("UserController")
@@ -64,8 +65,8 @@ public class UserControllerTest {
 
         var result = controller.createUser(createUserRequest);
 
-        Assertions.assertEquals("refresh", result.refreshToken());
-        Assertions.assertEquals("access", result.accessToken());
+        assertEquals("refresh", result.refreshToken());
+        assertEquals("access", result.accessToken());
     }
 
     @Test
@@ -92,7 +93,26 @@ public class UserControllerTest {
 
         var result = controller.authenticateUser(authenticateUserRequest);
 
-        Assertions.assertEquals("refresh", result.refreshToken());
-        Assertions.assertEquals("access", result.accessToken());
+        assertEquals("refresh", result.refreshToken());
+        assertEquals("access", result.accessToken());
+    }
+
+    @Test
+    @DisplayName("patchUserPassword() should change user's password")
+    public void t3() {
+        var changePasswordRequest = new PatchPasswordRequest("pass", "new");
+
+        var user = new User();
+
+        when(
+                mapper.toUser(1, changePasswordRequest)
+        ).thenReturn(user);
+
+        controller.patchUserPassword(1, changePasswordRequest);
+
+        verify(
+                service,
+                times(1)
+        ).patchUserPassword(user, "new");
     }
 }

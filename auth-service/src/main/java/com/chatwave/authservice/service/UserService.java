@@ -23,4 +23,12 @@ public interface UserService {
      */
     Session authenticateUser(User user);
 
+    /**
+     * Authenticates a user by id and password.
+     * Changes user's password.
+     *
+     * @param user with id and old password
+     * @param newPassword
+     */
+    void patchUserPassword(User user, String newPassword);
 }

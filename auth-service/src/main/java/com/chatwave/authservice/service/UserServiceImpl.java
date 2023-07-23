@@ -29,8 +29,8 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public Session createUser(User user){
-        var existing = repository.findById(user.getId());
-        if(existing.isPresent()) {
+        var optional = repository.findById(user.getId());
+        if(optional.isPresent()) {
             log.warn("Possible data inconsistency! Client tried to create user with busy ID: " + user.getId());
             throw new ResponseStatusException(CONFLICT, "User with given id already exists.");
         }
@@ -62,5 +62,27 @@ public class UserServiceImpl implements UserService {
 
         log.info("user has been authenticated: " + user.getId());
         return sessionService.createSession(user);
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
+    public void patchUserPassword(User user, String newPassword) {
+        authManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        user.getId(),
+                        user.getPassword()
+                )
+        );
+
+        var found = repository.findById(user.getId()).get();
+
+        var hash = passwordEncoder.encode(newPassword);
+        found.setPassword(hash);
+
+        repository.save(found);
     }
 }

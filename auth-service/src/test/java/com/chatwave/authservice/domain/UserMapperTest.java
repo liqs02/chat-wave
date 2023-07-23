@@ -1,6 +1,7 @@
 package com.chatwave.authservice.domain;
 
 import com.chatwave.authservice.domain.dto.AuthenticateUserRequest;
+import com.chatwave.authservice.domain.dto.PatchPasswordRequest;
 import com.chatwave.authservice.domain.dto.CreateUserRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,6 +29,16 @@ public class UserMapperTest {
         var authenticateUserRequest = new AuthenticateUserRequest( 1, "pass");
 
         var user = mapper.toUser(authenticateUserRequest);
+
+        assertEquals(1, user.getId());
+        assertEquals("pass", user.getPassword());
+    }
+
+    @Test
+    @DisplayName("should map userId and PatchPasswordRequest to user entity")
+    public void changePasswordRequestToUser() {
+        var changePasswordRequest = new PatchPasswordRequest("pass", "new");
+        var user = mapper.toUser(1, changePasswordRequest);
 
         assertEquals(1, user.getId());
         assertEquals("pass", user.getPassword());
