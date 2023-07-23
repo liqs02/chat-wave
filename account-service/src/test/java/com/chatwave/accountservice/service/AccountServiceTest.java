@@ -14,11 +14,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("AccountService")
@@ -39,7 +42,7 @@ public class AccountServiceTest {
 
     @Nested
     @DisplayName("createAccount()")
-    class CreateAccount {
+    class createAccount {
         @Test
         @DisplayName("should create an account")
         public void t1() {
@@ -65,7 +68,7 @@ public class AccountServiceTest {
 
     @Nested
     @DisplayName("authenticateAccount()")
-    class AuthenticateAccount {
+    class authenticateAccount {
         @Test
         @DisplayName("should authenticate an account")
         public void t1() {
@@ -88,8 +91,8 @@ public class AccountServiceTest {
 
 
     @Nested
-    @DisplayName("getAccount()")
-    class GetAccount {
+    @DisplayName("getAccountById()")
+    class getAccountById {
         @Test
         @DisplayName("should get an account")
         public void t1() {
@@ -99,9 +102,48 @@ public class AccountServiceTest {
                     repository.findById(1)
             ).thenReturn(Optional.of(account));
 
-            var result = service.getAccount(1);
+            var result = service.getAccountById(1);
 
             assertEquals(account, result);
+        }
+        @Test
+        @DisplayName("should throw NOT_FOUND ResponseStatusException if account does not exist")
+        public void t2() {
+            var thrown = assertThrows(
+                    ResponseStatusException.class,
+                    () -> service.getAccountById(1)
+            );
+
+            assertEquals(NOT_FOUND, thrown.getStatusCode());
+        }
+    }
+
+    @Nested
+    @DisplayName("getAccountByDisplayName()")
+    class getAccountByDisplayName {
+        @Test
+        @DisplayName("should get an account")
+        public void t1() {
+            var account = new Account();
+
+            when(
+                    repository.findByDisplayName("display")
+            ).thenReturn(Optional.of(account));
+
+            var result = service.getAccountByDisplayName("display");
+
+            assertEquals(account, result);
+        }
+
+        @Test
+        @DisplayName("should throw NOT_FOUND ResponseStatusException if account does not exist")
+        public void t2() {
+            var thrown = assertThrows(
+                    ResponseStatusException.class,
+                    () -> service.getAccountById(1)
+            );
+
+            assertEquals(NOT_FOUND, thrown.getStatusCode());
         }
     }
 }

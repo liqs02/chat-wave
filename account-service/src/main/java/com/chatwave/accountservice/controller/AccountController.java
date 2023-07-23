@@ -33,13 +33,19 @@ public class AccountController {
     @GetMapping("/{accountId}")
     @PreAuthorize("#accountId == authentication.principal")
     public AccountDetails getAccountDetails(@PathVariable Integer accountId) {
-        var account = service.getAccount(accountId);
+        var account = service.getAccountById(accountId);
         return mapper.toAccountDetails(account);
     }
 
     @GetMapping("/{id}/showcase")
     public AccountShowcase getAccountShowcase(@PathVariable Integer id) {
-        var account = service.getAccount(id);
+        var account = service.getAccountById(id);
+        return mapper.toAccountShowcase(account);
+    }
+
+    @PostMapping("/search/displayName")
+    public AccountShowcase getAccountByDisplayName(@RequestBody String displayName) {
+        var account = service.getAccountByDisplayName(displayName);
         return mapper.toAccountShowcase(account);
     }
 }

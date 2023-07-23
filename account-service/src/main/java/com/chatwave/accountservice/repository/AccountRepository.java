@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public interface AccountRepository extends JpaRepository<Account, Integer> {
     Optional<Account> findByLoginName(String loginName);
+    Optional<Account> findByDisplayName(String displayName);
     @Query("SELECT a FROM Account a WHERE a.loginName = ?1 OR a.displayName = ?2")
     Optional<Account> findByLoginOrDisplayName(String loginName, String displayName);
 }

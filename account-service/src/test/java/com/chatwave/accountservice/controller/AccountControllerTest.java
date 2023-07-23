@@ -29,7 +29,7 @@ public class AccountControllerTest {
 
         @Nested
         @DisplayName("createAccount()")
-        class CreateAccount {
+        class createAccount {
                 @Test
                 @DisplayName("should create an account")
                 public void t1() {
@@ -54,7 +54,7 @@ public class AccountControllerTest {
 
         @Nested
         @DisplayName("authenticateAccount()")
-        class AuthenticateAccount {
+        class authenticateAccount {
                 @Test
                 @DisplayName("should authenticate an account")
                 public void t1() {
@@ -71,7 +71,7 @@ public class AccountControllerTest {
 
         @Nested
         @DisplayName("getAccountDetails()")
-        class GetAccountDetails {
+        class getAccountDetails {
                 @Test
                 @DisplayName("should return an AccountDetails")
                 public void t1() {
@@ -79,7 +79,7 @@ public class AccountControllerTest {
                         var accountDetails = new AccountDetails(1, "login", "display");
 
                         when(
-                                service.getAccount(1)
+                                service.getAccountById(1)
                         ).thenReturn(account);
 
                         when(
@@ -93,7 +93,7 @@ public class AccountControllerTest {
 
         @Nested
         @DisplayName("getAccountShowcase()")
-        class GetAccountShowcase {
+        class getAccountShowcase {
                 @Test
                 @DisplayName("should return an AccountShowcase")
                 public void t1() {
@@ -101,7 +101,7 @@ public class AccountControllerTest {
                         var accountShowcase = new AccountShowcase(1, "display");
 
                         when(
-                                service.getAccount(1)
+                                service.getAccountById(1)
                         ).thenReturn(account);
 
                         when(
@@ -109,6 +109,28 @@ public class AccountControllerTest {
                         ).thenReturn(accountShowcase);
 
                         var result = controller.getAccountShowcase(1);
+                        assertEquals(accountShowcase, result);
+                }
+        }
+
+        @Nested
+        @DisplayName("getAccountByDisplayName()")
+        class getAccountByDisplayName {
+                @Test
+                @DisplayName("should return an AccountShowcase")
+                public void t1() {
+                        var account = new Account();
+                        var accountShowcase = new AccountShowcase(1, "display");
+
+                        when(
+                                service.getAccountByDisplayName("display")
+                        ).thenReturn(account);
+
+                        when(
+                                mapper.toAccountShowcase(account)
+                        ).thenReturn(accountShowcase);
+
+                        var result = controller.getAccountByDisplayName("display");
                         assertEquals(accountShowcase, result);
                 }
         }

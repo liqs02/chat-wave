@@ -28,5 +28,13 @@ public interface AccountService {
      * @param accountId
      * @return account
      */
-    Account getAccount(Integer accountId);
+    Account getAccountById(Integer accountId);
+
+    /**
+     * Searches for an account with a matching displayName.
+     *
+     * @param displayName
+     * @return account
+     */
+    Account getAccountByDisplayName(String displayName);
 }
