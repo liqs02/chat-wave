@@ -7,14 +7,15 @@ import com.chatwave.authservice.domain.dto.TokenSetResponse;
 import com.chatwave.authservice.domain.session.SessionMapper;
 import com.chatwave.authservice.service.UserService;
 import jakarta.validation.Valid;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import static org.apache.commons.lang.Validate.notNull;
 import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
+@Setter(onMethod_=@Autowired)
 @RequestMapping("/users")
 @PreAuthorize("hasAuthority('SCOPE_server')")
 public class UserController {
@@ -35,23 +36,5 @@ public class UserController {
         final var user = mapper.toUser(authenticateUserRequest);
         var session = service.authenticateUser(user);
         return sessionMapper.toTokenSetResponse(session);
-    }
-
-    @Autowired
-    public void setService(UserService service) {
-        notNull(service, "UserService can not be null!");
-        this.service = service;
-    }
-
-    @Autowired
-    public void setMapper(UserMapper mapper) {
-        notNull(mapper, "UserMapper can not be null!");
-        this.mapper = mapper;
-    }
-
-    @Autowired
-    public void setSessionMapper(SessionMapper sessionMapper) {
-        notNull(sessionMapper, "SessionMapper can not be null!");
-        this.sessionMapper = sessionMapper;
     }
 }

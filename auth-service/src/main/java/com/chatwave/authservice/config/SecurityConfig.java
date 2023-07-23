@@ -1,5 +1,6 @@
 package com.chatwave.authservice.config;
 
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,12 +23,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import java.util.UUID;
 
-import static org.apache.commons.lang.Validate.notNull;
 import static org.springframework.http.HttpMethod.GET;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@Setter(onMethod_=@Autowired)
 public class SecurityConfig {
     PasswordEncoder passwordEncoder;
     SessionAuthFilter sessionAuthFilter;
@@ -64,7 +65,7 @@ public class SecurityConfig {
         var accountClient = RegisteredClient.withId(UUID.randomUUID().toString())
                 .clientId("account-client")
                 .clientSecret(passwordEncoder.encode("secret")) // TODO: inject secret from environment variables
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 .redirectUri("http://account-service:8082/login/oauth2/code/spring")
@@ -75,17 +76,5 @@ public class SecurityConfig {
                 .build();
 
         return new InMemoryRegisteredClientRepository(accountClient);
-    }
-
-    @Autowired
-    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
-        notNull(passwordEncoder, "PasswordEncoder can not be null!");
-        this.passwordEncoder = passwordEncoder;
-    }
-
-    @Autowired
-    public void setSessionAuthFilter(SessionAuthFilter sessionAuthFilter) {
-        notNull(sessionAuthFilter, "SessionAuthFilter can not be null!");
-        this.sessionAuthFilter = sessionAuthFilter;
     }
 }

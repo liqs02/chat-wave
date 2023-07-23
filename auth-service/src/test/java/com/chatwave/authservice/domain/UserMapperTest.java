@@ -7,8 +7,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public@DisplayName("UserMapper")
-class UserMapperTest {
+@DisplayName("UserMapper")
+public class UserMapperTest {
     private final UserMapper mapper = UserMapper.INSTANCE;
 
     @Test

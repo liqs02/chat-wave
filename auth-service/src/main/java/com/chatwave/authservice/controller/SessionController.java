@@ -6,6 +6,7 @@ import com.chatwave.authservice.domain.dto.TokenSetResponse;
 import com.chatwave.authservice.domain.session.SessionMapper;
 import com.chatwave.authservice.service.SessionService;
 import jakarta.validation.Valid;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -13,10 +14,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.apache.commons.lang.Validate.notNull;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @RestController
+@Setter(onMethod_=@Autowired)
 @RequestMapping("/users")
 public class SessionController {
     private SessionService service;
@@ -50,18 +51,5 @@ public class SessionController {
     @PreAuthorize("#userId == authentication.principal")
     public void expireUserSession(@PathVariable Integer userId, @PathVariable Long sessionId) {
         service.expireUserSession(userId, sessionId);
-    }
-
-
-    @Autowired
-    public void setService(SessionService service) {
-        notNull(service, "SessionService can not be null!");
-        this.service = service;
-    }
-
-    @Autowired
-    public void setService(SessionMapper mapper) {
-        notNull(mapper, "SessionMapper can not be null!");
-        this.mapper = mapper;
     }
 }

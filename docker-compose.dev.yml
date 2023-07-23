@@ -45,6 +45,32 @@ services:
     ports:
       - "9081:5432"
 
+  account-service:
+    build: account-service
+    environment:
+      CONFIG_PASSWORD: $CONFIG_PASSWORD
+      POSTGRES_PASSWORD: $ACCOUNT_POSTGRES_PASSWORD
+    depends_on:
+      config:
+        condition: service_healthy
+      registry:
+        condition: service_healthy
+      account-postgres:
+        condition: service_healthy
+      auth-service:
+        condition: service_healthy
+    ports:
+      - "8082:8082"
+    volumes:
+      - ./account-service/target/account-service-0.0.1-SNAPSHOT.jar:/app.jar
+
+  account-postgres:
+    build: postgres
+    environment:
+      POSTGRES_PASSWORD: $ACCOUNT_POSTGRES_PASSWORD
+    ports:
+      - "9082:5432"
+
   gateway:
     build: gateway
     environment:

@@ -3,6 +3,7 @@ package com.chatwave.authservice.service;
 import com.chatwave.authservice.domain.User;
 import com.chatwave.authservice.domain.session.Session;
 import com.chatwave.authservice.repository.SessionRepository;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,11 +11,11 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
-import static org.apache.commons.lang.Validate.notNull;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
+@Setter(onMethod_=@Autowired)
 @Slf4j
 public class SessionServiceImpl implements SessionService {
     private SessionRepository repository;
@@ -93,11 +94,5 @@ public class SessionServiceImpl implements SessionService {
 
         session.expire();
         repository.save(session);
-    }
-
-    @Autowired
-    public void setRepository(SessionRepository repository) {
-        notNull(repository, "SessionRepository can not be null!");
-        this.repository = repository;
     }
 }
