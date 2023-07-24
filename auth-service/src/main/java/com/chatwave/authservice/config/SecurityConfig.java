@@ -5,10 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
@@ -23,6 +25,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import java.util.UUID;
 
+import static jakarta.ws.rs.HttpMethod.POST;
 import static org.springframework.http.HttpMethod.GET;
 
 @Configuration
@@ -32,11 +35,15 @@ import static org.springframework.http.HttpMethod.GET;
 public class SecurityConfig {
     PasswordEncoder passwordEncoder;
     SessionAuthFilter sessionAuthFilter;
+    AuthenticationProvider authenticationProvider;
 
     @Bean
     @Order(1)
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
+        http.sessionManagement(session ->
+                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                );
 
         return http.build();
     }
@@ -49,12 +56,17 @@ public class SecurityConfig {
             )
             .authorizeHttpRequests(auth ->
                     auth.requestMatchers(GET, "/actuator/health").permitAll()
-                        .requestMatchers("/error").permitAll()
+                            .requestMatchers(POST, "/users/sessions/refresh").permitAll()
+                            .requestMatchers("/error").permitAll()
                             .anyRequest().authenticated()
             )
             .oauth2ResourceServer(resourceServer ->
                     resourceServer.jwt(Customizer.withDefaults())
             )
+            .sessionManagement((session) -> session
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
+            .authenticationProvider(authenticationProvider)
             .addFilterBefore(sessionAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
