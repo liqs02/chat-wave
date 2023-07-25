@@ -31,12 +31,7 @@ public class AccountController {
     public TokenSet authenticateAccount(@Valid @RequestBody AuthenticateAccountRequest authenticateAccountRequest) {
         return service.authenticateAccount(authenticateAccountRequest.loginName(), authenticateAccountRequest.password());
     }
-
-    @GetMapping("/current")
-    public Principal getCurrentAccountId(Principal principal) {
-        return principal;
-    }
-
+    
     @GetMapping("/{accountId}")
     @PreAuthorize("#accountId == authentication.principal")
     public AccountDetails getAccountDetails(@PathVariable Integer accountId) {
