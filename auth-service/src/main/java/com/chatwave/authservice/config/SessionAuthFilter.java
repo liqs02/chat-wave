@@ -23,7 +23,7 @@ public class SessionAuthFilter extends OncePerRequestFilter {
 
         @Override
         public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-            var authHeader = request.getHeader("User-Authorization");
+            var authHeader = request.getHeader("User-Authorization"); // todo: change 'User-Authorization' to 'Authorization' header, REMEMBER that client authorization return 403/402 because "TOKEN IS NOT VALID JWT"
 
             if(authHeader == null || !authHeader.startsWith("Bearer ")) {
                 filterChain.doFilter(request, response);

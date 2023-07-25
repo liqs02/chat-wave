@@ -52,6 +52,7 @@ public class UserController {
     }
 
     @GetMapping("/current")
+    @PreAuthorize("authentication.principal != null")
     public Integer getCurrentUser(@AuthenticationPrincipal Integer userId) {
         return userId;
     }
