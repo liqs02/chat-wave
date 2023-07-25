@@ -14,6 +14,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.util.Objects;
 
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ResponseStatusException.class)
@@ -28,6 +30,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(FeignException.class)
     protected ResponseEntity<ApiException> handleFeignException(FeignException e) {
         var status = HttpStatus.valueOf(e.status());
+        if(status.is5xxServerError()) {
+            var apiException = new ApiException("An unexpected error occurred.", INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(apiException, status);
+        }
 
         var exceptionMessage = e.getMessage();
         var startIndex = exceptionMessage.indexOf("\"message\":\"");
@@ -41,7 +47,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         var message = exceptionMessage.substring(startIndex, endIndex);
 
-        var apiException = new ApiException(message, status); // TODO: check it later, when will be added exception handler in auth-service
+        var apiException = new ApiException(message, status);
         return new ResponseEntity<>(apiException, status);
     }
 
