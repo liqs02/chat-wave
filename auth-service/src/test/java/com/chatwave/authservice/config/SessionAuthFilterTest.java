@@ -53,7 +53,7 @@ public class SessionAuthFilterTest {
         session.setAccessToken("access");
 
         when(
-                request.getHeader( "Authorization")
+                request.getHeader( "User-Authorization")
         ).thenReturn("Bearer token");
 
         when(
@@ -81,7 +81,7 @@ public class SessionAuthFilterTest {
     @DisplayName("should move to the next filter if the authorisation header is not specified")
     public void t2() throws ServletException, IOException {
         when(
-                request.getHeader( "Authorization" )
+                request.getHeader( "User-Authorization" )
         ).thenReturn(null);
 
         sessionAuthFilter.doFilterInternal(request, response, filterChain);

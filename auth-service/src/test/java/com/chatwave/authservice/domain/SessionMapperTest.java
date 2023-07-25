@@ -9,13 +9,13 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public@DisplayName("SessionMapper")
+@DisplayName("SessionMapper")
 class SessionMapperTest {
     private final SessionMapper mapper = SessionMapper.INSTANCE;
 
     @Test
     @DisplayName("should map session entity to TokenSetResponse")
-    public void SessionToTokenSetResponse() {
+    void SessionToTokenSetResponse() {
         var session = new Session();
         session.setRefreshToken("refresh");
         session.setAccessToken("access");
@@ -28,7 +28,7 @@ class SessionMapperTest {
 
     @Test
     @DisplayName("should map session entity to SessionResponse")
-    public void SessionToSessionResponse() {
+    void SessionToSessionResponse() {
         var session = new Session();
         session.setId(1L);
         session.setCreatedAt(LocalDateTime.now());

@@ -8,12 +8,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CONFLICT;
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+import static org.springframework.http.HttpStatus.*;
 
 @Service
 @Setter(onMethod_=@Autowired)
@@ -57,7 +59,7 @@ public class UserServiceImpl implements UserService {
                     )
             );
         } catch(Exception e) {
-            throw new ResponseStatusException(UNAUTHORIZED, "Invalid username or password.");
+            throw new ResponseStatusException(BAD_REQUEST, "Invalid login or password.");
         }
 
         log.info("user has been authenticated: " + user.getId());
@@ -71,12 +73,16 @@ public class UserServiceImpl implements UserService {
     @Override
     @SuppressWarnings("OptionalGetWithoutIsPresent")
     public void patchUserPassword(User user, String newPassword) {
-        authManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        user.getId(),
-                        user.getPassword()
-                )
-        );
+        try {
+            authManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            user.getId(),
+                            user.getPassword()
+                    )
+            );
+        } catch(Exception e) {
+            throw new ResponseStatusException(BAD_REQUEST, "Invalid login or password.");
+        }
 
         var found = repository.findById(user.getId()).get();
 

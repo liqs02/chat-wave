@@ -23,7 +23,7 @@ public class SessionAuthFilter extends OncePerRequestFilter {
 
         @Override
         public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-            var authHeader = request.getHeader("Authorization");
+            var authHeader = request.getHeader("User-Authorization");
 
             if(authHeader == null || !authHeader.startsWith("Bearer ")) {
                 filterChain.doFilter(request, response);
@@ -33,7 +33,8 @@ public class SessionAuthFilter extends OncePerRequestFilter {
             var accessToken = authHeader.substring(7);
             var optionalSession = repository.findNotExpiredByAccessToken(accessToken);
 
-            if(optionalSession.isPresent() && SecurityContextHolder.getContext().getAuthentication() == null) {
+            var currentAuthentication =  SecurityContextHolder.getContext().getAuthentication();
+            if(optionalSession.isPresent() && currentAuthentication == null) {
                 var session = optionalSession.get();
 
                 var sessionAuth = new SessionAuthentication(session, request);

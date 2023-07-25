@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dataSource name="account service">
+<dataSource name="auth service">
   <database-model serializer="dbm" dbms="POSTGRES" family-id="POSTGRES" format-version="4.48">
     <root id="1"/>
     <database id="2" parent="1" name="chatwave">
@@ -13,7 +13,7 @@
 13206||10|C|G
 13206||-9223372036854775808|U|G
 13206||10|U|G</Grants>
-      <IntrospectionStateNumber>832</IntrospectionStateNumber>
+      <IntrospectionStateNumber>750</IntrospectionStateNumber>
       <ObjectId>16384</ObjectId>
       <OwnerName>postgres</OwnerName>
     </database>
@@ -3431,95 +3431,191 @@
     <schema id="262" parent="2" name="public">
       <Comment>standard public schema</Comment>
       <Current>1</Current>
-      <IntrospectionStateNumber>832</IntrospectionStateNumber>
+      <IntrospectionStateNumber>750</IntrospectionStateNumber>
       <ObjectId>2200</ObjectId>
       <StateNumber>518</StateNumber>
       <OwnerName>pg_database_owner</OwnerName>
     </schema>
-    <sequence id="263" parent="262" name="accounts_seq">
+    <sequence id="263" parent="262" name="sessions_seq">
       <DasType>bigint|0s</DasType>
-      <ObjectId>16560</ObjectId>
-      <SequenceIdentity>1(1)+50</SequenceIdentity>
+      <ObjectId>16385</ObjectId>
+      <SequenceIdentity>1(101)+50</SequenceIdentity>
       <StartValue>1</StartValue>
-      <StateNumber>829</StateNumber>
+      <StateNumber>726</StateNumber>
       <OwnerName>postgres</OwnerName>
     </sequence>
-    <table id="264" parent="262" name="accounts">
-      <ObjectId>16561</ObjectId>
-      <StateNumber>830</StateNumber>
+    <table id="264" parent="262" name="sessions">
+      <ObjectId>16386</ObjectId>
+      <StateNumber>732</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>postgres</OwnerName>
     </table>
-    <column id="265" parent="264" name="id">
+    <table id="265" parent="262" name="users">
+      <ObjectId>16397</ObjectId>
+      <StateNumber>732</StateNumber>
+      <AccessMethodId>2</AccessMethodId>
+      <OwnerName>postgres</OwnerName>
+    </table>
+    <column id="266" parent="264" name="expire_date">
+      <DasType>date|0s</DasType>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StateNumber>727</StateNumber>
+      <TypeId>1082</TypeId>
+    </column>
+    <column id="267" parent="264" name="user_id">
+      <DasType>integer|0s</DasType>
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StateNumber>727</StateNumber>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="268" parent="264" name="access_token_expire_date">
+      <DasType>timestamp(6)|0s</DasType>
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+      <StateNumber>727</StateNumber>
+      <TypeId>1114</TypeId>
+    </column>
+    <column id="269" parent="264" name="created_at">
+      <DasType>timestamp(6)|0s</DasType>
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+      <StateNumber>727</StateNumber>
+      <TypeId>1114</TypeId>
+    </column>
+    <column id="270" parent="264" name="id">
+      <DasType>bigint|0s</DasType>
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+      <StateNumber>727</StateNumber>
+      <TypeId>20</TypeId>
+    </column>
+    <column id="271" parent="264" name="access_token">
+      <DasType>varchar(255)|0s</DasType>
+      <Position>6</Position>
+      <StateNumber>727</StateNumber>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="272" parent="264" name="refresh_token">
+      <DasType>varchar(255)|0s</DasType>
+      <Position>7</Position>
+      <StateNumber>727</StateNumber>
+      <TypeId>1043</TypeId>
+    </column>
+    <foreign-key id="273" parent="264" name="fkruie73rneumyyd1bgo6qw8vjt">
+      <ColNames>user_id</ColNames>
+      <ObjectId>16405</ObjectId>
+      <RefColNames>id</RefColNames>
+      <RefColPositions>1</RefColPositions>
+      <StateNumber>732</StateNumber>
+      <RefTableId>16397</RefTableId>
+      <RefTableName>users</RefTableName>
+      <RefTableKind>table</RefTableKind>
+    </foreign-key>
+    <index id="274" parent="264" name="sessions_pkey">
+      <ColNames>id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>16391</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>727</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <index id="275" parent="264" name="sessions_access_token_key">
+      <ColNames>access_token</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>16393</ObjectId>
+      <StateNumber>727</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+      <CollationNames>default</CollationNames>
+      <CollationIds>100</CollationIds>
+      <CollationParentNames>pg_catalog</CollationParentNames>
+    </index>
+    <index id="276" parent="264" name="sessions_refresh_token_key">
+      <ColNames>refresh_token</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>16395</ObjectId>
+      <StateNumber>727</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+      <CollationNames>default</CollationNames>
+      <CollationIds>100</CollationIds>
+      <CollationParentNames>pg_catalog</CollationParentNames>
+    </index>
+    <index id="277" parent="264" name="session_user_index">
+      <ColNames>user_id</ColNames>
+      <ObjectId>16402</ObjectId>
+      <StateNumber>729</StateNumber>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <index id="278" parent="264" name="session_access_token_index">
+      <ColNames>access_token</ColNames>
+      <ObjectId>16403</ObjectId>
+      <StateNumber>730</StateNumber>
+      <AccessMethodId>403</AccessMethodId>
+      <CollationNames>default</CollationNames>
+      <CollationIds>100</CollationIds>
+      <CollationParentNames>pg_catalog</CollationParentNames>
+    </index>
+    <index id="279" parent="264" name="session_refresh_token_index">
+      <ColNames>refresh_token</ColNames>
+      <ObjectId>16404</ObjectId>
+      <StateNumber>731</StateNumber>
+      <AccessMethodId>403</AccessMethodId>
+      <CollationNames>default</CollationNames>
+      <CollationIds>100</CollationIds>
+      <CollationParentNames>pg_catalog</CollationParentNames>
+    </index>
+    <key id="280" parent="264" name="sessions_pkey">
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>16392</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>727</StateNumber>
+      <UnderlyingIndexId>16391</UnderlyingIndexId>
+    </key>
+    <key id="281" parent="264" name="sessions_access_token_key">
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>16394</ObjectId>
+      <StateNumber>727</StateNumber>
+      <UnderlyingIndexId>16393</UnderlyingIndexId>
+    </key>
+    <key id="282" parent="264" name="sessions_refresh_token_key">
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>16396</ObjectId>
+      <StateNumber>727</StateNumber>
+      <UnderlyingIndexId>16395</UnderlyingIndexId>
+    </key>
+    <column id="283" parent="265" name="id">
       <DasType>integer|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>830</StateNumber>
+      <StateNumber>728</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="266" parent="264" name="display_name">
-      <DasType>varchar(30)|0s</DasType>
+    <column id="284" parent="265" name="password">
+      <DasType>varchar(255)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
-      <StateNumber>830</StateNumber>
+      <StateNumber>728</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="267" parent="264" name="login_name">
-      <DasType>varchar(30)|0s</DasType>
-      <NotNull>1</NotNull>
-      <Position>3</Position>
-      <StateNumber>830</StateNumber>
-      <TypeId>1043</TypeId>
-    </column>
-    <index id="268" parent="264" name="accounts_pkey">
+    <index id="285" parent="265" name="users_pkey">
       <ColNames>id</ColNames>
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>16564</ObjectId>
+      <ObjectId>16400</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>830</StateNumber>
+      <StateNumber>728</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <index id="269" parent="264" name="accounts_display_name_key">
-      <ColNames>display_name</ColNames>
+    <key id="286" parent="265" name="users_pkey">
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>16566</ObjectId>
-      <StateNumber>830</StateNumber>
-      <Unique>1</Unique>
-      <AccessMethodId>403</AccessMethodId>
-      <CollationNames>default</CollationNames>
-      <CollationIds>100</CollationIds>
-      <CollationParentNames>pg_catalog</CollationParentNames>
-    </index>
-    <index id="270" parent="264" name="accounts_login_name_key">
-      <ColNames>login_name</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>16568</ObjectId>
-      <StateNumber>830</StateNumber>
-      <Unique>1</Unique>
-      <AccessMethodId>403</AccessMethodId>
-      <CollationNames>default</CollationNames>
-      <CollationIds>100</CollationIds>
-      <CollationParentNames>pg_catalog</CollationParentNames>
-    </index>
-    <key id="271" parent="264" name="accounts_pkey">
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>16565</ObjectId>
+      <ObjectId>16401</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>830</StateNumber>
-      <UnderlyingIndexId>16564</UnderlyingIndexId>
-    </key>
-    <key id="272" parent="264" name="accounts_display_name_key">
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>16567</ObjectId>
-      <StateNumber>830</StateNumber>
-      <UnderlyingIndexId>16566</UnderlyingIndexId>
-    </key>
-    <key id="273" parent="264" name="accounts_login_name_key">
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>16569</ObjectId>
-      <StateNumber>830</StateNumber>
-      <UnderlyingIndexId>16568</UnderlyingIndexId>
+      <StateNumber>728</StateNumber>
+      <UnderlyingIndexId>16400</UnderlyingIndexId>
     </key>
   </database-model>
 </dataSource>
