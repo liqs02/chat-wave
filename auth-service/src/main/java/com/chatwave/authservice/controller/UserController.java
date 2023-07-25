@@ -11,14 +11,16 @@ import jakarta.validation.Valid;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
 @Setter(onMethod_=@Autowired)
 @RequestMapping("/users")
-@PreAuthorize("hasAuthority('SCOPE_server')")
 public class UserController {
     UserService service;
     UserMapper mapper;
@@ -26,6 +28,7 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(CREATED)
+    @PreAuthorize("hasAuthority('SCOPE_server')")
     public TokenSetResponse createUser(@Valid @RequestBody CreateUserRequest createUserRequest) {
         var user = mapper.toUser(createUserRequest);
         var session = service.createUser(user);
@@ -33,6 +36,7 @@ public class UserController {
     }
 
     @PostMapping("/authenticate")
+    @PreAuthorize("hasAuthority('SCOPE_server')")
     public TokenSetResponse authenticateUser(@Valid @RequestBody AuthenticateUserRequest authenticateUserRequest) {
         var user = mapper.toUser(authenticateUserRequest);
         var session = service.authenticateUser(user);
@@ -40,9 +44,15 @@ public class UserController {
     }
 
     @PatchMapping("/{id}/password")
+    @PreAuthorize("hasAuthority('SCOPE_server')")
     public void patchUserPassword(@PathVariable Integer id, @Valid @RequestBody PatchPasswordRequest patchPasswordRequest) {
         var user = mapper.toUser(id, patchPasswordRequest);
         var newPassword = patchPasswordRequest.newPassword();
         service.patchUserPassword(user, newPassword);
+    }
+
+    @GetMapping("/current")
+    public Integer getCurrentUser(@AuthenticationPrincipal Integer userId) {
+        return userId;
     }
 }

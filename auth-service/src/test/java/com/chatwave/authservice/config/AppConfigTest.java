@@ -24,7 +24,7 @@ public class AppConfigTest {
 
     @Test
     @DisplayName("AuthenticationProvider test")
-    public void t1() {
+    public void AuthenticationProvider() {
         var user = new User();
         user.setId(1);
 

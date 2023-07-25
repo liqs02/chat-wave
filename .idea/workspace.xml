@@ -5,15 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b52ce3e4-3047-4dc8-a854-88fa60a134df" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/config/SecurityConfigTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/3ba57c0c-2107-4a3e-86bf-6e2dc072aad0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/3ba57c0c-2107-4a3e-86bf-6e2dc072aad0.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/72db1bb1-4ff3-4ea1-83f0-d33e0526a49b.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/72db1bb1-4ff3-4ea1-83f0-d33e0526a49b.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/account-service/src/main/java/com/chatwave/accountservice/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/account-service/src/main/java/com/chatwave/accountservice/config/SecurityConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/config/SecurityConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/config/SessionAuthFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/config/SessionAuthFilter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/controller/SessionControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/controller/SessionControllerTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/domain/SessionMapperTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/domain/SessionMapperTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/domain/SessionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/domain/SessionTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/domain/UserMapperTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/domain/UserMapperTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/repository/SessionRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/repository/SessionRepositoryTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/repository/UserRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/repository/UserRepositoryTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/service/SessionServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/service/SessionServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/service/UserServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/service/UserServiceTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/src/main/resources/shared/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config/src/main/resources/shared/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -85,22 +89,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Docker.development">
-    <configuration name="SecurityConfigTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="auth-service" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.chatwave.authservice.config.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.chatwave.authservice.config" />
-      <option name="MAIN_CLASS_NAME" value="com.chatwave.authservice.config.SecurityConfigTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="JUnit.auth service">
     <configuration name="account service" type="JUnit" factoryName="JUnit" temporary="true">
       <module name="account-service" />
       <extension name="net.ashald.envfile">
@@ -227,7 +216,6 @@
     </configuration>
     <list>
       <item itemvalue="Docker.development" />
-      <item itemvalue="JUnit.SecurityConfigTest" />
       <item itemvalue="JUnit.account service" />
       <item itemvalue="JUnit.auth service" />
       <item itemvalue="JUnit.gateway" />
@@ -241,7 +229,6 @@
     <recent_temporary>
       <list>
         <item itemvalue="JUnit.auth service" />
-        <item itemvalue="JUnit.SecurityConfigTest" />
         <item itemvalue="JUnit.account service" />
         <item itemvalue="JUnit.registry" />
         <item itemvalue="JUnit.gateway" />
@@ -257,7 +244,7 @@
       <option name="presentableId" value="Default" />
       <updated>1690222999815</updated>
       <workItem from="1690223001612" duration="54000" />
-      <workItem from="1690224127690" duration="5885000" />
+      <workItem from="1690224127690" duration="7372000" />
     </task>
     <servers />
   </component>
