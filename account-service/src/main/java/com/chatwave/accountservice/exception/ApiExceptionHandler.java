@@ -1,6 +1,7 @@
 package com.chatwave.accountservice.exception;
 
 import feign.FeignException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -17,6 +18,7 @@ import java.util.Objects;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @ControllerAdvice
+@Slf4j
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ResponseStatusException.class)
     protected ResponseEntity<ApiException> handleResponseStatusException(ResponseStatusException e) {
@@ -31,6 +33,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<ApiException> handleFeignException(FeignException e) {
         var status = HttpStatus.valueOf(e.status());
         if(status.is5xxServerError()) {
+            log.info("Feign client throw " + status + " error: " + e.getMessage());
             var apiException = new ApiException("An unexpected error occurred.", INTERNAL_SERVER_ERROR);
             return new ResponseEntity<>(apiException, status);
         }
