@@ -1,8 +1,8 @@
 package com.chatwave.authservice.config;
 
-import com.chatwave.authservice.domain.User;
 import com.chatwave.authservice.domain.session.Session;
-import com.chatwave.authservice.domain.session.SessionAuthentication;
+import com.chatwave.authservice.domain.user.User;
+import com.chatwave.authservice.domain.user.UserAuthentication;
 import com.chatwave.authservice.repository.SessionRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -24,10 +24,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-@DisplayName("SessionAuthFilter")
-public class SessionAuthFilterTest {
+@DisplayName("UserAuthFilter")
+public class UserAuthFilterTest {
     @InjectMocks
-    private SessionAuthFilter sessionAuthFilter;
+    private UserAuthFilter userAuthFilter;
 
     @Mock
     private HttpServletRequest request;
@@ -60,12 +60,12 @@ public class SessionAuthFilterTest {
                 repository.findNotExpiredByAccessToken("token")
         ).thenReturn(Optional.of(session));
 
-        sessionAuthFilter.doFilterInternal(request, response, filterChain);
+        userAuthFilter.doFilterInternal(request, response, filterChain);
 
         verify(filterChain)
                 .doFilter(request, response);
 
-        var authentication = (SessionAuthentication) SecurityContextHolder.getContext().getAuthentication();
+        var authentication = (UserAuthentication) SecurityContextHolder.getContext().getAuthentication();
 
         // check principals
         assertEquals(1, authentication.getPrincipal());
@@ -78,14 +78,9 @@ public class SessionAuthFilterTest {
     }
 
     @Test
-    @DisplayName("should move to the next filter if the authorisation header is not specified")
+    @DisplayName("should move to the next filter if the authorization header is not specified")
     public void t2() throws ServletException, IOException {
-        when(
-                request.getHeader( "User-Authorization" )
-        ).thenReturn(null);
-
-        sessionAuthFilter.doFilterInternal(request, response, filterChain);
-
+        userAuthFilter.doFilterInternal(request, response, filterChain);
         verify(filterChain).doFilter(request, response);
     }
 

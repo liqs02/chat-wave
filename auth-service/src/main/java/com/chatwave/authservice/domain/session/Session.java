@@ -1,6 +1,6 @@
 package com.chatwave.authservice.domain.session;
 
-import com.chatwave.authservice.domain.User;
+import com.chatwave.authservice.domain.user.User;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.apache.commons.lang.RandomStringUtils;

@@ -1,7 +1,7 @@
 package com.chatwave.authservice.service;
 
-import com.chatwave.authservice.domain.User;
 import com.chatwave.authservice.domain.session.Session;
+import com.chatwave.authservice.domain.user.User;
 import com.chatwave.authservice.repository.SessionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

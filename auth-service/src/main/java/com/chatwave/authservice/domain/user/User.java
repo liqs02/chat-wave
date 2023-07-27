@@ -1,4 +1,4 @@
-package com.chatwave.authservice.domain;
+package com.chatwave.authservice.domain.user;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

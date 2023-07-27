@@ -34,7 +34,7 @@ import static org.springframework.http.HttpMethod.GET;
 @Setter(onMethod_=@Autowired)
 public class SecurityConfig {
     PasswordEncoder passwordEncoder;
-    SessionAuthFilter sessionAuthFilter;
+    UserAuthFilter userAuthFilter;
     AuthenticationProvider authenticationProvider;
 
     @Bean
@@ -52,7 +52,7 @@ public class SecurityConfig {
     @Order(2)
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf ->
-                    csrf.ignoringRequestMatchers("/users", "/users/authenticate")
+                        csrf.ignoringRequestMatchers("/users", "/users/authenticate", "/users/authentication")
             )
             .authorizeHttpRequests(auth ->
                     auth.requestMatchers(GET, "/actuator/health").permitAll()
@@ -67,7 +67,7 @@ public class SecurityConfig {
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
             .authenticationProvider(authenticationProvider)
-            .addFilterBefore(sessionAuthFilter, UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(userAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

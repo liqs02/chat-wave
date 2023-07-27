@@ -1,11 +1,11 @@
 package com.chatwave.authservice.controller;
 
-import com.chatwave.authservice.domain.User;
 import com.chatwave.authservice.domain.dto.RefreshSessionRequest;
 import com.chatwave.authservice.domain.dto.SessionResponse;
 import com.chatwave.authservice.domain.dto.TokenSetResponse;
 import com.chatwave.authservice.domain.session.Session;
 import com.chatwave.authservice.domain.session.SessionMapper;
+import com.chatwave.authservice.domain.user.User;
 import com.chatwave.authservice.service.SessionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

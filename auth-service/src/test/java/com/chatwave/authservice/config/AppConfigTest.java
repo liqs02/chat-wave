@@ -1,6 +1,6 @@
 package com.chatwave.authservice.config;
 
-import com.chatwave.authservice.domain.User;
+import com.chatwave.authservice.domain.user.User;
 import com.chatwave.authservice.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

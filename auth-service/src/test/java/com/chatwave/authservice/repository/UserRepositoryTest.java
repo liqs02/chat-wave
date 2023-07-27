@@ -1,6 +1,6 @@
 package com.chatwave.authservice.repository;
 
-import com.chatwave.authservice.domain.User;
+import com.chatwave.authservice.domain.user.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
