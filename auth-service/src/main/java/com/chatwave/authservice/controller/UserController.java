@@ -48,15 +48,7 @@ public class UserController {
         service.patchUserPassword(user, newPassword);
     }
 
-    /*
-    @GetMapping("/current")
-    @PreAuthorize("authentication.principal != null")
-    public Integer getCurrentUser(@AuthenticationPrincipal Integer userId) {
-        return userId;
-    }
-    */
-
-    @GetMapping("/authentication") // TODO: change endpoint name
+    @GetMapping("/authentication")
     public Authentication getAuthentication(HttpServletRequest request) {
         return service.getAuthentication(request);
     }
