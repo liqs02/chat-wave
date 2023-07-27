@@ -1,8 +1,10 @@
 package com.chatwave.authservice.service;
 
-import com.chatwave.authservice.domain.User;
+import com.chatwave.authservice.config.UserAuthFilter;
 import com.chatwave.authservice.domain.session.Session;
+import com.chatwave.authservice.domain.user.User;
 import com.chatwave.authservice.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +17,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CONFLICT;
-import static org.springframework.http.HttpStatus.*;
 
 @Service
 @Setter(onMethod_=@Autowired)
@@ -25,6 +26,7 @@ public class UserServiceImpl implements UserService {
     private UserRepository repository;
     private SessionService sessionService;
     private AuthenticationManager authManager;
+    private UserAuthFilter userAuthFilter;
 
     /**
      * {@inheritDoc}
@@ -90,5 +92,16 @@ public class UserServiceImpl implements UserService {
         found.setPassword(hash);
 
         repository.save(found);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Authentication getAuthentication(HttpServletRequest request) {
+        var authentication = userAuthFilter.authorizeByAccessToken(request);
+        if(authentication == null)
+            throw new ResponseStatusException(BAD_REQUEST, "Invalid accessToken.");
+        return authentication;
     }
 }

@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
-
 import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
@@ -31,12 +29,7 @@ public class AccountController {
     public TokenSet authenticateAccount(@Valid @RequestBody AuthenticateAccountRequest authenticateAccountRequest) {
         return service.authenticateAccount(authenticateAccountRequest.loginName(), authenticateAccountRequest.password());
     }
-
-    @GetMapping("/current")
-    public Principal getCurrentAccountId(Principal principal) {
-        return principal;
-    }
-
+    
     @GetMapping("/{accountId}")
     @PreAuthorize("#accountId == authentication.principal")
     public AccountDetails getAccountDetails(@PathVariable Integer accountId) {

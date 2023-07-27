@@ -1,7 +1,9 @@
 package com.chatwave.authservice.service;
 
-import com.chatwave.authservice.domain.User;
 import com.chatwave.authservice.domain.session.Session;
+import com.chatwave.authservice.domain.user.User;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.security.core.Authentication;
 
 public interface UserService {
     /**
@@ -31,4 +33,13 @@ public interface UserService {
      * @param newPassword
      */
     void patchUserPassword(User user, String newPassword);
+
+    /**
+     * Searches session by accessToken.
+     * Creates UserAuthentication.
+     *
+     * @param request with User-Authorization header with accessToken
+     * @return user's authentication information
+     */
+    Authentication getAuthentication(HttpServletRequest request);
 }

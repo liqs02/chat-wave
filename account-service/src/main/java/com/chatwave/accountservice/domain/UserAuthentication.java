@@ -1,27 +1,19 @@
-package com.chatwave.authservice.domain.session;
+package com.chatwave.accountservice.domain;
 
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.security.auth.Subject;
 import java.util.Collection;
 
-public class SessionAuthentication implements Authentication {
+public class UserAuthentication implements Authentication { // todo: create library for microservices and share there it
     Integer userId; // represents principals
 
     String accessToken; // represents credentials
 
     Collection<? extends GrantedAuthority> authorities;
 
-    SessionAuthenticationDetails details;
-
-    public SessionAuthentication(Session session, HttpServletRequest request) {
-        this.userId = session.getUser().getId();
-        this.accessToken = session.getAccessToken();
-        this.authorities = session.getUser().getAuthorities();
-        this.details = new SessionAuthenticationDetails(session, request);
-    }
+    UserAuthenticationDetails details;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -34,7 +26,7 @@ public class SessionAuthentication implements Authentication {
     }
 
     @Override
-    public SessionAuthenticationDetails getDetails() {
+    public UserAuthenticationDetails getDetails() {
         return details;
     }
 

@@ -1,7 +1,7 @@
 package com.chatwave.authservice.service;
 
-import com.chatwave.authservice.domain.User;
 import com.chatwave.authservice.domain.session.Session;
+import com.chatwave.authservice.domain.user.User;
 import com.chatwave.authservice.repository.SessionRepository;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
