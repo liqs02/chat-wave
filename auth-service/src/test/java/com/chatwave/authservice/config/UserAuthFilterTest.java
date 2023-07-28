@@ -9,6 +9,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -41,47 +42,52 @@ public class UserAuthFilterTest {
     @Mock
     private SessionRepository repository;
 
-    @Test
-    @DisplayName("should authenticate a user")
-    public void t1() throws ServletException, IOException {
-        var user = new User();
-        user.setId(1);
-        user.setPassword("pass");
+    @Nested
+    @DisplayName("doFilterInternal(request, response, filterChain)")
+    class doFilterInternal {
+        @Test
+        @DisplayName("should authenticate a user")
+        public void t1() throws ServletException, IOException {
+            var user = new User();
+            user.setId(1);
+            user.setPassword("pass");
 
-        var session = new Session(user);
-        session.setId(2L);
-        session.setAccessToken("access");
+            var session = new Session(user);
+            session.setId(2L);
+            session.setAccessToken("access");
 
-        when(
-                request.getHeader( "User-Authorization")
-        ).thenReturn("Bearer token");
+            when(
+                    request.getHeader( "User-Authorization")
+            ).thenReturn("Bearer token");
 
-        when(
-                repository.findNotExpiredByAccessToken("token")
-        ).thenReturn(Optional.of(session));
+            when(
+                    repository.findNotExpiredByAccessToken("token")
+            ).thenReturn(Optional.of(session));
 
-        userAuthFilter.doFilterInternal(request, response, filterChain);
+            userAuthFilter.doFilterInternal(request, response, filterChain);
 
-        verify(filterChain)
-                .doFilter(request, response);
+            verify(filterChain)
+                    .doFilter(request, response);
 
-        var authentication = (UserAuthentication) SecurityContextHolder.getContext().getAuthentication();
+            var authentication = (UserAuthentication) SecurityContextHolder.getContext().getAuthentication();
 
-        // check principals
-        assertEquals(1, authentication.getPrincipal());
-        assertEquals("1", authentication.getName());
-        assertEquals(0, authentication.getAuthorities().size());
-        // check credentials
-        assertEquals("access", authentication.getCredentials());
-        // check details
-        assertEquals(2L, authentication.getDetails().getSessionId());
+            // check principals
+            assertEquals(1, authentication.getPrincipal());
+            assertEquals("1", authentication.getName());
+            assertEquals(0, authentication.getAuthorities().size());
+            // check credentials
+            assertEquals("access", authentication.getCredentials());
+            // check details
+            assertEquals(2L, authentication.getDetails().getSessionId());
+        }
+
+        @Test
+        @DisplayName("should move to the next filter if the authorization header is not specified")
+        public void t2() throws ServletException, IOException {
+            userAuthFilter.doFilterInternal(request, response, filterChain);
+            verify(filterChain).doFilter(request, response);
+        }
     }
 
-    @Test
-    @DisplayName("should move to the next filter if the authorization header is not specified")
-    public void t2() throws ServletException, IOException {
-        userAuthFilter.doFilterInternal(request, response, filterChain);
-        verify(filterChain).doFilter(request, response);
-    }
 
 }

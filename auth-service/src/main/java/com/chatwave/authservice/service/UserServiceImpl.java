@@ -32,6 +32,17 @@ public class UserServiceImpl implements UserService {
      * {@inheritDoc}
      */
     @Override
+    public Authentication getUserAuthentication(HttpServletRequest request) {
+        var authentication = userAuthFilter.getUserAuthentication(request);
+        if(authentication == null)
+            throw new ResponseStatusException(BAD_REQUEST, "Invalid accessToken.");
+        return authentication;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Session createUser(User user){
         var optional = repository.findById(user.getId());
         if(optional.isPresent()) {
@@ -92,16 +103,5 @@ public class UserServiceImpl implements UserService {
         found.setPassword(hash);
 
         repository.save(found);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Authentication getAuthentication(HttpServletRequest request) {
-        var authentication = userAuthFilter.authorizeByAccessToken(request);
-        if(authentication == null)
-            throw new ResponseStatusException(BAD_REQUEST, "Invalid accessToken.");
-        return authentication;
     }
 }

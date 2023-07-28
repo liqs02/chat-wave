@@ -7,6 +7,16 @@ import org.springframework.security.core.Authentication;
 
 public interface UserService {
     /**
+     * Gets accessToken from User-Authorization header.
+     * Searches session by accessToken.
+     * Creates UserAuthentication.
+     *
+     * @param request with User-Authorization header with accessToken
+     * @return user's authentication
+     */
+    Authentication getUserAuthentication(HttpServletRequest request);
+
+    /**
      * Creates a new user by provided id and password.
      * Creates session for user.
      *
@@ -33,13 +43,4 @@ public interface UserService {
      * @param newPassword
      */
     void patchUserPassword(User user, String newPassword);
-
-    /**
-     * Searches session by accessToken.
-     * Creates UserAuthentication.
-     *
-     * @param request with User-Authorization header with accessToken
-     * @return user's authentication information
-     */
-    Authentication getAuthentication(HttpServletRequest request);
 }

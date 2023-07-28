@@ -12,8 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
+
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @Component
 @Setter(onMethod_=@Autowired)
@@ -28,7 +31,7 @@ public class UserAuthFilter extends OncePerRequestFilter {
                 return;
             }
 
-            var userAuthentication = authorizeByAccessToken(request);
+            var userAuthentication = getUserAuthentication(request);
             if (userAuthentication == null) {
                 filterChain.doFilter(request, response);
                 return;
@@ -39,17 +42,21 @@ public class UserAuthFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         }
 
-        public UserAuthentication authorizeByAccessToken(HttpServletRequest request) {
-            var authHeader = request.getHeader("User-Authorization"); // todo: change 'User-Authorization' to 'Authorization' header, REMEMBER that client authorization return 403/402 because "TOKEN IS NOT VALID JWT"
+        public UserAuthentication getUserAuthentication(HttpServletRequest request) {
+            var authHeader = request.getHeader("User-Authorization");
 
-            if(authHeader == null || !authHeader.startsWith("Bearer "))
+            if(authHeader == null)
                 return null;
+
+            if(!authHeader.startsWith("Bearer "))
+                throw new ResponseStatusException(UNAUTHORIZED, "Invalid accessToken.");
 
             var accessToken = authHeader.substring(7);
             var optionalSession = repository.findNotExpiredByAccessToken(accessToken);
 
-            if(optionalSession.isEmpty()) // todo add exception
-                return null;
+            if(optionalSession.isEmpty())
+                throw new ResponseStatusException(UNAUTHORIZED, "Invalid accessToken.");
+
             var session = optionalSession.get();
             return new UserAuthentication(session, request);
         }

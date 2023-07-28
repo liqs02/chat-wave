@@ -1,8 +1,11 @@
 package com.chatwave.authservice.service;
 
+import com.chatwave.authservice.config.UserAuthFilter;
 import com.chatwave.authservice.domain.session.Session;
 import com.chatwave.authservice.domain.user.User;
+import com.chatwave.authservice.domain.user.UserAuthentication;
 import com.chatwave.authservice.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -34,13 +37,15 @@ public class UserServiceTest {
     private SessionService sessionService;
     @Mock
     private AuthenticationManager authManager;
+    @Mock
+    private UserAuthFilter userAuthFilter;
 
     @Nested
     @DisplayName("createUser( user )")
     class createUser {
         @Test
         @DisplayName("should create user, return new session")
-        public void t1() {
+         void t1() {
             var user = new User();
             user.setId(1);
             user.setPassword("pass");
@@ -73,7 +78,7 @@ public class UserServiceTest {
 
         @Test
         @DisplayName("should fail if user already exists")
-        public void t2() {
+         void t2() {
             var user = new User();
             user.setId(1);
 
@@ -95,7 +100,7 @@ public class UserServiceTest {
     class authenticateUser {
         @Test
         @DisplayName("should authenticate a user and return new session")
-        public void t1() {
+         void t1() {
             var user = new User();
             user.setId(1);
             user.setPassword("pass");
@@ -127,7 +132,7 @@ public class UserServiceTest {
     class patchUserPassword {
         @Test
         @DisplayName("should authenticate user and change password")
-        public void t1() {
+        void t1() {
             var user = new User();
             user.setId(1);
             user.setPassword("pass");
@@ -151,6 +156,22 @@ public class UserServiceTest {
                     .save(captor.capture());
 
             assertEquals("encoded", captor.getValue().getPassword());
+        }
+    }
+    @Nested
+    @DisplayName("getUserAuthentication( request )")
+    class getUserAuthentication {
+        @Test
+        @DisplayName("should get accessToken, verify user, create and return UserAuthentication")
+        void t1() {
+            var request = mock(HttpServletRequest.class);
+            var userAuthentication = mock(UserAuthentication.class);
+            when(
+                    userAuthFilter.getUserAuthentication(request)
+            ).thenReturn(userAuthentication);
+
+            var result = service.getUserAuthentication(request);
+            assertEquals(userAuthentication, result);
         }
     }
 }
