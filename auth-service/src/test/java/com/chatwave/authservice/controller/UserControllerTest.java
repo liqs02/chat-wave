@@ -7,8 +7,10 @@ import com.chatwave.authservice.domain.dto.TokenSetResponse;
 import com.chatwave.authservice.domain.session.Session;
 import com.chatwave.authservice.domain.session.SessionMapper;
 import com.chatwave.authservice.domain.user.User;
+import com.chatwave.authservice.domain.user.UserAuthentication;
 import com.chatwave.authservice.domain.user.UserMapper;
 import com.chatwave.authservice.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -47,8 +49,23 @@ public class UserControllerTest {
     }
 
     @Test
-    @DisplayName("createUser() should creates user and return access and refresh token")
+    @DisplayName("getUserAuthentication() should invoke service.getUserAuthentication() and return it")
     public void t1() {
+        var request = mock(HttpServletRequest.class);
+        var userAuthentication = mock(UserAuthentication.class);
+
+        when(
+                service.getUserAuthentication(request)
+        ).thenReturn(userAuthentication);
+
+        var result = controller.getUserAuthentication(request);
+
+        assertEquals(userAuthentication, result);
+    }
+
+    @Test
+    @DisplayName("createUser() should creates user and return accessToken and refreshToken")
+    public void t2() {
         var createUserRequest = new CreateUserRequest(1, "Pass1234");
 
         when(
@@ -70,8 +87,8 @@ public class UserControllerTest {
     }
 
     @Test
-    @DisplayName("authenticateUser() should creates user and return access and refresh token")
-    public void t2() {
+    @DisplayName("authenticateUser() should creates user and return accessToken and refreshToken")
+    public void t3() {
         var authenticateUserRequest = new AuthenticateUserRequest(1, "Pass1234");
 
         var user = new User();
@@ -99,7 +116,7 @@ public class UserControllerTest {
 
     @Test
     @DisplayName("patchUserPassword() should change user's password")
-    public void t3() {
+    public void t4() {
         var changePasswordRequest = new PatchPasswordRequest("pass", "new");
 
         var user = new User();

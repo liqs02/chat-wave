@@ -26,6 +26,11 @@ public class UserController {
     private UserMapper mapper;
     private SessionMapper sessionMapper;
 
+    @GetMapping("/authentication")
+    public Authentication getUserAuthentication(HttpServletRequest request) {
+        return service.getUserAuthentication(request);
+    }
+
     @PostMapping
     @ResponseStatus(CREATED)
     public TokenSetResponse createUser(@Valid @RequestBody CreateUserRequest createUserRequest) {
@@ -46,10 +51,5 @@ public class UserController {
         var user = mapper.toUser(id, patchPasswordRequest);
         var newPassword = patchPasswordRequest.newPassword();
         service.patchUserPassword(user, newPassword);
-    }
-
-    @GetMapping("/authentication")
-    public Authentication getAuthentication(HttpServletRequest request) {
-        return service.getAuthentication(request);
     }
 }
