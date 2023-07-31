@@ -63,7 +63,7 @@ public class AccountControllerTest {
         }
 
         @Test
-        @DisplayName("getAccountDetails() should return an AccountDetails")
+        @DisplayName("getCurrentAccountDetails() should return an AccountDetails")
         public void t3() {
                 var account = new Account();
                 var accountDetails = new AccountDetails(1, "login", "display");
@@ -76,7 +76,7 @@ public class AccountControllerTest {
                         mapper.toAccountDetails(account)
                 ).thenReturn(accountDetails);
 
-                var result = controller.getAccountDetails(1);
+                var result = controller.getCurrentAccountDetails(1);
                 assertEquals(accountDetails, result);
         }
 
