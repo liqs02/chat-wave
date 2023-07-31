@@ -1,4 +1,4 @@
-package com.chatwave.authclient;
+package com.chatwave.authclient.filter;
 
 import com.chatwave.authclient.client.AuthService;
 import jakarta.servlet.FilterChain;

@@ -2,6 +2,7 @@ package com.chatwave.authclient;
 
 import com.chatwave.authclient.client.AuthService;
 import com.chatwave.authclient.domain.UserAuthentication;
+import com.chatwave.authclient.filter.UserAuthFilter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
