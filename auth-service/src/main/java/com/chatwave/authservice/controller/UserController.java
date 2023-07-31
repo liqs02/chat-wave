@@ -39,7 +39,7 @@ public class UserController {
         return sessionMapper.toTokenSetResponse(session);
     }
 
-    @PostMapping("/auth")
+    @PostMapping("/authenticate")
     public TokenSetResponse authenticateUser(@Valid @RequestBody AuthenticateUserRequest authenticateUserRequest) {
         var user = mapper.toUser(authenticateUserRequest);
         var session = service.authenticateUser(user);
