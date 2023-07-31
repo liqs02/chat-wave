@@ -4,6 +4,7 @@ import com.chatwave.accountservice.domain.Account;
 import com.chatwave.accountservice.domain.AccountMapper;
 import com.chatwave.accountservice.domain.dto.*;
 import com.chatwave.accountservice.service.AccountService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,16 +25,21 @@ public class AccountControllerTest {
         private AccountService service;
         @Mock
         private AccountMapper mapper;
+        private final TokenSet TOKEN_SET = new TokenSet("refresh", "access");
+        private Account account;
 
-        private final TokenSet tokenSet = new TokenSet("refresh", "access");
-
+        @BeforeEach
+        void setup() {
+                account = new Account();
+                account.setId(1);
+                account.setLoginName("login");
+                account.setDisplayName("displayName");
+        }
 
         @Test
         @DisplayName("createAccount() should create an account")
         public void t1() {
-                var account = new Account();
-                account.setLoginName("login");
-                account.setDisplayName("display");
+                account.setId(null);
 
                 var createAccountRequest = new CreateAccountRequest("login", "display", "pass");
 
@@ -43,10 +49,10 @@ public class AccountControllerTest {
 
                 when(
                         service.createAccount(account, "pass")
-                ).thenReturn(tokenSet);
+                ).thenReturn(TOKEN_SET);
 
                 var result = controller.createAccount(createAccountRequest);
-                assertEquals(tokenSet, result);
+                assertEquals(TOKEN_SET, result);
         }
 
         @Test
@@ -56,16 +62,15 @@ public class AccountControllerTest {
 
                 when(
                         service.authenticateAccount("login", "pass")
-                ).thenReturn(tokenSet);
+                ).thenReturn(TOKEN_SET);
 
                 var result = controller.authenticateAccount(authenticateAccountRequest);
-                assertEquals(tokenSet, result);
+                assertEquals(TOKEN_SET, result);
         }
 
         @Test
-        @DisplayName("getAccountDetails() should return an AccountDetails")
+        @DisplayName("getCurrentAccountDetails() should return an AccountDetails")
         public void t3() {
-                var account = new Account();
                 var accountDetails = new AccountDetails(1, "login", "display");
 
                 when(
@@ -76,15 +81,13 @@ public class AccountControllerTest {
                         mapper.toAccountDetails(account)
                 ).thenReturn(accountDetails);
 
-                var result = controller.getAccountDetails(1);
+                var result = controller.getCurrentAccountDetails(1);
                 assertEquals(accountDetails, result);
         }
-
 
         @Test
         @DisplayName("getAccountShowcase() should return an AccountShowcase")
         public void t4() {
-                var account = new Account();
                 var accountShowcase = new AccountShowcase(1, "display");
 
                 when(
@@ -102,7 +105,6 @@ public class AccountControllerTest {
         @Test
         @DisplayName("getAccountByDisplayName() should return an AccountShowcase")
         public void t5() {
-                var account = new Account();
                 var accountShowcase = new AccountShowcase(1, "display");
 
                 when(

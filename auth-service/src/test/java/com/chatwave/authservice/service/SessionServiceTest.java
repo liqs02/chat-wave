@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -37,7 +36,6 @@ public class SessionServiceTest {
 
     @BeforeEach
     void setup() {
-        // setup User
         user = new User();
         user.setId(1);
         user.setPassword("pass");
@@ -168,9 +166,9 @@ public class SessionServiceTest {
         @Test
         @DisplayName("should expire all unexpired user's session")
         public void t1() {
-            var session1 = Mockito.mock(Session.class);
-            var session2 = Mockito.mock(Session.class);
-            var session3 = Mockito.mock(Session.class);
+            var session1 = mock(Session.class);
+            var session2 = mock(Session.class);
+            var session3 = mock(Session.class);
 
             when(
                     repository.findAllNotExpiredByUserId(1)
@@ -214,7 +212,7 @@ public class SessionServiceTest {
         @Test
         @DisplayName("should expire user's session")
         public void t1() {
-            var session = Mockito.mock(Session.class);
+            var session = mock(Session.class);
             var user = new User();
             user.setId(1);
 
@@ -249,7 +247,7 @@ public class SessionServiceTest {
         @Test
         @DisplayName("should throw NOT_FOUND if the session is of different user")
         public void t3() {
-            var session = Mockito.mock(Session.class);
+            var session = mock(Session.class);
             var user = new User();
             user.setId(2);
 
@@ -275,7 +273,7 @@ public class SessionServiceTest {
         @Test
         @DisplayName("should throw BAD_REQUEST if the session is already expired")
         public void t4() {
-            var session = Mockito.mock(Session.class);
+            var session = mock(Session.class);
             var user = new User();
             user.setId(1);
 

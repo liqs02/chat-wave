@@ -6,6 +6,7 @@ import com.chatwave.authservice.domain.user.User;
 import com.chatwave.authservice.domain.user.UserAuthentication;
 import com.chatwave.authservice.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -39,6 +40,18 @@ public class UserServiceTest {
     private AuthenticationManager authManager;
     @Mock
     private UserAuthFilter userAuthFilter;
+    private User user;
+    private Session session;
+
+    @BeforeEach
+    void setup() {
+        user = new User();
+        user.setId(1);
+        user.setPassword("pass");
+
+        session = new Session(user);
+        session.setId(1L);
+    }
 
     @Nested
     @DisplayName("createUser( user )")
@@ -46,13 +59,6 @@ public class UserServiceTest {
         @Test
         @DisplayName("should create user, return new session")
          void t1() {
-            var user = new User();
-            user.setId(1);
-            user.setPassword("pass");
-
-            var session = new Session(user);
-            session.setId(1L);
-
             when(
                 passwordEncoder.encode("pass")
             ).thenReturn("encoded");
@@ -79,8 +85,7 @@ public class UserServiceTest {
         @Test
         @DisplayName("should fail if user already exists")
          void t2() {
-            var user = new User();
-            user.setId(1);
+            user.setPassword(null);
 
             when(repository.findById( eq(1) ))
                     .thenReturn(Optional.of(user));
@@ -101,13 +106,6 @@ public class UserServiceTest {
         @Test
         @DisplayName("should authenticate a user and return new session")
          void t1() {
-            var user = new User();
-            user.setId(1);
-            user.setPassword("pass");
-
-            var session = new Session();
-            session.setId(1L);
-
             when(
                     sessionService.createSession(user)
             ).thenReturn(session);
@@ -133,10 +131,6 @@ public class UserServiceTest {
         @Test
         @DisplayName("should authenticate user and change password")
         void t1() {
-            var user = new User();
-            user.setId(1);
-            user.setPassword("pass");
-
             when(
                     repository.findById(1)
             ).thenReturn(Optional.of(user));
@@ -166,6 +160,7 @@ public class UserServiceTest {
         void t1() {
             var request = mock(HttpServletRequest.class);
             var userAuthentication = mock(UserAuthentication.class);
+
             when(
                     userAuthFilter.getUserAuthentication(request)
             ).thenReturn(userAuthentication);

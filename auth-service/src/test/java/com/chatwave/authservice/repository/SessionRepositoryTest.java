@@ -2,10 +2,7 @@ package com.chatwave.authservice.repository;
 
 import com.chatwave.authservice.domain.session.Session;
 import com.chatwave.authservice.domain.user.User;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -100,6 +97,7 @@ public class SessionRepositoryTest {
         @DisplayName("should returns valid session")
         public void t1() {
             var optional = repository.findNotExpiredByAccessToken("access");
+            if(optional.isEmpty()) fail();
             assertEquals(session, optional.get());
         }
 
@@ -110,7 +108,7 @@ public class SessionRepositoryTest {
             repository.save(session);
 
             var optional = repository.findNotExpiredByAccessToken("access");
-            assertEquals(true, optional.isEmpty());
+            assertTrue(optional.isEmpty());
         }
 
         @Test
@@ -120,7 +118,7 @@ public class SessionRepositoryTest {
             repository.save(session);
 
             var optional = repository.findNotExpiredByAccessToken("access");
-            assertEquals(true, optional.isEmpty());
+            assertTrue(optional.isEmpty());
         }
     }
 

@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.HttpStatus.CREATED;
@@ -29,14 +30,14 @@ public class AccountController {
     public TokenSet authenticateAccount(@Valid @RequestBody AuthenticateAccountRequest authenticateAccountRequest) {
         return service.authenticateAccount(authenticateAccountRequest.loginName(), authenticateAccountRequest.password());
     }
-    
-    @GetMapping("/{accountId}")
-    @PreAuthorize("#accountId == authentication.principal")
-    public AccountDetails getAccountDetails(@PathVariable Integer accountId) {
+
+    @GetMapping("/current")
+    @PreAuthorize("authentication.principal != null")
+    public AccountDetails getCurrentAccountDetails(@AuthenticationPrincipal Integer accountId) {
         var account = service.getAccountById(accountId);
         return mapper.toAccountDetails(account);
     }
-
+    
     @GetMapping("/{accountId}/showcase")
     public AccountShowcase getAccountShowcase(@PathVariable Integer accountId) {
         var account = service.getAccountById(accountId);
