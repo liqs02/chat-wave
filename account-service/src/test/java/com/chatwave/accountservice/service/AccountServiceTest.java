@@ -7,7 +7,7 @@ import com.chatwave.accountservice.domain.dto.CreateUserRequest;
 import com.chatwave.accountservice.domain.dto.PatchPasswordRequest;
 import com.chatwave.accountservice.domain.dto.TokenSet;
 import com.chatwave.accountservice.repository.AccountRepository;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -33,21 +33,21 @@ public class AccountServiceTest {
     AccountRepository repository;
     @Mock
     AuthService authService;
+    private TokenSet tokenSet;
+    private Account account;
 
-    private static TokenSet tokenSet;
-
-    @BeforeAll
-    public static void setup() {
+    @BeforeEach
+    void setup() {
         tokenSet = new TokenSet("refresh", "access");
+        account = new Account();
+        account.setId(1);
+        account.setLoginName("login");
+        account.setDisplayName("displayName");
     }
 
     @Test
     @DisplayName("createAccount() should create an account")
     public void t1() {
-        var account = new Account();
-        account.setLoginName("login");
-        account.setDisplayName("display");
-
         var accountWithId = account;
         accountWithId.setId(1);
 
@@ -66,9 +66,6 @@ public class AccountServiceTest {
     @Test
     @DisplayName("authenticateAccount() should authenticate an account")
     public void t2() {
-        var account = new Account();
-        account.setId(1);
-
         when(
                 repository.findByLoginName("login")
         ).thenReturn(Optional.of(account));
@@ -88,8 +85,6 @@ public class AccountServiceTest {
         @Test
         @DisplayName("should get an account")
         public void t1() {
-            var account = new Account();
-
             when(
                     repository.findById(1)
             ).thenReturn(Optional.of(account));
@@ -116,8 +111,6 @@ public class AccountServiceTest {
         @Test
         @DisplayName("should get an account")
         public void t1() {
-            var account = new Account();
-
             when(
                     repository.findByDisplayName("display")
             ).thenReturn(Optional.of(account));
@@ -138,7 +131,6 @@ public class AccountServiceTest {
             assertEquals(NOT_FOUND, thrown.getStatusCode());
         }
     }
-
 
     @Test
     @DisplayName("patchAccountPassword() should change password in auth service")
