@@ -7,6 +7,8 @@
     <file url="file://$PROJECT_DIR$/auth-service/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/chat-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/common/auth-client/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/common/auth-client/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/common/exception/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/common/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/common/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/config/src/main/java" charset="UTF-8" />
