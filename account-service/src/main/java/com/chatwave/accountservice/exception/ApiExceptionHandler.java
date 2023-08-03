@@ -19,7 +19,7 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @ControllerAdvice
 @Slf4j
-public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
+public class ApiExceptionHandler extends ResponseEntityExceptionHandler { // TODO: move it to separate library and add to chat-service
     @ExceptionHandler(ResponseStatusException.class)
     protected ResponseEntity<ApiException> handleResponseStatusException(ResponseStatusException e) {
         var status = HttpStatus.valueOf(e.getStatusCode().value());
