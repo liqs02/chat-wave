@@ -13,7 +13,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-@DisplayName("ChatRepository")
+@DisplayName("MessageRepository")
 public class MessageRepositoryTest {
     @Autowired
     private MessageRepository repository;
