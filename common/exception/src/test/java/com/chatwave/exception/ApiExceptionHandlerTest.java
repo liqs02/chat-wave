@@ -1,4 +1,4 @@
-package com.chatwave.accountservice.exception;
+package com.chatwave.exception;
 
 import feign.FeignException;
 import org.junit.jupiter.api.DisplayName;

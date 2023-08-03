@@ -1,4 +1,4 @@
-package com.chatwave.accountservice.exception;
+package com.chatwave.exception;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatusCode;

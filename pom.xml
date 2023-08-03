@@ -10,6 +10,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>common/auth-client</module>
+        <module>common/exception</module>
 
         <module>account-service</module>
         <module>auth-service</module>
