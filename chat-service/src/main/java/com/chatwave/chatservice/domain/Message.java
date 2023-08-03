@@ -10,7 +10,6 @@ import java.util.UUID;
 
 @Data
 @Entity
-@NoArgsConstructor
 @Table(
         name = "messages",
         indexes = {
@@ -21,7 +20,6 @@ import java.util.UUID;
 )
 public class Message {
     @Id
-    @GeneratedValue
     private UUID id;
 
     @Column(nullable = false, updatable = false)
@@ -32,10 +30,15 @@ public class Message {
     private String content;
 
     @Column(nullable = false, updatable = false)
-    @CreatedDate
     private LocalDateTime createdAt;
 
+    public Message() {
+        this.id = UUID.randomUUID();
+        this.createdAt = LocalDateTime.now();
+    }
+
     public Message(String content, Integer authorId, Integer receiverId) {
+        this();
         this.content = content;
         this.authorId = authorId;
         this.receiverId = receiverId;
