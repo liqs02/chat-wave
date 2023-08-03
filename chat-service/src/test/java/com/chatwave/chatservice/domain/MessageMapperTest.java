@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisplayName("MessageMapper")
 public class MessageMapperTest {
@@ -19,5 +20,8 @@ public class MessageMapperTest {
          assertEquals("It's a message.", result.getContent());
          assertEquals(1, result.getReceiverId());
          assertEquals(2, result.getAuthorId());
+
+         assertTrue(result.getId() != null);
+         assertTrue(result.getCreatedAt() != null);
      }
 }
