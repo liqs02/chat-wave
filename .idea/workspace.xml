@@ -5,9 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b52ce3e4-3047-4dc8-a854-88fa60a134df" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/chat-service/src/main/java/com/chatwave/chatservice/client/AuthService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/chat-service/src/main/java/com/chatwave/chatservice/domain/dto/MessageResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/chat-service/src/test/java/com/chatwave/chatservice/controller/ChatControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/src/main/resources/shared/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config/src/main/resources/shared/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/src/main/java/com/chatwave/chatservice/ChatServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/chat-service/src/main/java/com/chatwave/chatservice/ChatServiceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/src/main/java/com/chatwave/chatservice/config/AppConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/chat-service/src/main/java/com/chatwave/chatservice/config/AppConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/src/main/java/com/chatwave/chatservice/domain/MessageMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/chat-service/src/main/java/com/chatwave/chatservice/domain/MessageMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/src/main/java/com/chatwave/chatservice/domain/dto/CreateMessageRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/chat-service/src/main/java/com/chatwave/chatservice/domain/dto/SendMessageRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/src/test/java/com/chatwave/chatservice/domain/MessageMapperTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/chat-service/src/test/java/com/chatwave/chatservice/domain/MessageMapperTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/auth-client/src/main/java/com/chatwave/authclient/client/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/common/auth-client/src/main/java/com/chatwave/authclient/client/AuthService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,6 +43,9 @@
       </MavenGeneralSettings>
     </option>
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectId" id="2T1udtxSfwJywlqMce0tQU0N8fa" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -43,34 +54,35 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "deletionFromPopupRequiresConfirmation": "false",
-    "git-widget-placeholder": "feature/add-shared-code",
-    "jdk.selected.JAVA_MODULE": "20",
-    "last_opened_file_path": "/Users/patryklikus/Programowanie/ChatWave/auth-client/src/main/java/com/chatwave/authclient",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "onboarding.tips.debug.path": "/Users/patryklikus/Programowanie/ChatWave/common/src/main/java/org/example/Main.java",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "MavenSettings",
-    "spring.configuration.checksum": "58c532257ac6f8ecb6c26720227519db",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;deletionFromPopupRequiresConfirmation&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/chat-service&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;20&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/patryklikus/Programowanie/ChatWave/chat-service/src/test&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;/Users/patryklikus/Programowanie/ChatWave/common/src/main/java/org/example/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;MavenSettings&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;58c532257ac6f8ecb6c26720227519db&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="ReactorSettings">
     <option name="notificationShown" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/chat-service/src/test" />
       <recent name="$PROJECT_DIR$/auth-client/src/main/java/com/chatwave/authclient" />
       <recent name="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authclient" />
       <recent name="$PROJECT_DIR$/account-service/src/main/java/com/chatwave/accountservice/domain" />
@@ -85,6 +97,7 @@
       <recent name="com.chatwave.authservice.domain.session" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.chatwave.chatservice.config" />
       <recent name="com.chatwave.authclient" />
       <recent name="com.chatwave.accountservice.config" />
       <recent name="com.chatwave.accountservice.domain.dto" />
@@ -179,8 +192,14 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="registry" type="JUnit" factoryName="JUnit" temporary="true">
-      <module name="registry" />
+    <configuration name="chat service" type="JUnit" factoryName="JUnit" temporary="true">
+      <module name="chat-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.chatwave.chatservice.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
       <extension name="net.ashald.envfile">
         <option name="IS_ENABLED" value="false" />
         <option name="IS_SUBST" value="false" />
@@ -191,10 +210,10 @@
           <ENTRY IS_ENABLED="true" PARSER="runconfig" IS_EXECUTABLE="false" />
         </ENTRIES>
       </extension>
+      <option name="PACKAGE_NAME" value="com.chatwave.chatservice" />
       <option name="MAIN_CLASS_NAME" value="" />
       <option name="METHOD_NAME" value="" />
-      <option name="TEST_OBJECT" value="directory" />
-      <dir value="$PROJECT_DIR$/registry/src/test/java/com/chatwave/registry" />
+      <option name="TEST_OBJECT" value="package" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -209,6 +228,13 @@
     <configuration name="AuthServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="auth-service" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.chatwave.authservice.AuthServiceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ChatServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="chat-service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.chatwave.chatservice.ChatServiceApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -245,11 +271,12 @@
     </configuration>
     <list>
       <item itemvalue="Docker.development" />
+      <item itemvalue="JUnit.chat service" />
       <item itemvalue="JUnit.auth client" />
       <item itemvalue="JUnit.SecurityConfigTest" />
       <item itemvalue="JUnit.account service" />
       <item itemvalue="JUnit.auth service" />
-      <item itemvalue="JUnit.registry" />
+      <item itemvalue="Spring Boot.ChatServiceApplication" />
       <item itemvalue="Spring Boot.AccountServiceApplication" />
       <item itemvalue="Spring Boot.AuthServiceApplication" />
       <item itemvalue="Spring Boot.ConfigApplication" />
@@ -258,11 +285,11 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.chat service" />
         <item itemvalue="JUnit.auth client" />
         <item itemvalue="JUnit.account service" />
         <item itemvalue="JUnit.auth service" />
         <item itemvalue="JUnit.SecurityConfigTest" />
-        <item itemvalue="JUnit.registry" />
       </list>
     </recent_temporary>
   </component>

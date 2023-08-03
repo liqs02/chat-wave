@@ -87,6 +87,19 @@ public class SecurityConfig {
                 .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
                 .build();
 
-        return new InMemoryRegisteredClientRepository(accountClient);
+        var chatClient = RegisteredClient.withId(UUID.randomUUID().toString())
+                .clientId("chat-client")
+                .clientSecret(passwordEncoder.encode("secret"))
+                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
+                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
+                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+                .redirectUri("http://chat-service:8083/login/oauth2/code/spring")
+                .postLogoutRedirectUri("http://127.0.0.1:8080/")
+                .scope(OidcScopes.OPENID)
+                .scope("server")
+                .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
+                .build();
+
+        return new InMemoryRegisteredClientRepository(accountClient, chatClient);
     }
 }

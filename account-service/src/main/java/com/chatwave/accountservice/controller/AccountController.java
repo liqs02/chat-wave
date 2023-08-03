@@ -11,6 +11,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @RestController
 @RequestMapping("/accounts")
@@ -37,7 +38,14 @@ public class AccountController {
         var account = service.getAccountById(accountId);
         return mapper.toAccountDetails(account);
     }
-    
+
+    @GetMapping("/{accountId}")
+    @PreAuthorize("hasAuthority('SCOPE_server') || #accountId == authentication.principal")
+    public AccountDetails getAccountDetails(@PathVariable Integer accountId) {
+        var account = service.getAccountById(accountId);
+        return mapper.toAccountDetails(account);
+    }
+
     @GetMapping("/{accountId}/showcase")
     public AccountShowcase getAccountShowcase(@PathVariable Integer accountId) {
         var account = service.getAccountById(accountId);
