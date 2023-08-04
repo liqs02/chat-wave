@@ -12,6 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -28,6 +29,8 @@ public class ChatControllerTest {
     private ChatService service;
     @Mock
     private MessageMapper mapper;
+    @Mock
+    private SimpMessagingTemplate messagingTemplate;
 
     Message message;
     MessageResponse messageResponse;
@@ -58,6 +61,10 @@ public class ChatControllerTest {
         var result = controller.sendMessage(sendMessageRequest, 1, 2);
 
         assertEquals(messageResponse, result);
+
+        verify(
+                messagingTemplate
+        ).convertAndSendToUser("2", "/queue/2", message);
 
         verify(
                 service, times(1)
