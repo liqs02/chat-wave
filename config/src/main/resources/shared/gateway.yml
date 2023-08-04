@@ -1,2 +1,19 @@
 server:
   port: 8080
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: auth-route
+          uri: lb://auth-service
+          predicates:
+            - Path=/users/**
+        - id: account-route
+          uri: lb://account-service
+          predicates:
+            - Path=/accounts/**
+        - id: chat-route
+          uri: lb://chat-service
+          predicates:
+            - Path=/chat/**
