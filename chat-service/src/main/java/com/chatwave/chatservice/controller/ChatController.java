@@ -1,18 +1,16 @@
 package com.chatwave.chatservice.controller;
 
 import com.chatwave.chatservice.domain.MessageMapper;
-import com.chatwave.chatservice.domain.dto.SendMessageRequest;
 import com.chatwave.chatservice.domain.dto.MessageResponse;
+import com.chatwave.chatservice.domain.dto.SendMessageRequest;
 import com.chatwave.chatservice.service.ChatService;
-import feign.FeignException;
 import jakarta.validation.Valid;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +26,7 @@ import java.util.stream.Collectors;
 public class ChatController {
     private ChatService service;
     private MessageMapper mapper;
+    private SimpMessagingTemplate messagingTemplate;
 
     @GetMapping("/chat/{receiverId}/{page}")
     public List<MessageResponse> getMessagePage(@AuthenticationPrincipal Integer authorId, @PathVariable Integer receiverId, @PathVariable Integer page) {
@@ -39,10 +38,11 @@ public class ChatController {
     }
 
     @MessageMapping("/chat/{receiverId}")
-    @SendTo("/topic/chat/{receiverId}") // todo test in action
     public MessageResponse sendMessage(@Valid @Payload SendMessageRequest sendMessageRequest, @AuthenticationPrincipal Integer authorId, @DestinationVariable Integer receiverId) {
         var message = mapper.toMessage(sendMessageRequest, authorId, receiverId);
         message = service.sendMessage(message);
+
+        messagingTemplate.convertAndSendToUser(receiverId.toString(), "/queue/" + receiverId, message);
         return mapper.toMessageResponse(message);
     }
 }
