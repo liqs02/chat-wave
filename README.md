@@ -31,11 +31,11 @@ Storing and searching for a user by name is the task of account service contacti
 | Method   | Path                                    | Description                                   | Authorization Type |
 |:---------|:----------------------------------------|-----------------------------------------------|:-------------------|
 | `GET`    | `/users/authentication`                 | Get current user's authentication information | `CLIENT`           |
+| `GET`    | `/users/{userId}/sessions`              | Get all not expired user's sessions.          | `USER`             |
 | `POST`   | `/users`                                | Create a user                                 | `CLIENT`           |
 | `POST`   | `/users/authenticate`                   | Authenticate an existing user                 | `CLIENT`           |
-| `PATCH`  | `/users/{userId}/password`              | Change user's password.                       | `CLIENT`           |
-| `GET`    | `/users/{userId}/sessions`              | Get all not expired user's sessions.          | `USER`             |
 | `POST`   | `/users/sessions/refresh`               | Refresh accessToken for user.                 | `NONE`             |
+| `PATCH`  | `/users/{userId}/password`              | Change user's password.                       | `CLIENT`           |
 | `DELETE` | `/users/{userId}/sessions`              | Expire all user's session.                    | `USER`             |
 | `DELETE` | `/users/{userId}/sessions/{sessionsId}` | Expire selected session of user.              | `USER`             |
 
