@@ -39,10 +39,6 @@ public class ChatControllerTest {
     void setup() {
         message = new Message("Hello world!", 1, 2);
         messageResponse = new MessageResponse("Hello world!", 1, 2, LocalDateTime.MIN);
-
-        when(
-                mapper.toMessageResponse(message)
-        ).thenReturn(messageResponse);
     }
 
     @Test
@@ -58,13 +54,11 @@ public class ChatControllerTest {
                 service.sendMessage(message)
         ).thenReturn(message);
 
-        var result = controller.sendMessage(sendMessageRequest, 1, 2);
-
-        assertEquals(messageResponse, result);
+        controller.sendMessage(sendMessageRequest, 1, 2);
 
         verify(
                 messagingTemplate
-        ).convertAndSendToUser("2", "/queue/2", message);
+        ).convertAndSendToUser("2", "/topic/notifications", message);
 
         verify(
                 service, times(1)
@@ -77,6 +71,10 @@ public class ChatControllerTest {
         when(
                 service.getMessagePage(1,2,0)
         ).thenReturn(List.of(message));
+
+        when(
+                mapper.toMessageResponse(message)
+        ).thenReturn(messageResponse);
 
         var result = controller.getMessagePage(1, 2, 0);
 
