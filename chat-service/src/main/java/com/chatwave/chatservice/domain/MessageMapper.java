@@ -10,7 +10,7 @@ import org.mapstruct.factory.Mappers;
 public interface MessageMapper {
     MessageMapper INSTANCE = Mappers.getMapper(MessageMapper.class);
     @Mapping(source = "sendMessageRequest.message", target = "content")
-    Message toMessage(SendMessageRequest sendMessageRequest, Integer authorId, Integer receiverId);
+    Message toMessage(SendMessageRequest sendMessageRequest, Integer authorId);
 
     MessageResponse toMessageResponse(Message message);
 }

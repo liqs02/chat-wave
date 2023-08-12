@@ -2,7 +2,9 @@ package com.chatwave.chatservice.service;
 
 import com.chatwave.chatservice.domain.Message;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 public interface ChatService {
     /**
@@ -12,11 +14,10 @@ public interface ChatService {
      *
      * @param firstMemberId - first chat's memberId
      * @param secondMemberId - second chat's memberId
-     * @param page index
+     * @param from datetime from which we should take a page (excluding this message with exactly this datetime)
      * @return message list with fixed size
      */
-    List<Message> getMessagePage(Integer firstMemberId, Integer secondMemberId, Integer page);
-
+    List<Message> getMessages(Integer firstMemberId, Integer secondMemberId, LocalDateTime from);
 
     /**
      * Saves message in database.

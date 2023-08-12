@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -34,13 +35,15 @@ public class ChatServiceTest {
     }
 
     @Test
-    @DisplayName("getMessagePage() should get passed page by repository")
-    void getMessagePage() {
+    @DisplayName("getMessages() should get passed page by repository")
+    void getMessages() {
+        var datetime = LocalDateTime.now();
+
         when(
-                repository.findChat(1,2, pageable.withPage(3))
+                repository.findChat(1,2, datetime)
         ).thenReturn(List.of(message));
 
-        var result = service.getMessagePage(1, 2, 3);
+        var result = service.getMessages(1, 2, datetime);
 
         assertEquals(List.of(message), result);
     }
