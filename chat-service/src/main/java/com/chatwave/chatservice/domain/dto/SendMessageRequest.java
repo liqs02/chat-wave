@@ -1,7 +1,6 @@
 package com.chatwave.chatservice.domain.dto;
 
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
 public record SendMessageRequest(

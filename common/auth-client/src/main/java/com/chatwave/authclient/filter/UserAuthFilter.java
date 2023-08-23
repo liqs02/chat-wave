@@ -1,8 +1,6 @@
 package com.chatwave.authclient.filter;
 
 import com.chatwave.authclient.client.AuthService;
-import com.chatwave.authclient.domain.UserAuthentication;
-import feign.FeignException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

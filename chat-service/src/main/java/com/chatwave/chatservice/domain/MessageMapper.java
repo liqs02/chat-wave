@@ -1,7 +1,7 @@
 package com.chatwave.chatservice.domain;
 
-import com.chatwave.chatservice.domain.dto.SendMessageRequest;
 import com.chatwave.chatservice.domain.dto.MessageResponse;
+import com.chatwave.chatservice.domain.dto.SendMessageRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;

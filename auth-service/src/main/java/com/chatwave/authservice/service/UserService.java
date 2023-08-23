@@ -4,7 +4,6 @@ import com.chatwave.authservice.domain.session.Session;
 import com.chatwave.authservice.domain.user.User;
 import com.chatwave.authservice.domain.user.UserAuthentication;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.security.core.Authentication;
 
 public interface UserService {
     /**
