@@ -1,5 +1,6 @@
 package com.chatwave.authclient.domain;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -14,6 +15,14 @@ public class UserAuthentication implements Authentication { // todo: create libr
     Collection<? extends GrantedAuthority> authorities;
 
     UserAuthenticationDetails details;
+
+
+    /**
+     * Updates information from request (for example remoteIp)
+     */
+    public void update(HttpServletRequest request) {
+        details.update(request);
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

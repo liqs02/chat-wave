@@ -15,8 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.CONFLICT;
+import static org.springframework.http.HttpStatus.*;
 
 @Service
 @Setter(onMethod_=@Autowired)
@@ -33,11 +32,15 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public UserAuthentication getUserAuthentication(HttpServletRequest request) {
-        var authentication = userAuthFilter.getUserAuthentication(request);
-        if(authentication == null)
-            throw new ResponseStatusException(BAD_REQUEST, "Invalid accessToken.");
+        var authHeader = request.getHeader("User-Authorization");
+        if(authHeader == null)
+            throw new ResponseStatusException(UNAUTHORIZED, "No accessToken");
 
-        return authentication;
+        var optionalSession = userAuthFilter.getSession(authHeader);
+        if(optionalSession.isEmpty())
+            throw new ResponseStatusException(UNAUTHORIZED, "Invalid accessToken");
+
+        return new UserAuthentication(optionalSession.get(), request);
     }
 
     /**
