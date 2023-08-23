@@ -50,7 +50,7 @@ public class UserControllerTest {
 
     @Test
     @DisplayName("getUserAuthentication() should invoke service.getUserAuthentication() and return it")
-    public void t1() {
+    public void getUserAuthentication() {
         var request = mock(HttpServletRequest.class);
         var userAuthentication = mock(UserAuthentication.class);
 
@@ -65,7 +65,7 @@ public class UserControllerTest {
 
     @Test
     @DisplayName("createUser() should creates user and return accessToken and refreshToken")
-    public void t2() {
+    public void createUser() {
         var createUserRequest = new CreateUserRequest(1, "Pass1234");
 
         when(
@@ -88,7 +88,7 @@ public class UserControllerTest {
 
     @Test
     @DisplayName("authenticateUser() should creates user and return accessToken and refreshToken")
-    public void t3() {
+    public void authenticateUser() {
         var authenticateUserRequest = new AuthenticateUserRequest(1, "Pass1234");
 
         var user = new User();
@@ -116,7 +116,7 @@ public class UserControllerTest {
 
     @Test
     @DisplayName("patchUserPassword() should change user's password")
-    public void t4() {
+    public void patchUserPassword() {
         var changePasswordRequest = new PatchPasswordRequest("pass", "new");
 
         var user = new User();

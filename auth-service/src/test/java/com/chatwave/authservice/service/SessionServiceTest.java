@@ -46,7 +46,7 @@ public class SessionServiceTest {
     }
 
     @Nested
-    @DisplayName("createSession( user )")
+    @DisplayName("createSession(user)")
     class createSession {
         @Test
         @DisplayName("should create and return session")
@@ -71,8 +71,8 @@ public class SessionServiceTest {
     }
 
     @Nested
-    @DisplayName("refreshSession( refreshToken )")
-    class refresh {
+    @DisplayName("refreshSession(refreshToken)")
+    class refreshSession {
         @Test
         @DisplayName("should refresh session")
         public void t1() {
@@ -144,7 +144,7 @@ public class SessionServiceTest {
     }
 
     @Nested
-    @DisplayName("getUserCurrentSessions( userId )")
+    @DisplayName("getUserCurrentSessions(userId)")
     class getUserCurrentSessions {
         @Test
         @DisplayName("should return all user's current sessions")
@@ -161,7 +161,7 @@ public class SessionServiceTest {
     }
 
     @Nested
-    @DisplayName("expireAllUserSessions( userId )")
+    @DisplayName("expireAllUserSessions(userId)")
     class expireAllUserSessions {
         @Test
         @DisplayName("should expire all unexpired user's session")
@@ -207,7 +207,7 @@ public class SessionServiceTest {
     }
 
     @Nested
-    @DisplayName("expireUserSession( sessionId, userId )")
+    @DisplayName("expireUserSession(sessionId, userId)")
     class expireUserSession {
         @Test
         @DisplayName("should expire user's session")

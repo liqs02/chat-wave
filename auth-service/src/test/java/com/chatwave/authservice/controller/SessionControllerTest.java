@@ -50,7 +50,7 @@ public class SessionControllerTest {
 
     @Test
     @DisplayName("refreshTokens() should return token set")
-    public void t1() {
+    public void refreshTokens() {
         when(
                 service.refreshSession("token")
         ).thenReturn(session);
@@ -68,7 +68,7 @@ public class SessionControllerTest {
 
     @Test
     @DisplayName("getUserCurrentSessions() should return list of sessions")
-    public void t2() {
+    public void getUserCurrentSessions() {
         var sessionResponse = new SessionResponse(2L, session.getExpireDate(), session.getAccessTokenExpireDate(), session.getCreatedAt());
 
         when(
@@ -86,7 +86,7 @@ public class SessionControllerTest {
 
     @Test
     @DisplayName("expireAllUserSessions() should expire all user sessions")
-    public void t3() {
+    public void expireAllUserSessions() {
         controller.expireAllUserSessions(1);
         verify(service).expireAllUserSessions(1);
     }
@@ -94,7 +94,7 @@ public class SessionControllerTest {
     @Test
     @DisplayName("expireUserSession() should expire user session")
     @WithMockUser(username = "user", authorities = "SCOPE_ui")
-    public void t4() {
+    public void expireUserSession() {
         controller.expireUserSession(1,  2L);
         verify(service).expireUserSession(1, 2L);
     }

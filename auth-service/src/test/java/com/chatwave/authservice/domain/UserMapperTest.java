@@ -14,8 +14,8 @@ public class UserMapperTest {
     private final UserMapper mapper = UserMapper.INSTANCE;
 
     @Test
-    @DisplayName("should map createUserRequest to user entity")
-    public void createUserRequestToUser() {
+    @DisplayName("toUser(CreateUserRequest) should map createUserRequest to user entity")
+    public void toUser() {
         var createUserRequest = new CreateUserRequest( 1, "pass");
 
         var user = mapper.toUser(createUserRequest);
@@ -25,8 +25,8 @@ public class UserMapperTest {
     }
 
     @Test
-    @DisplayName("should map authenticateUserRequest to user entity")
-    public void authenticateUserRequestToUser() {
+    @DisplayName("toUser(AuthenticateUserRequest) should map authenticateUserRequest to user entity")
+    public void toUser2() {
         var authenticateUserRequest = new AuthenticateUserRequest( 1, "pass");
 
         var user = mapper.toUser(authenticateUserRequest);
@@ -36,10 +36,10 @@ public class UserMapperTest {
     }
 
     @Test
-    @DisplayName("should map userId and PatchPasswordRequest to user entity")
-    public void changePasswordRequestToUser() {
-        var changePasswordRequest = new PatchPasswordRequest("pass", "new");
-        var user = mapper.toUser(1, changePasswordRequest);
+    @DisplayName("toUser(userId, PatchPasswordRequest) should map userId and PatchPasswordRequest to user entity")
+    public void toUser3() {
+        var patchPasswordRequest = new PatchPasswordRequest("pass", "new");
+        var user = mapper.toUser(1, patchPasswordRequest);
 
         assertEquals(1, user.getId());
         assertEquals("pass", user.getPassword());

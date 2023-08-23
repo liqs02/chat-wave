@@ -1,6 +1,7 @@
 package com.chatwave.authservice.config;
 
 import com.chatwave.authservice.repository.SessionRepository;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Component;
 import static org.apache.commons.lang.Validate.notNull;
 
 @Component
+@Setter(onMethod_=@Autowired)
 public class SessionScheduler { // TODO: add tests
     private SessionRepository repository;
 
@@ -18,11 +20,5 @@ public class SessionScheduler { // TODO: add tests
             session.expire();
 
         repository.saveAll(sessionList);
-    }
-
-    @Autowired
-    public void setRefreshTokenRepository(SessionRepository repository) {
-        notNull(repository, "SessionRepository can not be null!");
-        this.repository = repository;
     }
 }

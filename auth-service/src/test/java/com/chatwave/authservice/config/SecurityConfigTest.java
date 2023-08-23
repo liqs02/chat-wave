@@ -49,7 +49,7 @@ public class SecurityConfigTest {
     @Test
     @DisplayName("test custom user's UserAuthFilter in integration test")
     @WithMockUser(authorities = "SCOPE_server")
-    public void t1() throws Exception {
+    public void userAuthFilter() throws Exception {
         var result = mvc.perform(
                         get("/users/authentication")
                 .header("User-Authorization","Bearer " + session.getAccessToken())
