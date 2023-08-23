@@ -22,10 +22,10 @@ public class ChatController {
     private ChatService service;
     private MessageMapper mapper;
 
-    @GetMapping("/{receiverId}")
-    public List<MessageResponse> getMessages(@Valid @RequestBody GetMessagesRequest getMessagesRequest, @AuthenticationPrincipal Integer authorId, @PathVariable Integer receiverId) {
+    @GetMapping("/{memberId}")
+    public List<MessageResponse> getMessages(@Valid @RequestBody GetMessagesRequest getMessagesRequest, @AuthenticationPrincipal Integer authorId, @PathVariable Integer memberId) {
         return service
-                .getMessages(authorId, receiverId, getMessagesRequest.from(), getMessagesRequest.newer())
+                .getMessages(authorId, memberId, getMessagesRequest.from(), getMessagesRequest.newer())
                 .parallelStream()
                 .map(message -> mapper.toMessageResponse(message))
                 .collect(Collectors.toList());
