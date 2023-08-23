@@ -85,7 +85,7 @@ public class SessionTest {
 
     @Test
     @DisplayName("refreshTokens() should generate new tokens and change expire dates")
-    public void t1() {
+    public void refreshTokens() {
         session.setAccessToken("access");
         session.setRefreshToken("refresh");
 

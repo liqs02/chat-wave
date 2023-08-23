@@ -25,8 +25,8 @@ class SessionMapperTest {
     }
 
     @Test
-    @DisplayName("should map session entity to TokenSetResponse")
-    void SessionToTokenSetResponse() {
+    @DisplayName("toTokenSetResponse(Session) should map session entity to TokenSetResponse")
+    void ToTokenSetResponse() {
         var result = mapper.toTokenSetResponse(session);
 
         assertEquals("refresh", result.refreshToken());
@@ -34,8 +34,8 @@ class SessionMapperTest {
     }
 
     @Test
-    @DisplayName("should map session entity to SessionResponse")
-    void SessionToSessionResponse() {
+    @DisplayName("toSessionResponse(Session) should map session entity to SessionResponse")
+    void toSessionResponse() {
         var result = mapper.toSessionResponse(session);
 
         assertEquals(1L, result.id());

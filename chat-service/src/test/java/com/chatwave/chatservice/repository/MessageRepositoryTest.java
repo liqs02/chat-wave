@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,8 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class MessageRepositoryTest {
     @MockBean
     private UserAuthFilter userAuthFilter;
-    @MockBean
-    private SimpMessagingTemplate messagingTemplate;
     @Autowired
     private MessageRepository repository;
     private List<Message> messages;
