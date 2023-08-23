@@ -40,7 +40,7 @@ public class UserAuthFilterTest {
     @DisplayName("should authenticate a user in auth-service")
     void t1() throws ServletException, IOException {
         when(
-                request.getHeader("Authorization")
+                request.getHeader("User-Authorization")
         ).thenReturn("Bearer token");
 
         when(

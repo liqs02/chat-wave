@@ -24,7 +24,7 @@ public class UserAuthFilter extends OncePerRequestFilter {
 
         @Override
         public void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
-            var authHeader = request.getHeader("Authorization");
+            var authHeader = request.getHeader("User-Authorization");
 
             if(authHeader == null) {
                 filterChain.doFilter(request, response);
@@ -32,7 +32,6 @@ public class UserAuthFilter extends OncePerRequestFilter {
             }
             try {
                 var authentication = authService.getUserAuthentication(authHeader);
-                authentication.update(request);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 filterChain.doFilter(request, response);
             } catch(Exception e) {

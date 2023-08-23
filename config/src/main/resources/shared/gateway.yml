@@ -17,3 +17,5 @@ spring:
           uri: lb://chat-service
           predicates:
             - Path=/chat/**
+            - Path=/topic/**
+            - Path=/ws/**
