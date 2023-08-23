@@ -57,7 +57,7 @@ public class UserAuthFilterTest {
             session.setAccessToken("access");
 
             when(
-                    request.getHeader( "Authorization")
+                    request.getHeader( "User-Authorization")
             ).thenReturn("Bearer token");
 
             when(

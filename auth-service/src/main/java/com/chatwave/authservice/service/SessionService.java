@@ -25,7 +25,7 @@ public interface SessionService {
 
     /**
      * Gets all not expired user's sessions.
-     * 
+     *
      * @param userId
      * @return user's sessions
      */
