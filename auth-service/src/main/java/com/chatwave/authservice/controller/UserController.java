@@ -5,6 +5,7 @@ import com.chatwave.authservice.domain.dto.CreateUserRequest;
 import com.chatwave.authservice.domain.dto.PatchPasswordRequest;
 import com.chatwave.authservice.domain.dto.TokenSetResponse;
 import com.chatwave.authservice.domain.session.SessionMapper;
+import com.chatwave.authservice.domain.user.UserAuthentication;
 import com.chatwave.authservice.domain.user.UserMapper;
 import com.chatwave.authservice.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,7 +13,6 @@ import jakarta.validation.Valid;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.HttpStatus.CREATED;
@@ -27,7 +27,7 @@ public class UserController {
     private SessionMapper sessionMapper;
 
     @GetMapping("/authentication")
-    public Authentication getUserAuthentication(HttpServletRequest request) {
+    public UserAuthentication getUserAuthentication(HttpServletRequest request) {
         return service.getUserAuthentication(request);
     }
 

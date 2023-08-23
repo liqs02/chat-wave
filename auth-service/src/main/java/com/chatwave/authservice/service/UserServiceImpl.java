@@ -3,6 +3,7 @@ package com.chatwave.authservice.service;
 import com.chatwave.authservice.config.UserAuthFilter;
 import com.chatwave.authservice.domain.session.Session;
 import com.chatwave.authservice.domain.user.User;
+import com.chatwave.authservice.domain.user.UserAuthentication;
 import com.chatwave.authservice.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Setter;
@@ -10,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -32,10 +32,11 @@ public class UserServiceImpl implements UserService {
      * {@inheritDoc}
      */
     @Override
-    public Authentication getUserAuthentication(HttpServletRequest request) {
+    public UserAuthentication getUserAuthentication(HttpServletRequest request) {
         var authentication = userAuthFilter.getUserAuthentication(request);
         if(authentication == null)
             throw new ResponseStatusException(BAD_REQUEST, "Invalid accessToken.");
+
         return authentication;
     }
 

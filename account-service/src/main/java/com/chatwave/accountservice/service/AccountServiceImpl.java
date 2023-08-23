@@ -80,6 +80,14 @@ public class AccountServiceImpl implements AccountService {
      * {@inheritDoc}
      */
     @Override
+    public Boolean doesAccountExist(Integer accountId) {
+        return repository.findById(accountId).isPresent();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Account getAccountByDisplayName(String displayName) {
         return repository.findByDisplayName(displayName)
                 .orElseThrow(() ->

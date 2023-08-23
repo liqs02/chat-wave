@@ -2,8 +2,8 @@ package com.chatwave.authservice.service;
 
 import com.chatwave.authservice.domain.session.Session;
 import com.chatwave.authservice.domain.user.User;
+import com.chatwave.authservice.domain.user.UserAuthentication;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.security.core.Authentication;
 
 public interface UserService {
     /**
@@ -14,7 +14,7 @@ public interface UserService {
      * @param request with User-Authorization header with accessToken
      * @return user's authentication
      */
-    Authentication getUserAuthentication(HttpServletRequest request);
+    UserAuthentication getUserAuthentication(HttpServletRequest request);
 
     /**
      * Creates a new user by provided id and password.

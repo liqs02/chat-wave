@@ -19,8 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
@@ -102,6 +101,34 @@ public class AccountServiceTest {
             );
 
             assertEquals(NOT_FOUND, thrown.getStatusCode());
+        }
+    }
+
+    @Nested
+    @DisplayName("doesAccountExist()")
+    class doesAccountExist {
+        @Test
+        @DisplayName("should get an account and return true")
+        public void t1() {
+            when(
+                    repository.findById(1)
+            ).thenReturn(Optional.of(account));
+
+            var result = service.doesAccountExist(1);
+
+            assertTrue(result);
+        }
+
+        @Test
+        @DisplayName("should get an account and return false if account doesn't exists")
+        public void t2() {
+            when(
+                    repository.findById(1)
+            ).thenReturn(Optional.empty());
+
+            var result = service.doesAccountExist(1);
+
+            assertFalse(result);
         }
     }
 
