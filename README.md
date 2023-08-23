@@ -47,13 +47,18 @@ By account service we can operate with accounts. We can create, authenticate or 
 |:-------|:---------------------------------|--------------------------------------------|:-------------------|
 | `GET`  | `/accounts/current`              | Get current account's details              | `USER`             |
 | `GET`  | `/accounts/{accountId}`          | Get account's details                      | `USER` or `CLIENT` |
+| `GET`  | `/accounts/{accountId}/exist`    | Check that user with given id exist.       | `USER` or `CLIENT` |
 | `GET`  | `/accounts/{accountId}/showcase` | Get account's public information           | `NONE`             |
 | `POST` | `/accounts`                      | Create an account and user in auth service | `USER`             |
 | `POST` | `/accounts/authenticate`         | Authenticate a user                        | `NONE`             |
 
 ### Chat Service
-Still in development...
+| Method | Path                 | Description                                            | Authorization Type |
+|:-------|:---------------------|--------------------------------------------------------|:-------------------|
+| `GET`  | `/chat/{memberId}`   | Get few messages from chat before/after specified date | `USER`             |
+| `POST` | `/chat/{receiverId}` | Send message to other user                             | `USER`             |
 
+Api is still in development!
 
 ## Infrastructure
 The distributed systems patterns are created by Spring Boot.
