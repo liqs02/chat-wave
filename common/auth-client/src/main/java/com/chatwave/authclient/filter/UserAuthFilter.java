@@ -1,6 +1,7 @@
 package com.chatwave.authclient.filter;
 
 import com.chatwave.authclient.client.AuthService;
+import com.chatwave.authclient.domain.UserAuthentication;
 import feign.FeignException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -21,7 +22,7 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 @Component
 @Setter(onMethod_=@Autowired)
 public class UserAuthFilter extends OncePerRequestFilter {
-        AuthService authService;
+        private AuthService authService;
 
         @Override
         public void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {

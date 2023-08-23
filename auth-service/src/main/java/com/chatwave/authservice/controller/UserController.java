@@ -5,6 +5,7 @@ import com.chatwave.authservice.domain.dto.CreateUserRequest;
 import com.chatwave.authservice.domain.dto.PatchPasswordRequest;
 import com.chatwave.authservice.domain.dto.TokenSetResponse;
 import com.chatwave.authservice.domain.session.SessionMapper;
+import com.chatwave.authservice.domain.user.UserAuthentication;
 import com.chatwave.authservice.domain.user.UserMapper;
 import com.chatwave.authservice.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,7 +28,7 @@ public class UserController {
     private SessionMapper sessionMapper;
 
     @GetMapping("/authentication")
-    public Authentication getUserAuthentication(HttpServletRequest request) {
+    public UserAuthentication getUserAuthentication(HttpServletRequest request) {
         return service.getUserAuthentication(request);
     }
 
