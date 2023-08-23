@@ -14,8 +14,8 @@ public class MessageMapperTest {
      @Test
      @DisplayName("should map SendMessageRequest and authorId to message entity")
      void t1() {
-         var createMessageRequest = new SendMessageRequest(2, "It's a message.");
-         var result = mapper.toMessage(createMessageRequest, 1);
+         var createMessageRequest = new SendMessageRequest("It's a message.");
+         var result = mapper.toMessage(createMessageRequest, 1, 2);
 
          assertEquals("It's a message.", result.getContent());
          assertEquals(1, result.getAuthorId());

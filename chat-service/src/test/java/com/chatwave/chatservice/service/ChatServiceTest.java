@@ -1,7 +1,9 @@
 package com.chatwave.chatservice.service;
 
+import com.chatwave.chatservice.client.AccountService;
 import com.chatwave.chatservice.domain.Message;
 import com.chatwave.chatservice.repository.MessageRepository;
+import feign.FeignException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,31 +27,46 @@ public class ChatServiceTest {
     @Mock
     private MessageRepository repository;
     @Mock
-    private Pageable pageable;
+    private AccountService accountService;
 
     private Message message;
 
     @BeforeEach
     void setup() {
         message = new Message();
+        message.setReceiverId(2);
     }
 
     @Test
-    @DisplayName("getMessages() should get passed page by repository")
+    @DisplayName("getMessages() should return return messages before specified date if newer value is false")
     void getMessages() {
         var datetime = LocalDateTime.now();
 
         when(
-                repository.findChat(1,2, datetime)
+                repository.findMessagesBefore(1,2, datetime)
         ).thenReturn(List.of(message));
 
-        var result = service.getMessages(1, 2, datetime);
+        var result = service.getMessages(1, 2, datetime, false);
 
         assertEquals(List.of(message), result);
     }
 
     @Test
-    @DisplayName("sendMessage() should save and return message")
+    @DisplayName("getMessages() should return return messages after specified date if newer value is true")
+    void getMessagesNewerTrue() {
+        var datetime = LocalDateTime.now();
+
+        when(
+                repository.findMessagesAfter(1,2, datetime)
+        ).thenReturn(List.of(message));
+
+        var result = service.getMessages(1, 2, datetime, true);
+
+        assertEquals(List.of(message), result);
+    }
+
+    @Test
+    @DisplayName("sendMessage() should check that receiver exist, save and return message")
     void sendMessage() {
         var result = service.sendMessage(message);
 
@@ -58,6 +75,9 @@ public class ChatServiceTest {
         ).save(message);
 
         assertEquals(message, result);
-    }
 
+        verify(
+                accountService, times(1)
+        ).doesAccountExist(2);
+    }
 }

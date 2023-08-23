@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.Pageable;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.time.LocalDateTime;
@@ -48,14 +47,27 @@ public class MessageRepositoryTest {
     }
 
     @Test
-    @DisplayName("findChat() should find all messages from chat")
-    void t1() {
-        var result = repository.findChat(1, 2, LocalDateTime.now());
+    @DisplayName("findMessagesBefore() should find all messages from chat")
+    void findMessagesBefore() {
+        var result = repository.findMessagesBefore(1, 2, LocalDateTime.now());
 
         assertEquals(4, result.size());
-        assertEquals(messages.get(3), result.get(0));
-        assertEquals(messages.get(2), result.get(1));
-        assertEquals(messages.get(1), result.get(2));
-        assertEquals(messages.get(0), result.get(3));
+        assertEquals(messages.get(0), result.get(0));
+        assertEquals(messages.get(1), result.get(1));
+        assertEquals(messages.get(2), result.get(2));
+        assertEquals(messages.get(3), result.get(3));
     }
+
+    @Test
+    @DisplayName("findMessagesAfter() should find all messages from chat")
+    void findMessagesAfter() {
+        var result = repository.findMessagesAfter(1, 2, LocalDateTime.now().minusHours(1));
+
+        assertEquals(4, result.size());
+        assertEquals(messages.get(0), result.get(0));
+        assertEquals(messages.get(1), result.get(1));
+        assertEquals(messages.get(2), result.get(2));
+        assertEquals(messages.get(3), result.get(3));
+    }
+
 }
