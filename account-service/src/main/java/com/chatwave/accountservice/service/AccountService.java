@@ -32,6 +32,14 @@ public interface AccountService {
     Account getAccountById(Integer accountId);
 
     /**
+     * Checks that account with given id does exist.
+     *
+     * @param accountId
+     * @return boolean represents that account exists
+     */
+    Boolean doesAccountExist(Integer accountId);
+
+    /**
      * Searches for an account with a matching displayName.
      *
      * @param displayName

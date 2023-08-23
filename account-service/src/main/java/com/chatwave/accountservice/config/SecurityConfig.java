@@ -21,7 +21,8 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(auth ->
+        http.csrf(csrf -> csrf.ignoringRequestMatchers("/accounts/{accountId}/exist"))
+                .authorizeHttpRequests(auth ->
                     auth.requestMatchers(GET, "/actuator/health").permitAll()
                         .requestMatchers("/error").permitAll()
                         .requestMatchers(POST, "/accounts", "/accounts/authenticate").permitAll()

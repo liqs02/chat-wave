@@ -6,15 +6,19 @@ import com.chatwave.accountservice.domain.dto.*;
 import com.chatwave.accountservice.service.AccountService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.server.ResponseStatusException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("AccountControllerTest")
@@ -38,7 +42,7 @@ public class AccountControllerTest {
 
         @Test
         @DisplayName("createAccount() should create an account")
-        public void t1() {
+        public void createAccount() {
                 account.setId(null);
 
                 var createAccountRequest = new CreateAccountRequest("login", "display", "pass");
@@ -57,7 +61,7 @@ public class AccountControllerTest {
 
         @Test
         @DisplayName("authenticateAccount() should authenticate an account")
-        public void t2() {
+        public void authenticateAccount() {
                 var authenticateAccountRequest = new AuthenticateAccountRequest("login", "pass");
 
                 when(
@@ -70,7 +74,7 @@ public class AccountControllerTest {
 
         @Test
         @DisplayName("getCurrentAccountDetails() should return an AccountDetails")
-        public void t3() {
+        public void getCurrentAccountDetails() {
                 var accountDetails = new AccountDetails(1, "login", "display");
 
                 when(
@@ -85,9 +89,39 @@ public class AccountControllerTest {
                 assertEquals(accountDetails, result);
         }
 
+        @Nested
+        @DisplayName("doesAccountExist()")
+        class doesAccountExist {
+                @Test
+                @DisplayName("should return nothing if user exist")
+                public void t1() {
+                        when(
+                                service.doesAccountExist(1)
+                        ).thenReturn(true);
+
+                        controller.doesAccountExist(1);
+                }
+
+                @Test
+                @DisplayName("should throw NOT_FOUND status if user doesn't exist")
+                public void t2() {
+                        when(
+                                service.doesAccountExist(1)
+                        ).thenReturn(false);
+
+                        var result = assertThrows(
+                                ResponseStatusException.class,
+                                () -> controller.doesAccountExist(1)
+                        );
+
+                        assertEquals(NOT_FOUND, result.getStatusCode());
+                }
+        }
+
+
         @Test
         @DisplayName("getAccountShowcase() should return an AccountShowcase")
-        public void t4() {
+        public void getAccountShowcase() {
                 var accountShowcase = new AccountShowcase(1, "display");
 
                 when(
@@ -104,7 +138,7 @@ public class AccountControllerTest {
 
         @Test
         @DisplayName("getAccountByDisplayName() should return an AccountShowcase")
-        public void t5() {
+        public void getAccountByDisplayName() {
                 var accountShowcase = new AccountShowcase(1, "display");
 
                 when(
@@ -121,7 +155,7 @@ public class AccountControllerTest {
 
         @Test
         @DisplayName("patchAccountPassword() should invoke service's change password method")
-        public void t6() {
+        public void patchAccountPassword() {
                 var patchPasswordRequest = new PatchPasswordRequest("pass", "new");
 
                 controller.patchAccountPassword(1, patchPasswordRequest);

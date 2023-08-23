@@ -9,9 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.NO_CONTENT;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RestController
 @RequestMapping("/accounts")
@@ -44,6 +45,13 @@ public class AccountController {
     public AccountDetails getAccountDetails(@PathVariable Integer accountId) {
         var account = service.getAccountById(accountId);
         return mapper.toAccountDetails(account);
+    }
+
+    @GetMapping("/{accountId}/exist")
+    @PreAuthorize("hasAuthority('SCOPE_server')")
+    public void doesAccountExist(@PathVariable Integer accountId) {
+        var doesExist = service.doesAccountExist(accountId);
+        if(!doesExist) throw new ResponseStatusException(NOT_FOUND, "User with given id does not exist");
     }
 
     @GetMapping("/{accountId}/showcase")
