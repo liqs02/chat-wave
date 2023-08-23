@@ -19,9 +19,9 @@ An auth service implements authorization for clients and users.
 Clients are authenticated by `client_secret_post` and authorized by `client_credentials`.
 
 Users has custom authorization based on sessions. User gets `accessToken` and `refreshToken` after authentication.
-To use `accessToken` we have to send it in `User-Authorization` header with `Bearer ` prefix like below.  
+To use `accessToken` we have to send it in `Authorization` header with `Bearer ` prefix like below.  
 ```http
-User-Authorization: Bearer accessToken
+Authorization: Bearer accessToken
 ```
 
 Service contains methods to operate with user and user's session. 

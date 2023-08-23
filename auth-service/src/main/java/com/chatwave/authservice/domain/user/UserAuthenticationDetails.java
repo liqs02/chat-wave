@@ -11,6 +11,6 @@ public class UserAuthenticationDetails {
 
     public UserAuthenticationDetails(Session session, HttpServletRequest request) {
         this.sessionId = session.getId();
-        this.remoteAddress = request.getRemoteAddr(); // TODO: most likely for further implementation.There may be a microservice address here instead of a client.
+        this.remoteAddress = request.getRemoteAddr();
     }
 }

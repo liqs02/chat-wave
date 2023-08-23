@@ -159,14 +159,25 @@ public class UserServiceTest {
         @DisplayName("should get accessToken, verify user, create and return UserAuthentication")
         void t1() {
             var request = mock(HttpServletRequest.class);
-            var userAuthentication = mock(UserAuthentication.class);
+
+            var user = new User();
+            user.setId(1);
+            var session = new Session(user);
+            session.setId(1L);
 
             when(
-                    userAuthFilter.getUserAuthentication(request)
-            ).thenReturn(userAuthentication);
+                    request.getHeader("User-Authorization")
+            ).thenReturn("Bearer token");
+
+            when(
+                    userAuthFilter.getSession("Bearer token")
+            ).thenReturn(Optional.of(session));
 
             var result = service.getUserAuthentication(request);
-            assertEquals(userAuthentication, result);
+
+            assertNotNull(result);
+            assertNotNull(result.getDetails());
+            assertEquals(1, result.getDetails().getSessionId());
         }
     }
 }
