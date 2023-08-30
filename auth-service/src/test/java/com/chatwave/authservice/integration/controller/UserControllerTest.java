@@ -1,4 +1,4 @@
-package com.chatwave.authservice.integration;
+package com.chatwave.authservice.integration.controller;
 
 import com.chatwave.authservice.domain.dto.AuthenticateUserRequest;
 import com.chatwave.authservice.domain.dto.CreateUserRequest;
