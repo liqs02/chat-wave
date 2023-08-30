@@ -6,6 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,9 +19,9 @@ import java.io.IOException;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @Component
-@Setter(onMethod_=@Autowired)
+@RequiredArgsConstructor
 public class UserAuthFilter extends OncePerRequestFilter {
-        private AuthService authService;
+        private final AuthService authService;
 
         @Override
         public void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {

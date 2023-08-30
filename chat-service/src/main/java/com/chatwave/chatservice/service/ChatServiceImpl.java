@@ -4,6 +4,7 @@ import com.chatwave.chatservice.client.AccountService;
 import com.chatwave.chatservice.domain.Message;
 import com.chatwave.chatservice.repository.MessageRepository;
 import feign.FeignException;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +17,11 @@ import java.util.List;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Service
-@Setter(onMethod_=@Autowired)
+@RequiredArgsConstructor
 @Slf4j
 public class ChatServiceImpl implements ChatService{
-    private MessageRepository repository;
-    private AccountService accountService;
+    private final MessageRepository repository;
+    private final AccountService accountService;
 
     /**
      * {@inheritDoc}

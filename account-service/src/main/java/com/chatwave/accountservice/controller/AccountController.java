@@ -4,6 +4,7 @@ import com.chatwave.accountservice.domain.AccountMapper;
 import com.chatwave.accountservice.domain.dto.*;
 import com.chatwave.accountservice.service.AccountService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,10 +17,10 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RestController
 @RequestMapping("/accounts")
-@Setter(onMethod_=@Autowired)
+@RequiredArgsConstructor
 public class AccountController {
-    AccountService service;
-    AccountMapper mapper;
+    private final AccountService service;
+    private final AccountMapper mapper;
 
     @PostMapping
     @ResponseStatus(CREATED)

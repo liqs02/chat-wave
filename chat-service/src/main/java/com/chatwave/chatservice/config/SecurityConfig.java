@@ -1,6 +1,7 @@
 package com.chatwave.chatservice.config;
 
 import com.chatwave.authclient.filter.UserAuthFilter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -14,9 +15,9 @@ import static org.springframework.http.HttpMethod.GET;
 
 @Configuration
 @EnableWebSecurity
-@Setter(onMethod_=@Autowired)
+@RequiredArgsConstructor
 public class SecurityConfig {
-    UserAuthFilter userAuthFilter;
+    private final UserAuthFilter userAuthFilter;
 
     @Bean
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {

@@ -6,6 +6,7 @@ import com.chatwave.chatservice.domain.dto.MessageResponse;
 import com.chatwave.chatservice.domain.dto.SendMessageRequest;
 import com.chatwave.chatservice.service.ChatService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,10 +18,10 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/chat")
-@Setter(onMethod_=@Autowired)
+@RequiredArgsConstructor
 public class ChatController {
-    private ChatService service;
-    private MessageMapper mapper;
+    private final ChatService service;
+    private final MessageMapper mapper;
 
     @GetMapping("/{memberId}")
     public List<MessageResponse> getMessages(@Valid @RequestBody GetMessagesRequest getMessagesRequest, @AuthenticationPrincipal Integer authorId, @PathVariable Integer memberId) {

@@ -9,6 +9,7 @@ import com.chatwave.accountservice.domain.dto.TokenSet;
 import com.chatwave.accountservice.repository.AccountRepository;
 import feign.FeignException;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +19,11 @@ import org.springframework.web.server.ResponseStatusException;
 import static org.springframework.http.HttpStatus.*;
 
 @Service
-@Setter(onMethod_=@Autowired)
+@RequiredArgsConstructor
 @Slf4j
 public class AccountServiceImpl implements AccountService {
-    AccountRepository repository;
-    AuthService authService;
+    private final AccountRepository repository;
+    private final AuthService authService;
 
     /**
      * {@inheritDoc}
