@@ -1,5 +1,6 @@
-package com.chatwave.authservice.config;
+package com.chatwave.authservice.unit.config;
 
+import com.chatwave.authservice.config.UserAuthFilter;
 import com.chatwave.authservice.domain.session.Session;
 import com.chatwave.authservice.domain.user.User;
 import com.chatwave.authservice.domain.user.UserAuthentication;

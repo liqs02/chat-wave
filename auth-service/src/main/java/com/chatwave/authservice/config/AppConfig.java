@@ -3,6 +3,7 @@ package com.chatwave.authservice.config;
 import com.chatwave.authservice.domain.session.SessionMapper;
 import com.chatwave.authservice.domain.user.UserMapper;
 import com.chatwave.authservice.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -19,9 +20,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import static java.lang.Integer.parseInt;
 
 @Configuration
-@Setter(onMethod_=@Autowired)
+@RequiredArgsConstructor
 public class AppConfig {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Bean
     public UserMapper userMapper() {

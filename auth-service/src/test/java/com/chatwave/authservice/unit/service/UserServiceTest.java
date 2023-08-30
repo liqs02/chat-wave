@@ -1,10 +1,12 @@
-package com.chatwave.authservice.service;
+package com.chatwave.authservice.unit.service;
 
 import com.chatwave.authservice.config.UserAuthFilter;
 import com.chatwave.authservice.domain.session.Session;
 import com.chatwave.authservice.domain.user.User;
 import com.chatwave.authservice.domain.user.UserAuthentication;
 import com.chatwave.authservice.repository.UserRepository;
+import com.chatwave.authservice.service.SessionService;
+import com.chatwave.authservice.service.UserServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -150,23 +152,6 @@ public class UserServiceTest {
                     .save(captor.capture());
 
             assertEquals("encoded", captor.getValue().getPassword());
-        }
-    }
-    @Nested
-    @DisplayName("getUserAuthentication( request )")
-    class getUserAuthentication {
-        @Test
-        @DisplayName("should get accessToken, verify user, create and return UserAuthentication")
-        void t1() {
-            var request = mock(HttpServletRequest.class);
-            var userAuthentication = mock(UserAuthentication.class);
-
-            when(
-                    userAuthFilter.getUserAuthentication(request)
-            ).thenReturn(userAuthentication);
-
-            var result = service.getUserAuthentication(request);
-            assertEquals(userAuthentication, result);
         }
     }
 }

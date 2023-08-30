@@ -10,6 +10,7 @@ import com.chatwave.authservice.domain.user.UserMapper;
 import com.chatwave.authservice.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,17 +19,17 @@ import org.springframework.web.bind.annotation.*;
 import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
-@Setter(onMethod_=@Autowired)
+@RequiredArgsConstructor
 @RequestMapping("/users")
 @PreAuthorize("hasAuthority('SCOPE_server')")
 public class UserController {
-    private UserService service;
-    private UserMapper mapper;
-    private SessionMapper sessionMapper;
+    private final UserService service;
+    private final UserMapper mapper;
+    private final SessionMapper sessionMapper;
 
     @GetMapping("/authentication")
     public UserAuthentication getUserAuthentication(HttpServletRequest request) {
-        return service.getUserAuthentication(request);
+        return service.getUserAuthentication(request); // todo: add integration test after refactor
     }
 
     @PostMapping

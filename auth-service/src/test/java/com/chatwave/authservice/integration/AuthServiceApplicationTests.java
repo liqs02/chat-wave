@@ -1,4 +1,4 @@
-package com.chatwave.authservice;
+package com.chatwave.authservice.integration;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,7 +1,9 @@
-package com.chatwave.authservice.repository;
+package com.chatwave.authservice.unit.repository;
 
 import com.chatwave.authservice.domain.session.Session;
 import com.chatwave.authservice.domain.user.User;
+import com.chatwave.authservice.repository.SessionRepository;
+import com.chatwave.authservice.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

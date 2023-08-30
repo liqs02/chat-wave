@@ -1,4 +1,4 @@
-package com.chatwave.authservice.domain;
+package com.chatwave.authservice.unit.domain;
 
 import com.chatwave.authservice.domain.dto.AuthenticateUserRequest;
 import com.chatwave.authservice.domain.dto.CreateUserRequest;

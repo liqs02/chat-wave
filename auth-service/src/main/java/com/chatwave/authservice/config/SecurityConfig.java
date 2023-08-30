@@ -1,5 +1,6 @@
 package com.chatwave.authservice.config;
 
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -31,11 +32,11 @@ import static org.springframework.http.HttpMethod.GET;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-@Setter(onMethod_=@Autowired)
+@RequiredArgsConstructor
 public class SecurityConfig {
-    PasswordEncoder passwordEncoder;
-    UserAuthFilter userAuthFilter;
-    AuthenticationProvider authenticationProvider;
+    private final PasswordEncoder passwordEncoder;
+    private final UserAuthFilter userAuthFilter;
+    private final AuthenticationProvider authenticationProvider;
 
     @Bean
     @Order(1)

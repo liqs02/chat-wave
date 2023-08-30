@@ -1,4 +1,4 @@
-package com.chatwave.authservice.domain;
+package com.chatwave.authservice.unit.domain;
 
 import com.chatwave.authservice.domain.session.Session;
 import com.chatwave.authservice.domain.session.SessionMapper;
