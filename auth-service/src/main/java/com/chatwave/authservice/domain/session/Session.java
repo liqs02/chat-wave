@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table( name = "sessions",
     indexes = {
-        @Index(name = "session_user_index", columnList = "userId"),
+        @Index(name = "session_user_index", columnList = "user_id"),
         @Index(name = "session_access_token_index", columnList = "accessToken"),
         @Index(name = "session_refresh_token_index", columnList = "refreshToken")
     }
@@ -24,7 +24,7 @@ public class Session {
     private Long id;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name="userId", nullable=false, updatable = false)
+    @JoinColumn(nullable=false, updatable = false)
     private User user;
 
     @Column(unique = true)

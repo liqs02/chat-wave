@@ -51,7 +51,7 @@ public class SecurityConfig {
     @Order(2)
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf ->
-                        csrf.ignoringRequestMatchers("/users", "/users/authenticate", "/users/authentication")
+                        csrf.ignoringRequestMatchers("/users", "/users/authenticate", "/users/authentication", "/users/{userId}/password")
             )
             .authorizeHttpRequests(auth ->
                     auth.requestMatchers(GET, "/actuator/health").permitAll()

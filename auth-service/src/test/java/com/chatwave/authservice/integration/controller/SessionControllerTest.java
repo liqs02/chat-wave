@@ -24,7 +24,6 @@ public class SessionControllerTest extends UserAuthUtils {
     @DisplayName("GET /users/{userId}/sessions")
     class getActiveSessionsByUserId {
         private Session secondSession;
-        private final String ENDPOINT = "/users/1/sessions";
 
         @BeforeEach
         @SuppressWarnings("OptionalGetWithoutIsPresent")
@@ -36,6 +35,7 @@ public class SessionControllerTest extends UserAuthUtils {
         @Test
         @DisplayName("should return all user's sessions")
         public void t200() {
+            String ENDPOINT = "/users/1/sessions";
             var sessions = webTestClient
                     .get()
                     .uri(ENDPOINT)
@@ -65,7 +65,6 @@ public class SessionControllerTest extends UserAuthUtils {
     @Nested
     @DisplayName("POST /users/sessions/refresh")
     class refreshTokens {
-        private final String ENDPOINT = "/users/sessions/refresh";
 
         @BeforeEach
         void setUp() {
@@ -76,6 +75,7 @@ public class SessionControllerTest extends UserAuthUtils {
         @Test
         @DisplayName("should return all user's sessions")
         public void t200() {
+            String ENDPOINT = "/users/sessions/refresh";
             var tokenSet = webTestClient
                     .mutateWith(csrf())
                     .post()
@@ -98,20 +98,19 @@ public class SessionControllerTest extends UserAuthUtils {
     @Nested
     @DisplayName("DELETE /users/{userId}/sessions")
     class expireUserSessions {
-        private Session secondSession;
-        private final String ENDPOINT = "/users/1/sessions";
 
 
         @BeforeEach
         @SuppressWarnings("OptionalGetWithoutIsPresent")
         void setUp() {
-            secondSession = new Session(userRepository.findById(1).get());
+            Session secondSession = new Session(userRepository.findById(1).get());
             sessionRepository.save(secondSession);
         }
 
         @Test
         @DisplayName("should expire all active user's sessions")
         public void t200() {
+            String ENDPOINT = "/users/1/sessions";
             webTestClient
                     .mutateWith(csrf()) // todo: fix this, it throws NPE (tests are correct)
                     .delete()
@@ -120,15 +119,15 @@ public class SessionControllerTest extends UserAuthUtils {
                     .exchange()
                     .expectStatus().isOk();
 
-            var optionalSession = sessionRepository.findById(session.getId());
-            if(optionalSession.isEmpty())
+            var optional1 = sessionRepository.findById(session.getId());
+            if(optional1.isEmpty())
                 fail();
-            assertTrue(optionalSession.get().isExpired());
+            assertTrue(optional1.get().isExpired());
 
-            var optionalSession2 = sessionRepository.findById(session.getId());
-            if(optionalSession2.isEmpty())
+            var optional2 = sessionRepository.findById(session.getId());
+            if(optional2.isEmpty())
                 fail();
-            assertTrue(optionalSession2.get().isExpired());
+            assertTrue(optional2.get().isExpired());
         }
     }
 

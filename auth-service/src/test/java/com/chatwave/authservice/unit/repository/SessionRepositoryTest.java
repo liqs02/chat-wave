@@ -133,8 +133,10 @@ public class SessionRepositoryTest {
         @Test
         @DisplayName("should find session")
         public void t1() {
-            var found = repository.findNotExpiredByIdAndUserId(session.getId(),1).get();
-            assertEquals(session, found);
+            var found = repository.findNotExpiredByIdAndUserId(session.getId(),1);
+            if(found.isEmpty())
+                fail("Session was not found by findNotExpiredByIdAndUserId method");
+            assertEquals(session, found.get());
         }
 
         @Test

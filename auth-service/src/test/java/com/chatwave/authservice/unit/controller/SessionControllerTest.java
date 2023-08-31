@@ -33,12 +33,11 @@ public class SessionControllerTest {
     @Mock
     private SessionMapper mapper;
 
-    private User user;
     private Session session;
 
     @BeforeEach
     public void setup() {
-        user = new User();
+        var user = new User();
         user.setId(1);
         user.setPassword("pass");
 

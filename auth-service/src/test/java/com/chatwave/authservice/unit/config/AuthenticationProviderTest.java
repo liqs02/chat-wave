@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @DisplayName("AppConfig")
-public class AppConfigTest {
+public class AuthenticationProviderTest {
     @Autowired
     AuthenticationProvider authenticationProvider;
     @Autowired

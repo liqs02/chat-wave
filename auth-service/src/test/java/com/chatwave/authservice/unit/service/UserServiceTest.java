@@ -1,6 +1,5 @@
 package com.chatwave.authservice.unit.service;
 
-import com.chatwave.authservice.config.UserAuthFilter;
 import com.chatwave.authservice.domain.session.Session;
 import com.chatwave.authservice.domain.user.User;
 import com.chatwave.authservice.repository.UserRepository;
@@ -38,8 +37,6 @@ public class UserServiceTest {
     private SessionService sessionService;
     @Mock
     private AuthenticationManager authManager;
-    @Mock
-    private UserAuthFilter userAuthFilter;
     private User user;
     private Session session;
 

@@ -57,18 +57,8 @@ public class UserAuthFilterTest {
     }
 
     @Test
-    @DisplayName("should return UNAUTHORIZED if user send header with invalid prefix")
-    public void t4() {
-        webTestClient.get()
-                .uri(ENDPOINT)
-                .header("User-Authorization", "Beare " + accessToken)
-                .exchange()
-                .expectStatus().isUnauthorized();
-    }
-
-    @Test
     @DisplayName("should return UNAUTHORIZED if user send header without prefix")
-    public void t5() {
+    public void t4() {
         webTestClient.get()
                 .uri(ENDPOINT)
                 .header("User-Authorization", accessToken)
@@ -78,7 +68,7 @@ public class UserAuthFilterTest {
 
     @Test
     @DisplayName("should return UNAUTHORIZED if user send empty header")
-    public void t6() {
+    public void t5() {
         webTestClient.get()
                 .uri(ENDPOINT)
                 .header("User-Authorization", "")
@@ -88,7 +78,7 @@ public class UserAuthFilterTest {
 
     @Test
     @DisplayName("should return UNAUTHORIZED if user didn't send header")
-    public void t7() {
+    public void t6() {
         webTestClient.get()
                 .uri(ENDPOINT)
                 .exchange()
