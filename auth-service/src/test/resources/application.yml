@@ -1,7 +1,10 @@
 spring:
   cloud.config.enabled: false
   jpa.hibernate.ddl-auto: create-drop
+  profiles:
+    active: tests
 
 eureka.client.enabled: false
 
 server.port: 8081
+

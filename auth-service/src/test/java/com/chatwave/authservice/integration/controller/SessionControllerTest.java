@@ -13,8 +13,6 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.csrf;
-
 /**
  * Too deeper understanding tests look at {@link  UserAuthUtils}
  */
@@ -35,10 +33,9 @@ public class SessionControllerTest extends UserAuthUtils {
         @Test
         @DisplayName("should return all user's sessions")
         public void t200() {
-            String ENDPOINT = "/users/1/sessions";
             var sessions = webTestClient
                     .get()
-                    .uri(ENDPOINT)
+                    .uri("/users/1/sessions")
                     .header("User-Authorization", getAuthHeader())
                     .exchange()
                     .expectStatus().isOk()
@@ -60,6 +57,17 @@ public class SessionControllerTest extends UserAuthUtils {
             assertEquals(secondSession.getAccessTokenExpireDate(), foundSession.accessTokenExpireDate());
             assertEquals(secondSession.getCreatedAt(), foundSession.createdAt());
         }
+
+        @Test
+        @DisplayName("should return FORBIDDEN if user does not have permissions")
+        public void t403() {
+            webTestClient
+                    .get()
+                    .uri("/users/2/sessions")
+                    .header("User-Authorization", getAuthHeader())
+                    .exchange()
+                    .expectStatus().isForbidden();
+            }
     }
 
     @Nested
@@ -75,11 +83,9 @@ public class SessionControllerTest extends UserAuthUtils {
         @Test
         @DisplayName("should return all user's sessions")
         public void t200() {
-            String ENDPOINT = "/users/sessions/refresh";
             var tokenSet = webTestClient
-                    .mutateWith(csrf())
                     .post()
-                    .uri(ENDPOINT)
+                    .uri("/users/sessions/refresh")
                     .bodyValue(new RefreshSessionRequest(session.getRefreshToken()))
                     .exchange()
                     .expectStatus().isOk()
@@ -98,23 +104,19 @@ public class SessionControllerTest extends UserAuthUtils {
     @Nested
     @DisplayName("DELETE /users/{userId}/sessions")
     class expireUserSessions {
-
-
         @BeforeEach
         @SuppressWarnings("OptionalGetWithoutIsPresent")
         void setUp() {
-            Session secondSession = new Session(userRepository.findById(1).get());
+            var secondSession = new Session(userRepository.findById(1).get());
             sessionRepository.save(secondSession);
         }
 
         @Test
         @DisplayName("should expire all active user's sessions")
         public void t200() {
-            String ENDPOINT = "/users/1/sessions";
             webTestClient
-                    .mutateWith(csrf()) // todo: fix this, it throws NPE (tests are correct)
                     .delete()
-                    .uri(ENDPOINT)
+                    .uri("/users/1/sessions")
                     .header("User-Authorization", getAuthHeader())
                     .exchange()
                     .expectStatus().isOk();
@@ -129,22 +131,32 @@ public class SessionControllerTest extends UserAuthUtils {
                 fail();
             assertTrue(optional2.get().isExpired());
         }
+
+
+        @Test
+        @DisplayName("should return FORBIDDEN if user does not have permissions")
+        public void t403() {
+            webTestClient
+                    .delete()
+                    .uri("/users/2/sessions")
+                    .header("User-Authorization", getAuthHeader())
+                    .exchange()
+                    .expectStatus().isForbidden();
+        }
     }
 
     @Nested
     @DisplayName("DELETE /users/{userId}/sessions/{sessionId}")
     class expireSession {
-        private String getEndpoint() {
-            return "/users/1/sessions/" + session.getId();
+        private String getEndpoint(Integer userId) {
+            return "/users/" + userId + "/sessions/" + session.getId();
         }
 
         @Test
         @DisplayName("should expire user's session")
         public void t200() {
-            webTestClient
-                    .mutateWith(csrf())
-                    .delete()
-                    .uri(getEndpoint())
+            webTestClient.delete()
+                    .uri(getEndpoint(1))
                     .header("User-Authorization", getAuthHeader())
                     .exchange()
                     .expectStatus().isOk();
@@ -155,6 +167,16 @@ public class SessionControllerTest extends UserAuthUtils {
             assertTrue(optionalSession.get().isExpired());
         }
 
+        @Test
+        @DisplayName("should return FORBIDDEN if user does not have permissions")
+        public void t403() {
+            webTestClient
+                    .delete()
+                    .uri(getEndpoint(2))
+                    .header("User-Authorization", getAuthHeader())
+                    .exchange()
+                    .expectStatus().isForbidden();
+        }
     }
 
 }
