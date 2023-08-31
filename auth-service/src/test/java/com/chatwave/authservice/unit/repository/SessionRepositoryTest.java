@@ -1,7 +1,9 @@
-package com.chatwave.authservice.repository;
+package com.chatwave.authservice.unit.repository;
 
 import com.chatwave.authservice.domain.session.Session;
 import com.chatwave.authservice.domain.user.User;
+import com.chatwave.authservice.repository.SessionRepository;
+import com.chatwave.authservice.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -131,8 +133,10 @@ public class SessionRepositoryTest {
         @Test
         @DisplayName("should find session")
         public void t1() {
-            var found = repository.findNotExpiredByIdAndUserId(session.getId(),1).get();
-            assertEquals(session, found);
+            var found = repository.findNotExpiredByIdAndUserId(session.getId(),1);
+            if(found.isEmpty())
+                fail("Session was not found by findNotExpiredByIdAndUserId method");
+            assertEquals(session, found.get());
         }
 
         @Test

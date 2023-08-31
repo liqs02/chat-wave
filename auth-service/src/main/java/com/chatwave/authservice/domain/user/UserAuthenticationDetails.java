@@ -6,8 +6,8 @@ import lombok.Getter;
 
 @Getter
 public class UserAuthenticationDetails {
-    Long sessionId;
-    String remoteAddress;
+    private final Long sessionId;
+    private final String remoteAddress;
 
     public UserAuthenticationDetails(Session session, HttpServletRequest request) {
         this.sessionId = session.getId();

@@ -1,4 +1,4 @@
-package com.chatwave.authservice.config;
+package com.chatwave.authservice.unit.config;
 
 import com.chatwave.authservice.domain.user.User;
 import com.chatwave.authservice.repository.UserRepository;
@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @DisplayName("AppConfig")
-public class AppConfigTest {
+public class AuthenticationProviderTest {
     @Autowired
     AuthenticationProvider authenticationProvider;
     @Autowired
@@ -29,6 +29,7 @@ public class AppConfigTest {
         user.setId(1);
 
         var encoded = passwordEncoder.encode("pass");
+
         user.setPassword(encoded);
 
         userRepository.save(user);

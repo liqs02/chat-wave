@@ -3,9 +3,8 @@ package com.chatwave.authservice.service;
 import com.chatwave.authservice.domain.session.Session;
 import com.chatwave.authservice.domain.user.User;
 import com.chatwave.authservice.repository.SessionRepository;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -15,10 +14,10 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
-@Setter(onMethod_=@Autowired)
+@RequiredArgsConstructor
 @Slf4j
 public class SessionServiceImpl implements SessionService {
-    private SessionRepository repository;
+    private final SessionRepository repository;
 
     /**
      * {@inheritDoc}
@@ -56,7 +55,7 @@ public class SessionServiceImpl implements SessionService {
      * {@inheritDoc}
      */
     @Override
-    public List<Session> getUserCurrentSessions(Integer userId) {
+    public List<Session> getActiveSessionsByUserId(Integer userId) {
         return repository.findAllNotExpiredByUserId(userId);
     }
 
@@ -64,7 +63,7 @@ public class SessionServiceImpl implements SessionService {
      * {@inheritDoc}
      */
     @Override
-    public void expireAllUserSessions(Integer userId) {
+    public void expireUserSessions(Integer userId) {
         var sessionList = repository.findAllNotExpiredByUserId(userId);
         if(sessionList.isEmpty()) return;
 
@@ -78,7 +77,7 @@ public class SessionServiceImpl implements SessionService {
      * {@inheritDoc}
      */
     @Override
-    public void expireUserSession(Integer userId, Long sessionId) {
+    public void expireSession(Integer userId, Long sessionId) {
         var session = repository.findById(sessionId)
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "The session with given ID does not exist."));
 

@@ -1,43 +1,51 @@
 package com.chatwave.authservice.service;
 
-import com.chatwave.authservice.config.UserAuthFilter;
 import com.chatwave.authservice.domain.session.Session;
 import com.chatwave.authservice.domain.user.User;
 import com.chatwave.authservice.domain.user.UserAuthentication;
+import com.chatwave.authservice.repository.SessionRepository;
 import com.chatwave.authservice.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.CONFLICT;
+import static org.springframework.http.HttpStatus.*;
 
 @Service
-@Setter(onMethod_=@Autowired)
+@RequiredArgsConstructor
 @Slf4j
 public class UserServiceImpl implements UserService {
-    private PasswordEncoder passwordEncoder;
-    private UserRepository repository;
-    private SessionService sessionService;
-    private AuthenticationManager authManager;
-    private UserAuthFilter userAuthFilter;
+    private final PasswordEncoder passwordEncoder;
+    private final UserRepository repository;
+    private final SessionRepository sessionRepository;
+    private final SessionService sessionService;
+    private final AuthenticationManager authManager;
 
     /**
      * {@inheritDoc}
      */
     @Override
     public UserAuthentication getUserAuthentication(HttpServletRequest request) {
-        var authentication = userAuthFilter.getUserAuthentication(request);
-        if(authentication == null)
-            throw new ResponseStatusException(BAD_REQUEST, "Invalid accessToken.");
+        var authHeader = request.getHeader("User-Authorization");
+        if(authHeader == null)
+            return null;
 
-        return authentication;
+        if(!authHeader.startsWith("Bearer "))
+            throw new ResponseStatusException(UNAUTHORIZED, "Invalid accessToken.");
+
+        var accessToken = authHeader.substring(7);
+        var optionalSession = sessionRepository.findNotExpiredByAccessToken(accessToken);
+
+        if(optionalSession.isEmpty())
+            throw new ResponseStatusException(UNAUTHORIZED, "Invalid accessToken.");
+
+        var session = optionalSession.get();
+        return new UserAuthentication(session, request);
     }
 
     /**

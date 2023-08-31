@@ -1,8 +1,9 @@
-package com.chatwave.authservice.service;
+package com.chatwave.authservice.unit.service;
 
 import com.chatwave.authservice.domain.session.Session;
 import com.chatwave.authservice.domain.user.User;
 import com.chatwave.authservice.repository.SessionRepository;
+import com.chatwave.authservice.service.SessionServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -144,7 +145,7 @@ public class SessionServiceTest {
     }
 
     @Nested
-    @DisplayName("getUserCurrentSessions(userId)")
+    @DisplayName("getActiveSessionsByUserId(userId)")
     class getUserCurrentSessions {
         @Test
         @DisplayName("should return all user's current sessions")
@@ -155,13 +156,13 @@ public class SessionServiceTest {
                     repository.findAllNotExpiredByUserId(1)
             ).thenReturn(sessions);
 
-            var result = service.getUserCurrentSessions(1);
+            var result = service.getActiveSessionsByUserId(1);
             assertEquals(sessions, result);
         }
     }
 
     @Nested
-    @DisplayName("expireAllUserSessions(userId)")
+    @DisplayName("expireUserSessions(userId)")
     class expireAllUserSessions {
         @Test
         @DisplayName("should expire all unexpired user's session")
@@ -174,7 +175,7 @@ public class SessionServiceTest {
                     repository.findAllNotExpiredByUserId(1)
             ).thenReturn(List.of(session1, session2, session3));
 
-            service.expireAllUserSessions(1);
+            service.expireUserSessions(1);
 
             var inOrder = inOrder(session1, session2, session3, repository);
 
@@ -202,12 +203,12 @@ public class SessionServiceTest {
                     repository.findAllNotExpiredByUserId(1)
             ).thenReturn(List.of());
 
-            service.expireAllUserSessions(1);
+            service.expireUserSessions(1);
         }
     }
 
     @Nested
-    @DisplayName("expireUserSession(sessionId, userId)")
+    @DisplayName("expireSession(sessionId, userId)")
     class expireUserSession {
         @Test
         @DisplayName("should expire user's session")
@@ -224,7 +225,7 @@ public class SessionServiceTest {
                     session.getUser()
             ).thenReturn(user);
 
-            service.expireUserSession(1, 2L);
+            service.expireSession(1, 2L);
 
             verify(session, times(1))
                     .expire();
@@ -238,7 +239,7 @@ public class SessionServiceTest {
         public void t2() {
             var thrown = assertThrows(
                     ResponseStatusException.class,
-                    () -> service.expireUserSession(1, 2L)
+                    () -> service.expireSession(1, 2L)
             );
 
             assertEquals(NOT_FOUND, thrown.getStatusCode());
@@ -261,7 +262,7 @@ public class SessionServiceTest {
 
             var thrown = assertThrows(
                     ResponseStatusException.class,
-                    () -> service.expireUserSession(1, 2L)
+                    () -> service.expireSession(1, 2L)
             );
 
             assertEquals(NOT_FOUND, thrown.getStatusCode());
@@ -291,7 +292,7 @@ public class SessionServiceTest {
 
             var thrown = assertThrows(
                     ResponseStatusException.class,
-                    () -> service.expireUserSession(1, 2L)
+                    () -> service.expireSession(1, 2L)
             );
 
             assertEquals(BAD_REQUEST, thrown.getStatusCode());

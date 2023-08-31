@@ -1,7 +1,6 @@
 package com.chatwave.authservice.config;
 
-import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -10,6 +9,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -31,11 +31,12 @@ import static org.springframework.http.HttpMethod.GET;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-@Setter(onMethod_=@Autowired)
+@RequiredArgsConstructor
 public class SecurityConfig {
-    PasswordEncoder passwordEncoder;
-    UserAuthFilter userAuthFilter;
-    AuthenticationProvider authenticationProvider;
+    private final String activeProfile;
+    private final PasswordEncoder passwordEncoder;
+    private final UserAuthFilter userAuthFilter;
+    private final AuthenticationProvider authenticationProvider;
 
     @Bean
     @Order(1)
@@ -52,7 +53,7 @@ public class SecurityConfig {
     @Order(2)
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf ->
-                        csrf.ignoringRequestMatchers("/users", "/users/authenticate", "/users/authentication")
+                        csrf.ignoringRequestMatchers("/users", "/users/authenticate", "/users/authentication", "/users/{userId}/password")
             )
             .authorizeHttpRequests(auth ->
                     auth.requestMatchers(GET, "/actuator/health").permitAll()
@@ -68,6 +69,9 @@ public class SecurityConfig {
             )
             .authenticationProvider(authenticationProvider)
             .addFilterBefore(userAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
+        if (activeProfile.trim().equalsIgnoreCase("tests"))
+            http.csrf(AbstractHttpConfigurer::disable);
 
         return http.build();
     }

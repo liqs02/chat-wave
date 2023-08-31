@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="auth service">
-  <database-model serializer="dbm" dbms="POSTGRES" family-id="POSTGRES" format-version="4.48">
+  <database-model serializer="dbm" dbms="POSTGRES" family-id="POSTGRES" format-version="4.49">
     <root id="1"/>
     <database id="2" parent="1" name="chatwave">
       <Current>1</Current>
@@ -3506,9 +3506,9 @@
     <foreign-key id="273" parent="264" name="fkruie73rneumyyd1bgo6qw8vjt">
       <ColNames>user_id</ColNames>
       <ObjectId>16405</ObjectId>
-      <RefColNames>id</RefColNames>
-      <RefColPositions>1</RefColPositions>
       <StateNumber>732</StateNumber>
+      <RefKeyColPositions>1</RefKeyColPositions>
+      <RefKeyColNames>id</RefKeyColNames>
       <RefTableId>16397</RefTableId>
       <RefTableName>users</RefTableName>
       <RefTableKind>table</RefTableKind>

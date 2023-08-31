@@ -1,5 +1,6 @@
-package com.chatwave.authservice.controller;
+package com.chatwave.authservice.unit.controller;
 
+import com.chatwave.authservice.controller.UserController;
 import com.chatwave.authservice.domain.dto.AuthenticateUserRequest;
 import com.chatwave.authservice.domain.dto.CreateUserRequest;
 import com.chatwave.authservice.domain.dto.PatchPasswordRequest;

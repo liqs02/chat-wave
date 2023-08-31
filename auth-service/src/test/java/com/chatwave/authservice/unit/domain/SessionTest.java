@@ -1,4 +1,4 @@
-package com.chatwave.authservice.domain;
+package com.chatwave.authservice.unit.domain;
 
 import com.chatwave.authservice.domain.session.Session;
 import com.chatwave.authservice.domain.user.User;
@@ -14,11 +14,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class SessionTest {
     private Session session;
-    private User user;
 
     @BeforeEach
     public void setUp() {
-        user = new User();
+        User user = new User();
         session = new Session(user);
     }
 
@@ -103,7 +102,7 @@ public class SessionTest {
         assertEquals(192, session.getAccessToken().length());
         assertEquals(255, session.getRefreshToken().length());
 
-        assertNotEquals(tomorrow, session.getAccessTokenExpireDate());
-        assertNotEquals(lastHour, session.getExpireDate());
+        assertNotEquals(lastHour, session.getAccessTokenExpireDate());
+        assertNotEquals(tomorrow, session.getExpireDate());
     }
 }

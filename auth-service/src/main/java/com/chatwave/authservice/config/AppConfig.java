@@ -3,8 +3,8 @@ package com.chatwave.authservice.config;
 import com.chatwave.authservice.domain.session.SessionMapper;
 import com.chatwave.authservice.domain.user.UserMapper;
 import com.chatwave.authservice.repository.UserRepository;
-import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,9 +19,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import static java.lang.Integer.parseInt;
 
 @Configuration
-@Setter(onMethod_=@Autowired)
+@RequiredArgsConstructor
 public class AppConfig {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Bean
     public UserMapper userMapper() {
@@ -55,5 +55,10 @@ public class AppConfig {
         authProvider.setUserDetailsService(userDetailsService());
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
+    }
+
+    @Bean
+    public String activeProfile(@Value("${spring.profiles.active}") String activeProfile) {
+        return activeProfile;
     }
 }
