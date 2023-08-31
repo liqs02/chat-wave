@@ -12,20 +12,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.NO_CONTENT;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
 public class SessionController {
     private final SessionService service;
     private final SessionMapper mapper;
-
-    @PostMapping("/sessions/refresh")
-    public TokenSetResponse refreshTokens(@Valid @RequestBody RefreshSessionRequest refreshSessionRequest) {
-        var session = service.refreshSession(refreshSessionRequest.refreshToken());
-        return mapper.toTokenSetResponse(session);
-    }
 
     @GetMapping("/{userId}/sessions")
     @PreAuthorize("#userId == authentication.principal")
@@ -36,15 +28,19 @@ public class SessionController {
                 .toList();
     }
 
+    @PostMapping("/sessions/refresh")
+    public TokenSetResponse refreshTokens(@Valid @RequestBody RefreshSessionRequest refreshSessionRequest) {
+        var session = service.refreshSession(refreshSessionRequest.refreshToken());
+        return mapper.toTokenSetResponse(session);
+    }
+
     @DeleteMapping("/{userId}/sessions")
-    @ResponseStatus(NO_CONTENT)
     @PreAuthorize("#userId == authentication.principal")
     public void expireUserSessions(@PathVariable Integer userId) {
         service.expireUserSessions(userId);
     }
 
     @DeleteMapping("/{userId}/sessions/{sessionId}")
-    @ResponseStatus(NO_CONTENT)
     @PreAuthorize("#userId == authentication.principal")
     public void expireSession(@PathVariable Integer userId, @PathVariable Long sessionId) {
         service.expireSession(userId, sessionId);

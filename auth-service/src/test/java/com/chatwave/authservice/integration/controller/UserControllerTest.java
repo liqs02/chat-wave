@@ -16,6 +16,9 @@ import java.rmi.UnexpectedException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Too deeper understanding tests look at {@link  ClientAuthUtils}
+ */
 @DisplayName("UserController integration tests")
 public class UserControllerTest extends ClientAuthUtils {
     @Autowired
