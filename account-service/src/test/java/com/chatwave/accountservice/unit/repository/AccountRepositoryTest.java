@@ -1,7 +1,8 @@
-package com.chatwave.accountservice.repository;
+package com.chatwave.accountservice.unit.repository;
 
 import com.chatwave.accountservice.client.AuthService;
 import com.chatwave.accountservice.domain.Account;
+import com.chatwave.accountservice.repository.AccountRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

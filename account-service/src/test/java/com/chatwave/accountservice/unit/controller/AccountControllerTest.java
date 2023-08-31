@@ -1,5 +1,6 @@
-package com.chatwave.accountservice.controller;
+package com.chatwave.accountservice.unit.controller;
 
+import com.chatwave.accountservice.controller.AccountController;
 import com.chatwave.accountservice.domain.Account;
 import com.chatwave.accountservice.domain.AccountMapper;
 import com.chatwave.accountservice.domain.dto.*;
