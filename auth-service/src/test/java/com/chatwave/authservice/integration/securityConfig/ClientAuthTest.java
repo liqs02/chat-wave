@@ -1,44 +1,42 @@
-package com.chatwave.authservice.integration.utils;
+package com.chatwave.authservice.integration.securityConfig;
 
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.util.LinkedMultiValueMap;
 
-import java.rmi.UnexpectedException;
-import java.util.Map;
-
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
-public class ClientAuth {
+@DisplayName("SecurityConfig authentication tests")
+public class ClientAuthTest {
     @Autowired
-    protected WebTestClient webTestClient;
+    private WebTestClient webTestClient;
 
-    protected String getAccessToken() throws UnexpectedException {
-        var formData = new LinkedMultiValueMap<>();
+    @Test
+    @DisplayName("test clients' authorization should return client's token")
+    public void t1() {
+        var formData = new LinkedMultiValueMap<String, String>();
         formData.add("grant_type", "client_credentials");
         formData.add("client_id", "account-client");
         formData.add("client_secret", "secret");
         formData.add("scope", "openid server");
 
-        var result = webTestClient.post()
+         webTestClient.post()
                 .uri("/oauth2/token")
                 .contentType(APPLICATION_FORM_URLENCODED)
                 .bodyValue(formData)
                 .exchange()
                 .expectStatus().isOk()
-                .expectBody(Map.class).returnResult().getResponseBody();
-
-        if(result == null)
-            throw new UnexpectedException("Service could not get client's authentication accessToken");
-        else
-            return (String) result.get("access_token");
+                .expectBody()
+                .jsonPath("$.access_token").isNotEmpty()
+                .jsonPath("$.scope").isEqualTo("server openid")
+                .jsonPath("$.token_type").isEqualTo("Bearer")
+                .jsonPath("$.expires_in").isEqualTo(299);
     }
 
-    protected String getAuthHeader() throws UnexpectedException {
-        return "Bearer " + this.getAccessToken();
-    }
 }

@@ -4,8 +4,6 @@ import com.chatwave.authservice.domain.session.SessionMapper;
 import com.chatwave.authservice.domain.user.UserMapper;
 import com.chatwave.authservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

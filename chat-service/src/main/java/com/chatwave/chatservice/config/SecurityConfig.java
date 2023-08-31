@@ -2,8 +2,6 @@ package com.chatwave.chatservice.config;
 
 import com.chatwave.authclient.filter.UserAuthFilter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

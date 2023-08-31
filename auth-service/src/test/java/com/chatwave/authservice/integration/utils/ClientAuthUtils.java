@@ -1,41 +1,44 @@
-package com.chatwave.authservice.integration.securityConfig;
+package com.chatwave.authservice.integration.utils;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.util.LinkedMultiValueMap;
 
+import java.rmi.UnexpectedException;
+import java.util.Map;
+
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
-@DisplayName("SecurityConfig clients' tests")
-public class SecurityConfigClientsTest {
+public class ClientAuthUtils {
     @Autowired
-    private WebTestClient webTestClient;
+    protected WebTestClient webTestClient;
 
-    @Test
-    @DisplayName("should return client's token")
-    public void t1() {
-        var formData = new LinkedMultiValueMap<String, String>();
+    protected String getAccessToken() throws UnexpectedException {
+        var formData = new LinkedMultiValueMap<>();
         formData.add("grant_type", "client_credentials");
         formData.add("client_id", "account-client");
         formData.add("client_secret", "secret");
         formData.add("scope", "openid server");
 
-         webTestClient.post()
+        var result = webTestClient.post()
                 .uri("/oauth2/token")
                 .contentType(APPLICATION_FORM_URLENCODED)
                 .bodyValue(formData)
                 .exchange()
                 .expectStatus().isOk()
-                .expectBody()
-                .jsonPath("$.access_token").isNotEmpty()
-                .jsonPath("$.scope").isEqualTo("server openid")
-                .jsonPath("$.token_type").isEqualTo("Bearer")
-                .jsonPath("$.expires_in").isEqualTo(299);
+                .expectBody(Map.class).returnResult().getResponseBody();
+
+        if(result == null)
+            throw new UnexpectedException("Test could not take client's accessToken.");
+        else
+            return (String) result.get("access_token");
+    }
+
+    protected String getAuthHeader() throws UnexpectedException {
+        return "Bearer " + this.getAccessToken();
     }
 }

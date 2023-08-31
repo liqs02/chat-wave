@@ -5,7 +5,7 @@ import com.chatwave.authservice.domain.dto.CreateUserRequest;
 import com.chatwave.authservice.domain.dto.PatchPasswordRequest;
 import com.chatwave.authservice.domain.dto.TokenSetResponse;
 import com.chatwave.authservice.domain.user.User;
-import com.chatwave.authservice.integration.utils.ClientAuth;
+import com.chatwave.authservice.integration.utils.ClientAuthUtils;
 import com.chatwave.authservice.repository.SessionRepository;
 import com.chatwave.authservice.repository.UserRepository;
 import org.junit.jupiter.api.*;
@@ -17,7 +17,7 @@ import java.rmi.UnexpectedException;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("UserController integration tests")
-public class UserControllerTest extends ClientAuth {
+public class UserControllerTest extends ClientAuthUtils {
     @Autowired
     private UserRepository userRepository;
     @Autowired
