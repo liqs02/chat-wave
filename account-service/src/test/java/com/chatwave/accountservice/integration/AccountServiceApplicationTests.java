@@ -1,4 +1,4 @@
-package com.chatwave.accountservice;
+package com.chatwave.accountservice.integration;
 
 import com.chatwave.accountservice.client.AuthService;
 import org.junit.jupiter.api.Test;
