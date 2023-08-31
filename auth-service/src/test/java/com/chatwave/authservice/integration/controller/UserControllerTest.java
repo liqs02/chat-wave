@@ -69,7 +69,7 @@ public class UserControllerTest extends ClientAuth {
                 fail("User was not saved.");
 
             if(sessionRepository.findByAccessToken(tokenSet.accessToken()).isEmpty() || sessionRepository.findByRefreshToken(tokenSet.refreshToken()).isEmpty())
-            fail("Session was not saved.");
+                fail("Session was not saved.");
         }
 
         @Test

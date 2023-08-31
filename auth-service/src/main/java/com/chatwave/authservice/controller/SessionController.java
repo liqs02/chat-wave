@@ -7,8 +7,6 @@ import com.chatwave.authservice.domain.session.SessionMapper;
 import com.chatwave.authservice.service.SessionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,11 +31,10 @@ public class SessionController {
     @GetMapping("/{userId}/sessions")
     @PreAuthorize("#userId == authentication.principal")
     public List<SessionResponse> getActiveSessionsByUserId(@PathVariable Integer userId) {
-        var sessionList = service.getActiveSessionsByUserId(userId);
-        return sessionList
-                .stream()
+        return service.getActiveSessionsByUserId(userId)
+                .parallelStream()
                 .map(mapper::toSessionResponse)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @DeleteMapping("/{userId}/sessions")

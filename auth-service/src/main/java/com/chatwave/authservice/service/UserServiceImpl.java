@@ -29,7 +29,6 @@ public class UserServiceImpl implements UserService {
     private final SessionRepository sessionRepository;
     private final SessionService sessionService;
     private final AuthenticationManager authManager;
-    private final UserAuthFilter userAuthFilter;
 
     /**
      * {@inheritDoc}
