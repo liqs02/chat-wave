@@ -10,11 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
-
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @Component
 @RequiredArgsConstructor
@@ -29,12 +26,12 @@ public class UserAuthFilter extends OncePerRequestFilter {
                 filterChain.doFilter(request, response);
                 return;
             }
+
             try {
                 var authentication = authService.getUserAuthentication(authHeader);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-                filterChain.doFilter(request, response);
-            } catch(Exception e) {
-                throw new ResponseStatusException(UNAUTHORIZED, e.getMessage());
-            }
+                SecurityContextHolder.getContext().setAuthentication(authentication); // todo: change logic to set ip of customer (no microservice)
+            } catch(Exception ignored) {}
+
+            filterChain.doFilter(request, response);
         }
 }
