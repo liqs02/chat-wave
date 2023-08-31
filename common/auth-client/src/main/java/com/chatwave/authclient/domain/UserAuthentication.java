@@ -1,22 +1,23 @@
 package com.chatwave.authclient.domain;
 
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.Getter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.security.auth.Subject;
 import java.util.Collection;
+import java.util.List;
 
+@Getter
 public class UserAuthentication implements Authentication { // todo: create library for microservices and share there it
-    Integer userId; // represents principals
-
-    String accessToken; // represents credentials
-
-    Collection<? extends GrantedAuthority> authorities;
-
-    UserAuthenticationDetails details;
+    private Integer userId; // represents principals
+    private String accessToken; // represents credentials
+    private List<GrantedAuthority> authorities;
+    private UserAuthenticationDetails details;
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public List<GrantedAuthority> getAuthorities() {
         return authorities;
     }
 

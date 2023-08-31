@@ -29,7 +29,8 @@ public class UserAuthFilter extends OncePerRequestFilter {
 
             try {
                 var authentication = authService.getUserAuthentication(authHeader);
-                SecurityContextHolder.getContext().setAuthentication(authentication); // todo: change logic to set ip of customer (no microservice)
+                authentication.getDetails().setRemoteAddress(request);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
             } catch(Exception ignored) {}
 
             filterChain.doFilter(request, response);

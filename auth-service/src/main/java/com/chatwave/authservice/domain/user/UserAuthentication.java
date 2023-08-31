@@ -7,15 +7,16 @@ import org.springframework.security.core.GrantedAuthority;
 
 import javax.security.auth.Subject;
 import java.util.Collection;
+import java.util.List;
 
 public class UserAuthentication implements Authentication {
-    Integer userId; // represents principals
+    private final Integer userId; // represents principals
 
-    String accessToken; // represents credentials
+    private final String accessToken; // represents credentials
 
-    Collection<? extends GrantedAuthority> authorities;
+    private final List<GrantedAuthority> authorities;
 
-    UserAuthenticationDetails details;
+    private final UserAuthenticationDetails details;
 
     public UserAuthentication(Session session, HttpServletRequest request) {
         this.userId = session.getUser().getId();
@@ -25,7 +26,7 @@ public class UserAuthentication implements Authentication {
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public List<GrantedAuthority> getAuthorities() {
         return authorities;
     }
 

@@ -24,7 +24,7 @@ public class User implements UserDetails {
     private String password;
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public List<GrantedAuthority> getAuthorities() {
         return List.of();
     }
 
