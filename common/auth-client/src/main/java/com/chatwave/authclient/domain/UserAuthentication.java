@@ -1,12 +1,10 @@
 package com.chatwave.authclient.domain;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.security.auth.Subject;
-import java.util.Collection;
 import java.util.List;
 
 @Getter
