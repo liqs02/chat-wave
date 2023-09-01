@@ -13,12 +13,12 @@ import static java.util.Objects.requireNonNullElse;
 @Configuration
 public class AppConfig {
     @Bean
-    MessageMapper messageMapper() {
+    public MessageMapper messageMapper() {
         return MessageMapper.INSTANCE;
     }
 
     @Bean
-    UserAuthFilter userAuthFilter(@Autowired AuthClient authClient) {
+    public UserAuthFilter userAuthFilter(@Autowired AuthClient authClient) {
         return new UserAuthFilter(authClient);
     }
 

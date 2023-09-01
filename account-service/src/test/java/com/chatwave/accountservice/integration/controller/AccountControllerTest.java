@@ -1,6 +1,8 @@
-/*package com.chatwave.accountservice.integration.controller;
+package com.chatwave.accountservice.integration.controller;
 
+import com.chatwave.accountservice.client.AuthClient;
 import com.chatwave.accountservice.domain.dto.CreateAccountRequest;
+import com.chatwave.accountservice.domain.dto.CreateUserRequest;
 import com.chatwave.accountservice.domain.dto.TokenSet;
 import com.chatwave.accountservice.repository.AccountRepository;
 import com.github.tomakehurst.wiremock.WireMockServer;
@@ -9,12 +11,14 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
@@ -25,26 +29,8 @@ public class AccountControllerTest {
     private WebTestClient webTestClient;
     @Autowired
     private AccountRepository accountRepository;
-    private static WireMockServer wireMockServer;
-
-    @BeforeAll
-    static void startWireMock() {
-        wireMockServer = new WireMockServer(
-                WireMockConfiguration.wireMockConfig().dynamicPort()
-        );
-
-        wireMockServer.start();
-    }
-
-    @DynamicPropertySource
-    static void overrideWebClientBaseUrl(DynamicPropertyRegistry registry) {
-        registry.add("auth-service", wireMockServer::baseUrl);
-    }
-
-    @AfterAll
-    static void stopWireMock() {
-        wireMockServer.stop();
-    }
+    @MockBean
+    private AuthClient authClient;
 
     @AfterEach
     void tearDown() {
@@ -57,12 +43,9 @@ public class AccountControllerTest {
         @Test
         @DisplayName("should create an account")
         public void t1() {
-            wireMockServer.stubFor(
-                    post( urlEqualTo("/users") )
-                    .willReturn(
-                            aResponse().withBodyFile("auth-service/token_set_response.json")
-                    )
-            );
+            when(
+                    authClient.createUser( new CreateUserRequest(1, "Pass1234"))
+            ).thenReturn(new TokenSet("refreshToken", "accessToken"));
 
 
             var createAccountRequest = new CreateAccountRequest("loginName", "display","Pass1234");
@@ -75,13 +58,12 @@ public class AccountControllerTest {
                     .returnResult().getResponseBody();
 
             assertNotNull(tokenSet);
-            assertNotNull(tokenSet.accessToken());
-            assertNotNull(tokenSet.refreshToken());
+            assertEquals("accessToken", tokenSet.accessToken());
+            assertEquals("refreshToken", tokenSet.refreshToken());
 
-            var optionalAccount = accountRepository.findByLoginName("login");
+            var optionalAccount = accountRepository.findByLoginName("loginName");
             assertTrue(optionalAccount.isPresent());
         }
     }
 
 }
-*/

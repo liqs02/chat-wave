@@ -5,3 +5,4 @@ spring:
     import: configserver:http://user:${CONFIG_PASSWORD}@config:8888
   profiles:
     active: ${PROFILE}
+
