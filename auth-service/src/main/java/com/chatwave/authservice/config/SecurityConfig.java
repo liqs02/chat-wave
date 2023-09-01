@@ -70,7 +70,7 @@ public class SecurityConfig {
             .authenticationProvider(authenticationProvider)
             .addFilterBefore(userAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
-        if (activeProfile.trim().equalsIgnoreCase("tests"))
+        if (activeProfile.equalsIgnoreCase("tests"))
             http.csrf(AbstractHttpConfigurer::disable);
 
         return http.build();
@@ -79,7 +79,7 @@ public class SecurityConfig {
     @Bean
     public RegisteredClientRepository registeredClientRepository() {
         var accountClient = RegisteredClient.withId(UUID.randomUUID().toString())
-                .clientId("account-client")
+                .clientId("account-service")
                 .clientSecret(passwordEncoder.encode("secret")) // TODO: inject secret from environment variables
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
@@ -92,7 +92,7 @@ public class SecurityConfig {
                 .build();
 
         var chatClient = RegisteredClient.withId(UUID.randomUUID().toString())
-                .clientId("chat-client")
+                .clientId("chat-service")
                 .clientSecret(passwordEncoder.encode("secret"))
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)

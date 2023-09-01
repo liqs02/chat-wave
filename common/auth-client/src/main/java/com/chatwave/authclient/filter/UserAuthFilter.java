@@ -1,6 +1,7 @@
 package com.chatwave.authclient.filter;
 
-import com.chatwave.authclient.client.AuthService;
+import com.chatwave.authclient.client.AuthClient;
+import com.chatwave.authclient.domain.UserAuthentication;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,15 +9,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-@Component
 @RequiredArgsConstructor
 public class UserAuthFilter extends OncePerRequestFilter {
-        private final AuthService authService;
+    private final AuthClient authClient;
 
         @Override
         public void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
@@ -27,11 +26,15 @@ public class UserAuthFilter extends OncePerRequestFilter {
                 return;
             }
 
+            var authentication = (UserAuthentication) null;
             try {
-                var authentication = authService.getUserAuthentication(authHeader);
+                authentication = authClient.getUserAuthentication(authHeader);
+            } catch(Exception ignored) {}
+
+            if(authentication != null) {
                 authentication.getDetails().setRemoteAddress(request);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-            } catch(Exception ignored) {}
+            }
 
             filterChain.doFilter(request, response);
         }

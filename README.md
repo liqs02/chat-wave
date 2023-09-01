@@ -91,7 +91,7 @@ Library provides filter for user's authorization. To use the filter we need to a
 and create a feign client:
 ```java
 @FeignClient("auth-service")
-public interface AuthService extends com.chatwave.authclient.client.AuthService {}
+public interface AuthService extends com.chatwave.authclient.client.AuthClient {}
 ```
 The library also has UserAuthentication class.
 This object is a representation of the information that is stored after successful user authorization. 

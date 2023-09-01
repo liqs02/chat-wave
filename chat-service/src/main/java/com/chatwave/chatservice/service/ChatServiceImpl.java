@@ -1,6 +1,6 @@
 package com.chatwave.chatservice.service;
 
-import com.chatwave.chatservice.client.AccountService;
+import com.chatwave.chatservice.client.AccountClient;
 import com.chatwave.chatservice.domain.Message;
 import com.chatwave.chatservice.repository.MessageRepository;
 import feign.FeignException;
@@ -19,7 +19,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 @Slf4j
 public class ChatServiceImpl implements ChatService{
     private final MessageRepository repository;
-    private final AccountService accountService;
+    private final AccountClient accountClient;
 
     /**
      * {@inheritDoc}
@@ -38,7 +38,7 @@ public class ChatServiceImpl implements ChatService{
     @Override
     public Message sendMessage(Message message) {
         try {
-            accountService.doesAccountExist(message.getReceiverId());
+            accountClient.doesAccountExist(message.getReceiverId());
         } catch(FeignException.NotFound e) {
             throw new ResponseStatusException(BAD_REQUEST,"ReceiverId is invalid, user with this ID does not exist");
         }

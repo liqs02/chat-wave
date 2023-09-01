@@ -1,12 +1,13 @@
 package com.chatwave.authclient;
 
-import com.chatwave.authclient.client.AuthService;
+import com.chatwave.authclient.client.AuthClient;
 import com.chatwave.authclient.domain.UserAuthentication;
 import com.chatwave.authclient.filter.UserAuthFilter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,15 +27,19 @@ public class UserAuthFilterTest {
     @InjectMocks
     private UserAuthFilter userAuthFilter;
     @Mock
-    private AuthService authService;
+    private AuthClient authClient;
     @Mock
     private HttpServletRequest request;
     @Mock
     private HttpServletResponse response;
     @Mock
     private FilterChain filterChain;
-    @Mock
     private UserAuthentication userAuthentication;
+
+    @BeforeEach
+    void setUp() {
+        userAuthentication = new UserAuthentication();
+    }
 
     @Test
     @DisplayName("should authenticate a user in auth-service")
@@ -44,7 +49,7 @@ public class UserAuthFilterTest {
         ).thenReturn("Bearer token");
 
         when(
-                authService.getUserAuthentication("Bearer token")
+                authClient.getUserAuthentication("Bearer token")
         ).thenReturn(userAuthentication);
 
         userAuthFilter.doFilterInternal(request, response, filterChain);

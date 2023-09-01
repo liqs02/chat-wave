@@ -16,6 +16,10 @@ public class UserAuthentication implements Authentication { // todo: create libr
     private List<GrantedAuthority> authorities;
     private UserAuthenticationDetails details;
 
+    public UserAuthentication() {
+        details = new UserAuthenticationDetails();
+    }
+
     @Override
     public List<GrantedAuthority> getAuthorities() {
         return authorities;

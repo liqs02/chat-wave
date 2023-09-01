@@ -1,6 +1,6 @@
 package com.chatwave.accountservice.unit.service;
 
-import com.chatwave.accountservice.client.AuthService;
+import com.chatwave.accountservice.client.AuthClient;
 import com.chatwave.accountservice.domain.Account;
 import com.chatwave.accountservice.domain.dto.AuthenticateUserRequest;
 import com.chatwave.accountservice.domain.dto.CreateUserRequest;
@@ -32,7 +32,7 @@ public class AccountServiceTest {
     @Mock
     AccountRepository repository;
     @Mock
-    AuthService authService;
+    AuthClient authService;
     private TokenSet tokenSet;
     private Account account;
 
