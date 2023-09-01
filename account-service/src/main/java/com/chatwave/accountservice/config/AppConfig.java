@@ -24,7 +24,6 @@ public class AppConfig {
 
     @Bean
     public String activeProfile(@Value("${spring.profiles.active}") String activeProfile) {
-        return requireNonNullElse(activeProfile, "");
+        return activeProfile;
     }
-
 }
