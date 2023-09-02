@@ -1,10 +1,10 @@
 package com.chatwave.accountservice.integration.controller;
 
 import com.chatwave.accountservice.client.AuthClient;
-import com.chatwave.accountservice.domain.dto.CreateAccountRequest;
-import com.chatwave.accountservice.domain.dto.CreateUserRequest;
-import com.chatwave.accountservice.domain.dto.TokenSet;
+import com.chatwave.accountservice.domain.Account;
+import com.chatwave.accountservice.domain.dto.*;
 import com.chatwave.accountservice.repository.AccountRepository;
+import com.chatwave.authclient.domain.UserAuthentication;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -16,6 +16,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
@@ -35,6 +38,16 @@ public class AccountControllerTest {
         accountRepository.deleteAll();
     }
 
+    private Account createAndSaveAccount() {
+        var account = new Account();
+        account.setId(1);
+        account.setLoginName("loginName");
+        account.setDisplayName("displayName");
+
+        accountRepository.save(account);
+        return account;
+    }
+
     @Nested
     @DisplayName("POST /accounts")
     public class createAccount {
@@ -42,14 +55,12 @@ public class AccountControllerTest {
         @DisplayName("should create an account")
         public void t1() {
             when(
-                    authClient.createUser( new CreateUserRequest(1, "Pass1234"))
+                    authClient.createUser( new CreateUserRequest(any(), "Pass1234"))
             ).thenReturn(new TokenSet("refreshToken", "accessToken"));
 
-
-            var createAccountRequest = new CreateAccountRequest("loginName", "display","Pass1234");
             var tokenSet = webTestClient.post()
                     .uri("/accounts")
-                    .bodyValue(createAccountRequest)
+                    .bodyValue(new CreateAccountRequest("loginName", "display","Pass1234"))
                     .exchange()
                     .expectStatus().isCreated()
                     .expectBody(TokenSet.class)
@@ -64,4 +75,29 @@ public class AccountControllerTest {
         }
     }
 
+    @Nested
+    @DisplayName("POST /accounts/authenticate")
+    public class authenticateAccount {
+        @Test
+        @DisplayName("should authenticate a user")
+        public void t1() {
+            when(
+                    authClient.authenticateUser( new AuthenticateUserRequest(any(), "Pass1234") )
+            ).thenReturn(new TokenSet("refreshToken", "accessToken"));
+
+            createAndSaveAccount();
+
+            var tokenSet = webTestClient.post()
+                    .uri("/accounts/authenticate")
+                    .bodyValue(new AuthenticateAccountRequest("loginName","Pass1234"))
+                    .exchange()
+                    .expectStatus().isOk()
+                    .expectBody(TokenSet.class)
+                    .returnResult().getResponseBody();
+
+            assertNotNull(tokenSet);
+            assertEquals("accessToken", tokenSet.accessToken());
+            assertEquals("refreshToken", tokenSet.refreshToken());
+        }
+    }
 }

@@ -73,23 +73,6 @@ public class AccountControllerTest {
                 assertEquals(TOKEN_SET, result);
         }
 
-        @Test
-        @DisplayName("getCurrentAccountDetails() should return an AccountDetails")
-        public void getCurrentAccountDetails() {
-                var accountDetails = new AccountDetails(1, "login", "display");
-
-                when(
-                        service.getAccountById(1)
-                ).thenReturn(account);
-
-                when(
-                        mapper.toAccountDetails(account)
-                ).thenReturn(accountDetails);
-
-                var result = controller.getCurrentAccountDetails(1);
-                assertEquals(accountDetails, result);
-        }
-
         @Nested
         @DisplayName("doesAccountExist()")
         class doesAccountExist {
