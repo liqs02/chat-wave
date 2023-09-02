@@ -33,21 +33,11 @@ spring:
             scope:
               - openid
               - server
-          account-service:
-            client-id: chat-service
-            client-secret: secret
-            authorization-grant-type: client_credentials
-            client-authentication-method: client_secret_post
-            redirect-uri: "{baseUrl}/login/oauth2/code/spring"
-            scope:
-              - openid
-              - server
-            provider: auth-service
 
   cloud:
     openfeign:
       oauth2:
-        clientRegistrationId: chat-service
+        clientRegistrationId: auth-service
         enabled: true
 
 server:
