@@ -37,7 +37,7 @@ spring:
   cloud:
     openfeign:
       oauth2:
-        clientRegistrationId: account-service
+        clientRegistrationId: auth-service
         enabled: true
 
 server:
