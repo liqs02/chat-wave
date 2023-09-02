@@ -8,12 +8,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
 @RequiredArgsConstructor
+@Slf4j
 public class UserAuthFilter extends OncePerRequestFilter {
     private final AuthClient authClient;
 
@@ -29,7 +32,10 @@ public class UserAuthFilter extends OncePerRequestFilter {
             var authentication = (UserAuthentication) null;
             try {
                 authentication = authClient.getUserAuthentication(authHeader);
-            } catch(Exception ignored) {}
+                log.debug("User has been successfully authenticated");
+            } catch(Exception e) {
+                log.debug("User has not been authenticated: " + e.getMessage());
+            }
 
             if(authentication != null) {
                 authentication.getDetails().setRemoteAddress(request);
