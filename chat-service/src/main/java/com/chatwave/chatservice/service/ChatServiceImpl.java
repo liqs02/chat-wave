@@ -26,7 +26,7 @@ public class ChatServiceImpl implements ChatService{
      */
     @Override
     public List<Message> getMessages(Integer firstMemberId, Integer secondMemberId, LocalDateTime from, Boolean newer) {
-        if(newer.equals(true))
+        if(newer)
             return repository.findMessagesAfter(firstMemberId, secondMemberId, from);
         else
             return repository.findMessagesBefore(firstMemberId, secondMemberId, from);
