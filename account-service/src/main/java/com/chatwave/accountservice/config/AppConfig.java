@@ -11,12 +11,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AppConfig {
     @Bean
-    AccountMapper accountMapper() {
+    public AccountMapper accountMapper() {
         return AccountMapper.INSTANCE;
     }
 
     @Bean
-    UserAuthFilter userAuthFilter(@Autowired AuthClient authService) {
+    public UserAuthFilter userAuthFilter(@Autowired AuthClient authService) {
         return new UserAuthFilter(authService);
     }
 

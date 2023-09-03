@@ -21,10 +21,10 @@ spring:
           issuer-uri: http://auth-service:8081
       client:
         provider:
-          auth-service:
+          microservices:
             issuer-uri: http://auth-service:8081
         registration:
-          auth-service:
+          microservices:
             client-id: chat-service
             client-secret: secret
             authorization-grant-type: client_credentials
@@ -37,7 +37,7 @@ spring:
   cloud:
     openfeign:
       oauth2:
-        clientRegistrationId: auth-service
+        clientRegistrationId: microservices
         enabled: true
 
 server:
