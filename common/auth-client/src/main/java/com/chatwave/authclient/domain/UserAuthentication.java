@@ -1,5 +1,7 @@
 package com.chatwave.authclient.domain;
 
+import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -7,7 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import javax.security.auth.Subject;
 import java.util.List;
 
-@Getter
+@Data
 public class UserAuthentication implements Authentication { // todo: create library for microservices and share there it
     private Integer userId; // represents principals
     private String accessToken; // represents credentials

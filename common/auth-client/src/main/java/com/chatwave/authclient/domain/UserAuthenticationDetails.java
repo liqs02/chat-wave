@@ -1,9 +1,12 @@
 package com.chatwave.authclient.domain;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Getter
+@Data
 public class UserAuthenticationDetails {
     private Long sessionId;
     private String remoteAddress;

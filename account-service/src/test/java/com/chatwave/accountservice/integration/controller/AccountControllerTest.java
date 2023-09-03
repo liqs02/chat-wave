@@ -5,6 +5,7 @@ import com.chatwave.accountservice.domain.Account;
 import com.chatwave.accountservice.domain.dto.*;
 import com.chatwave.accountservice.repository.AccountRepository;
 import com.chatwave.authclient.domain.UserAuthentication;
+import com.chatwave.authclient.domain.UserAuthenticationDetails;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -17,9 +18,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
@@ -40,13 +39,25 @@ public class AccountControllerTest {
 
     private Account createAndSaveAccount() {
         var account = new Account();
-        account.setId(1);
         account.setLoginName("loginName");
         account.setDisplayName("displayName");
 
         accountRepository.save(account);
         return account;
     }
+
+    private void mockUserAuthentication() {
+        var userAuthentication = new UserAuthentication();
+
+        userAuthentication.setUserId(1);
+        userAuthentication.setDetails(new UserAuthenticationDetails());
+
+        when(
+                authClient.getUserAuthentication("Bearer accessToken")
+        ).thenReturn(userAuthentication);
+    }
+
+
 
     @Nested
     @DisplayName("POST /accounts")
@@ -98,6 +109,86 @@ public class AccountControllerTest {
             assertNotNull(tokenSet);
             assertEquals("accessToken", tokenSet.accessToken());
             assertEquals("refreshToken", tokenSet.refreshToken());
+        }
+    }
+
+    @Nested
+    @DisplayName("GET /accounts/{accountId}/exist")
+    public class doesAccountExist {
+        @Test
+        @DisplayName("should return OK if user exist")
+        public void t1() {
+            var accountId = createAndSaveAccount().getId();
+            mockUserAuthentication();
+
+            webTestClient.get()
+                    .uri("/accounts/{id}/exist", accountId)
+                    .header("User-Authorization", "Bearer accessToken")
+                    .exchange()
+                    .expectStatus().isOk();
+        }
+    }
+
+    @Nested
+    @DisplayName("GET /accounts/{accountId}/showcase")
+    public class getAccountShowcase {
+        @Test
+        @DisplayName("should return information about user")
+        public void t1() {
+            var accountId = createAndSaveAccount().getId();
+            mockUserAuthentication();
+
+            var result = webTestClient.get()
+                    .uri("/accounts/{id}/showcase", accountId)
+                    .header("User-Authorization", "Bearer accessToken")
+                    .exchange()
+                    .expectStatus().isOk()
+                    .expectBody(AccountShowcase.class)
+                    .returnResult().getResponseBody();
+
+            assertNotNull(result);
+            assertEquals(accountId, result.id());
+            assertEquals("displayName", result.displayName());
+        }
+    }
+
+    @Nested
+    @DisplayName("PATCH /accounts/{accountId}/password")
+    public class patchAccountPassword {
+        @Test
+        @DisplayName("should update user's password")
+        public void t1() {
+            var accountId = createAndSaveAccount().getId();
+            mockUserAuthentication();
+
+            var patchPasswordRequest = new PatchPasswordRequest("Pass1234", "New12345");
+
+            webTestClient.patch()
+                    .uri("/accounts/{id}/password", accountId)
+                    .bodyValue(patchPasswordRequest)
+                    .header("User-Authorization", "Bearer accessToken")
+                    .exchange()
+                    .expectStatus().isOk();
+
+            verify(
+                    authClient, times(1)
+            ).patchUserPassword(1, patchPasswordRequest);
+        }
+
+        @Test
+        @DisplayName("should return 403 if user wants to update other user's password")
+        public void t2() {
+            var accountId = createAndSaveAccount().getId();
+            mockUserAuthentication();
+
+            var patchPasswordRequest = new PatchPasswordRequest("Pass1234", "New12345");
+
+            webTestClient.patch()
+                    .uri("/accounts/{id}/password", accountId + 1)
+                    .bodyValue(patchPasswordRequest)
+                    .header("User-Authorization", "Bearer accessToken")
+                    .exchange()
+                    .expectStatus().isForbidden();
         }
     }
 }

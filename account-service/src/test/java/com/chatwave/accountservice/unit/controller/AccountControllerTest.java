@@ -121,23 +121,6 @@ public class AccountControllerTest {
         }
 
         @Test
-        @DisplayName("getAccountByDisplayName() should return an AccountShowcase")
-        public void getAccountByDisplayName() {
-                var accountShowcase = new AccountShowcase(1, "display");
-
-                when(
-                        service.getAccountByDisplayName("display")
-                ).thenReturn(account);
-
-                when(
-                        mapper.toAccountShowcase(account)
-                ).thenReturn(accountShowcase);
-
-                var result = controller.getAccountByDisplayName("display");
-                assertEquals(accountShowcase, result);
-        }
-
-        @Test
         @DisplayName("patchAccountPassword() should invoke service's change password method")
         public void patchAccountPassword() {
                 var patchPasswordRequest = new PatchPasswordRequest("pass", "new");

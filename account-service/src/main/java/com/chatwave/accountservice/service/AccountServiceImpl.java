@@ -87,17 +87,6 @@ public class AccountServiceImpl implements AccountService {
      * {@inheritDoc}
      */
     @Override
-    public Account getAccountByDisplayName(String displayName) {
-        return repository.findByDisplayName(displayName)
-                .orElseThrow(() ->
-                        new ResponseStatusException(NOT_FOUND, "User with given displayName does not exist.")
-                        );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void patchAccountPassword(Integer accountId, PatchPasswordRequest patchPasswordRequest) {
         authService.patchUserPassword(accountId, patchPasswordRequest);
     }

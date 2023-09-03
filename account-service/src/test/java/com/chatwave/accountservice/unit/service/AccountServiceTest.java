@@ -133,33 +133,6 @@ public class AccountServiceTest {
         }
     }
 
-    @Nested
-    @DisplayName("getAccountByDisplayName()")
-    class getAccountByDisplayName {
-        @Test
-        @DisplayName("should get an account")
-        public void t1() {
-            when(
-                    repository.findByDisplayName("display")
-            ).thenReturn(Optional.of(account));
-
-            var result = service.getAccountByDisplayName("display");
-
-            assertEquals(account, result);
-        }
-
-        @Test
-        @DisplayName("should throw NOT_FOUND ResponseStatusException if account does not exist")
-        public void t2() {
-            var thrown = assertThrows(
-                    ResponseStatusException.class,
-                    () -> service.getAccountById(1)
-            );
-
-            assertEquals(NOT_FOUND, thrown.getStatusCode());
-        }
-    }
-
     @Test
     @DisplayName("patchAccountPassword() should change password in auth service")
     public void t3() {
