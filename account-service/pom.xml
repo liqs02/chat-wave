@@ -21,7 +21,7 @@
         <dependency>
             <groupId>com.chatwave</groupId>
             <artifactId>auth-client</artifactId>
-            <version>0.0.2-SNAPSHOT</version>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.chatwave</groupId>
