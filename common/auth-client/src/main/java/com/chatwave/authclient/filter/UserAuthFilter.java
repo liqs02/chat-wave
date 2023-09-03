@@ -20,28 +20,28 @@ import java.io.IOException;
 public class UserAuthFilter extends OncePerRequestFilter {
     private final AuthClient authClient;
 
-        @Override
-        public void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
-            var authHeader = request.getHeader("User-Authorization");
+    @Override
+    public void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
+        var authHeader = request.getHeader("User-Authorization");
 
-            if(authHeader == null) {
-                filterChain.doFilter(request, response);
-                return;
-            }
-
-            var authentication = (UserAuthentication) null;
-            try {
-                authentication = authClient.getUserAuthentication(authHeader);
-                log.debug("User has been successfully authenticated");
-            } catch(Exception e) {
-                log.debug("User has not been authenticated: " + e.getMessage());
-            }
-
-            if(authentication != null) {
-                authentication.getDetails().setRemoteAddress(request);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
-
+        if(authHeader == null) {
             filterChain.doFilter(request, response);
+            return;
         }
+
+        var authentication = (UserAuthentication) null;
+        try {
+            authentication = authClient.getUserAuthentication(authHeader);
+            log.debug("User has been successfully authenticated");
+        } catch(Exception e) {
+            log.debug("User has not been authenticated: " + e.getMessage());
+        }
+
+        if(authentication != null) {
+            authentication.getDetails().setRemoteAddress(request);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
+
+        filterChain.doFilter(request, response);
+    }
 }
