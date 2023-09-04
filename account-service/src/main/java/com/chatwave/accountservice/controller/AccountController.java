@@ -32,21 +32,8 @@ public class AccountController {
         return service.authenticateAccount(authenticateAccountRequest.loginName(), authenticateAccountRequest.password());
     }
 
-    @GetMapping("/current")
-    @PreAuthorize("authentication.principal != null")
-    public AccountDetails getCurrentAccountDetails(@AuthenticationPrincipal Integer accountId) {
-        var account = service.getAccountById(accountId);
-        return mapper.toAccountDetails(account);
-    }
-
-    @GetMapping("/{accountId}")
-    @PreAuthorize("hasAuthority('SCOPE_server') || #accountId == authentication.principal")
-    public AccountDetails getAccountDetails(@PathVariable Integer accountId) {
-        var account = service.getAccountById(accountId);
-        return mapper.toAccountDetails(account);
-    }
-
     @GetMapping("/{accountId}/exist")
+    @PreAuthorize("hasAuthority('SCOPE_server')")
     public void doesAccountExist(@PathVariable Integer accountId) {
         var doesExist = service.doesAccountExist(accountId);
         if(!doesExist) throw new ResponseStatusException(NOT_FOUND, "User with given id does not exist");
@@ -55,12 +42,6 @@ public class AccountController {
     @GetMapping("/{accountId}/showcase")
     public AccountShowcase getAccountShowcase(@PathVariable Integer accountId) {
         var account = service.getAccountById(accountId);
-        return mapper.toAccountShowcase(account);
-    }
-
-    @PostMapping("/search/displayName")
-    public AccountShowcase getAccountByDisplayName(@RequestBody String displayName) {
-        var account = service.getAccountByDisplayName(displayName);
         return mapper.toAccountShowcase(account);
     }
 

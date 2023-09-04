@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 @FeignClient("auth-service")
-public interface AuthService {
+public interface AuthClient {
     @GetMapping(value = "/users/authentication")
     UserAuthentication getUserAuthentication(@RequestHeader("User-Authorization") String userAuthorizationHeader);
 }

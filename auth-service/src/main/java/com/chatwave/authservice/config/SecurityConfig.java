@@ -1,6 +1,7 @@
 package com.chatwave.authservice.config;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -23,6 +24,8 @@ import org.springframework.security.oauth2.server.authorization.settings.ClientS
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import static jakarta.ws.rs.HttpMethod.POST;
@@ -33,10 +36,10 @@ import static org.springframework.http.HttpMethod.GET;
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final String activeProfile;
+    private final List<String> activeProfiles;
     private final PasswordEncoder passwordEncoder;
-    private final UserAuthFilter userAuthFilter;
     private final AuthenticationProvider authenticationProvider;
+    private final UserAuthFilter userAuthFilter;
 
     @Bean
     @Order(1)
@@ -70,7 +73,7 @@ public class SecurityConfig {
             .authenticationProvider(authenticationProvider)
             .addFilterBefore(userAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
-        if (activeProfile.trim().equalsIgnoreCase("tests"))
+        if(activeProfiles.contains("CSRF_DISABLE"))
             http.csrf(AbstractHttpConfigurer::disable);
 
         return http.build();
@@ -79,7 +82,7 @@ public class SecurityConfig {
     @Bean
     public RegisteredClientRepository registeredClientRepository() {
         var accountClient = RegisteredClient.withId(UUID.randomUUID().toString())
-                .clientId("account-client")
+                .clientId("account-service")
                 .clientSecret(passwordEncoder.encode("secret")) // TODO: inject secret from environment variables
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
@@ -92,7 +95,7 @@ public class SecurityConfig {
                 .build();
 
         var chatClient = RegisteredClient.withId(UUID.randomUUID().toString())
-                .clientId("chat-client")
+                .clientId("chat-service")
                 .clientSecret(passwordEncoder.encode("secret"))
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)

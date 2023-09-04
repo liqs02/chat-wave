@@ -1,6 +1,6 @@
 package com.chatwave.accountservice.service;
 
-import com.chatwave.accountservice.client.AuthService;
+import com.chatwave.accountservice.client.AuthClient;
 import com.chatwave.accountservice.domain.Account;
 import com.chatwave.accountservice.domain.dto.AuthenticateUserRequest;
 import com.chatwave.accountservice.domain.dto.CreateUserRequest;
@@ -21,7 +21,7 @@ import static org.springframework.http.HttpStatus.*;
 @Slf4j
 public class AccountServiceImpl implements AccountService {
     private final AccountRepository repository;
-    private final AuthService authService;
+    private final AuthClient authService;
 
     /**
      * {@inheritDoc}
@@ -81,17 +81,6 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Boolean doesAccountExist(Integer accountId) {
         return repository.findById(accountId).isPresent();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Account getAccountByDisplayName(String displayName) {
-        return repository.findByDisplayName(displayName)
-                .orElseThrow(() ->
-                        new ResponseStatusException(NOT_FOUND, "User with given displayName does not exist.")
-                        );
     }
 
     /**

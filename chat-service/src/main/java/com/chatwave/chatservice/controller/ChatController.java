@@ -26,8 +26,8 @@ public class ChatController {
         return service
                 .getMessages(authorId, memberId, getMessagesRequest.from(), getMessagesRequest.newer())
                 .parallelStream()
-                .map(message -> mapper.toMessageResponse(message))
-                .collect(Collectors.toList());
+                .map(mapper::toMessageResponse)
+                .toList();
     }
 
     @PostMapping("/{receiverId}")

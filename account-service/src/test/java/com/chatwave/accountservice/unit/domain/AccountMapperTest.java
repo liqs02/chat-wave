@@ -1,5 +1,7 @@
-package com.chatwave.accountservice.domain;
+package com.chatwave.accountservice.unit.domain;
 
+import com.chatwave.accountservice.domain.Account;
+import com.chatwave.accountservice.domain.AccountMapper;
 import com.chatwave.accountservice.domain.dto.CreateAccountRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

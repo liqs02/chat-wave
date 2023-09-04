@@ -21,15 +21,15 @@ spring:
           issuer-uri: http://auth-service:8081
       client:
         provider:
-          auth-service:
+          microservices:
             issuer-uri: http://auth-service:8081
         registration:
-          auth-service:
-            client-id: chat-client
+          microservices:
+            client-id: chat-service
             client-secret: secret
             authorization-grant-type: client_credentials
             client-authentication-method: client_secret_post
-            redirect-uri:  "{baseUrl}/login/oauth2/code/spring"
+            redirect-uri: "{baseUrl}/login/oauth2/code/spring"
             scope:
               - openid
               - server
@@ -37,6 +37,7 @@ spring:
   cloud:
     openfeign:
       oauth2:
+        clientRegistrationId: microservices
         enabled: true
 
 server:

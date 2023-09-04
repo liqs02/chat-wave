@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @FeignClient("auth-service")
-public interface AuthService extends com.chatwave.authclient.client.AuthService {
-    @PostMapping(value = "/users", consumes = "application/json")
+public interface AuthClient extends com.chatwave.authclient.client.AuthClient {
+    @PostMapping(value = "/users")
     TokenSet createUser(CreateUserRequest createUserRequest);
 
-    @PostMapping(value = "/users/authenticate", consumes = "application/json")
+    @PostMapping(value = "/users/authenticate")
     TokenSet authenticateUser(AuthenticateUserRequest authenticateUserRequest);
 
     @PatchMapping(value = "/users/{id}/password")

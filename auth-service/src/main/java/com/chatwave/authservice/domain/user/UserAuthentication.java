@@ -6,7 +6,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.security.auth.Subject;
-import java.util.Collection;
 import java.util.List;
 
 public class UserAuthentication implements Authentication {
@@ -26,8 +25,13 @@ public class UserAuthentication implements Authentication {
     }
 
     @Override
-    public List<GrantedAuthority> getAuthorities() {
-        return authorities;
+    public Integer getPrincipal() {
+        return userId;
+    }
+
+    @Override
+    public String getName() {
+        return userId.toString();
     }
 
     @Override
@@ -36,13 +40,13 @@ public class UserAuthentication implements Authentication {
     }
 
     @Override
-    public UserAuthenticationDetails getDetails() {
-        return details;
+    public List<GrantedAuthority> getAuthorities() {
+        return authorities;
     }
 
     @Override
-    public Integer getPrincipal() {
-        return userId;
+    public UserAuthenticationDetails getDetails() {
+        return details;
     }
 
     @Override
@@ -52,11 +56,6 @@ public class UserAuthentication implements Authentication {
 
     @Override
     public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {}
-
-    @Override
-    public String getName() {
-        return userId.toString();
-    }
 
     @Override
     public boolean implies(Subject subject) {

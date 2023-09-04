@@ -1,6 +1,6 @@
 package com.chatwave.chatservice.service;
 
-import com.chatwave.chatservice.client.AccountService;
+import com.chatwave.chatservice.client.AccountClient;
 import com.chatwave.chatservice.domain.Message;
 import com.chatwave.chatservice.repository.MessageRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,7 +25,7 @@ public class ChatServiceTest {
     @Mock
     private MessageRepository repository;
     @Mock
-    private AccountService accountService;
+    private AccountClient accountClient;
 
     private Message message;
 
@@ -75,7 +75,7 @@ public class ChatServiceTest {
         assertEquals(message, result);
 
         verify(
-                accountService, times(1)
+                accountClient, times(1)
         ).doesAccountExist(2);
     }
 }

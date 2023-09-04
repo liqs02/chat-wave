@@ -1,12 +1,13 @@
-package com.chatwave.accountservice.service;
+package com.chatwave.accountservice.unit.service;
 
-import com.chatwave.accountservice.client.AuthService;
+import com.chatwave.accountservice.client.AuthClient;
 import com.chatwave.accountservice.domain.Account;
 import com.chatwave.accountservice.domain.dto.AuthenticateUserRequest;
 import com.chatwave.accountservice.domain.dto.CreateUserRequest;
 import com.chatwave.accountservice.domain.dto.PatchPasswordRequest;
 import com.chatwave.accountservice.domain.dto.TokenSet;
 import com.chatwave.accountservice.repository.AccountRepository;
+import com.chatwave.accountservice.service.AccountServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -31,7 +32,7 @@ public class AccountServiceTest {
     @Mock
     AccountRepository repository;
     @Mock
-    AuthService authService;
+    AuthClient authService;
     private TokenSet tokenSet;
     private Account account;
 
@@ -129,33 +130,6 @@ public class AccountServiceTest {
             var result = service.doesAccountExist(1);
 
             assertFalse(result);
-        }
-    }
-
-    @Nested
-    @DisplayName("getAccountByDisplayName()")
-    class getAccountByDisplayName {
-        @Test
-        @DisplayName("should get an account")
-        public void t1() {
-            when(
-                    repository.findByDisplayName("display")
-            ).thenReturn(Optional.of(account));
-
-            var result = service.getAccountByDisplayName("display");
-
-            assertEquals(account, result);
-        }
-
-        @Test
-        @DisplayName("should throw NOT_FOUND ResponseStatusException if account does not exist")
-        public void t2() {
-            var thrown = assertThrows(
-                    ResponseStatusException.class,
-                    () -> service.getAccountById(1)
-            );
-
-            assertEquals(NOT_FOUND, thrown.getStatusCode());
         }
     }
 

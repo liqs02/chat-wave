@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @FeignClient("account-service")
-public interface AccountService {
+public interface AccountClient {
     @GetMapping("/{accountId}/exist")
     void doesAccountExist(@PathVariable Integer accountId);
 }

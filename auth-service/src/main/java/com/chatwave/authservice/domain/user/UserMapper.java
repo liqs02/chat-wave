@@ -14,7 +14,7 @@ public interface UserMapper {
     @Mapping(target = "authorities", ignore = true)
     User toUser(CreateUserRequest createUserRequest);
 
-    @Mapping(target = " authorities", ignore = true)
+    @Mapping(target = "authorities", ignore = true)
     User toUser(AuthenticateUserRequest authenticateUserRequest);
 
     @Mapping(source = "userId", target = "id")

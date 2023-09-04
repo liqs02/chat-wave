@@ -40,14 +40,6 @@ public interface AccountService {
     Boolean doesAccountExist(Integer accountId);
 
     /**
-     * Searches for an account with a matching displayName.
-     *
-     * @param displayName
-     * @return account
-     */
-    Account getAccountByDisplayName(String displayName);
-
-    /**
      * Changes password of user with given id.
      *
      * @param accountId

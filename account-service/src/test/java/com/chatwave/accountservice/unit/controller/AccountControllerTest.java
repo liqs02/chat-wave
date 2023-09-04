@@ -1,5 +1,6 @@
-package com.chatwave.accountservice.controller;
+package com.chatwave.accountservice.unit.controller;
 
+import com.chatwave.accountservice.controller.AccountController;
 import com.chatwave.accountservice.domain.Account;
 import com.chatwave.accountservice.domain.AccountMapper;
 import com.chatwave.accountservice.domain.dto.*;
@@ -72,23 +73,6 @@ public class AccountControllerTest {
                 assertEquals(TOKEN_SET, result);
         }
 
-        @Test
-        @DisplayName("getCurrentAccountDetails() should return an AccountDetails")
-        public void getCurrentAccountDetails() {
-                var accountDetails = new AccountDetails(1, "login", "display");
-
-                when(
-                        service.getAccountById(1)
-                ).thenReturn(account);
-
-                when(
-                        mapper.toAccountDetails(account)
-                ).thenReturn(accountDetails);
-
-                var result = controller.getCurrentAccountDetails(1);
-                assertEquals(accountDetails, result);
-        }
-
         @Nested
         @DisplayName("doesAccountExist()")
         class doesAccountExist {
@@ -133,23 +117,6 @@ public class AccountControllerTest {
                 ).thenReturn(accountShowcase);
 
                 var result = controller.getAccountShowcase(1);
-                assertEquals(accountShowcase, result);
-        }
-
-        @Test
-        @DisplayName("getAccountByDisplayName() should return an AccountShowcase")
-        public void getAccountByDisplayName() {
-                var accountShowcase = new AccountShowcase(1, "display");
-
-                when(
-                        service.getAccountByDisplayName("display")
-                ).thenReturn(account);
-
-                when(
-                        mapper.toAccountShowcase(account)
-                ).thenReturn(accountShowcase);
-
-                var result = controller.getAccountByDisplayName("display");
                 assertEquals(accountShowcase, result);
         }
 
