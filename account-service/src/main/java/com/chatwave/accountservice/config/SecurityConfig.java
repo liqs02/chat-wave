@@ -39,7 +39,7 @@ public class SecurityConfig {
             )
             .addFilterAt(userAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
-        if(activeProfiles.contains("CSRF_OFF"))
+        if(activeProfiles.contains("CSRF_DISABLE"))
             http.csrf(AbstractHttpConfigurer::disable);
 
         return http.build();

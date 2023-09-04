@@ -8,15 +8,24 @@ Still in active development.
 
 **Backend:** `Java` `Spring Boot` `PostgreSQL`
 
-**Deploying** `Docker Compose` `Docker`
+**Deploying** `Docker` `Docker Compose`
 
 ## Functional services
 Chat wave is decomposed into three core microservices. All of them have own database and have a different business role.
 
+Each endpoint used by users are protected by csrf protection provided by Spring Boot. You can disable this protection by setting up a special spring profile on the service (however it is not recommended):
+```yaml
+spring.profiles.active: CSRF_DISABLE
+```
+
+
 ### Auth Service
 
 An auth service implements authorization for clients and users.
-Clients are authenticated by `client_secret_post` and authorized by `client_credentials`.
+Auth service is used by other services to implement easy common authorization system.
+
+
+Clients are authenticated by `client_secret_post` and authorized by `client_credentials` provided by Spring Boot.
 
 Users has custom authorization based on sessions. User gets `accessToken` and `refreshToken` after authentication.
 To use `accessToken` we have to send it in `User-Authorization` header with `Bearer ` prefix like below.  
@@ -24,48 +33,50 @@ To use `accessToken` we have to send it in `User-Authorization` header with `Bea
 User-Authorization: Bearer accessToken
 ```
 
+
 Service contains methods to operate with user and user's session. 
 Auth service contains just user's id and password. 
-Storing and searching for a user by name is the task of account service contacting auth-service.
+Storing login names is the task of account service.
 
-| Method   | Path                                    | Description                                   | Authorization Type |
-|:---------|:----------------------------------------|-----------------------------------------------|:-------------------|
-| `GET`    | `/users/authentication`                 | Get current user's authentication information | `CLIENT`           |
-| `GET`    | `/users/{userId}/sessions`              | Get all not expired user's sessions.          | `USER`             |
-| `POST`   | `/users`                                | Create a user                                 | `CLIENT`           |
-| `POST`   | `/users/authenticate`                   | Authenticate an existing user                 | `CLIENT`           |
-| `POST`   | `/users/sessions/refresh`               | Refresh accessToken for user.                 | `NONE`             |
-| `PATCH`  | `/users/{userId}/password`              | Change user's password.                       | `CLIENT`           |
-| `DELETE` | `/users/{userId}/sessions`              | Expire all user's session.                    | `USER`             |
-| `DELETE` | `/users/{userId}/sessions/{sessionsId}` | Expire selected session of user.              | `USER`             |
+| Method   | Path                                    | Description                          | Authorization Type |
+|:---------|:----------------------------------------|--------------------------------------|:-------------------|
+| `GET`    | `/users/authentication`                 | Get current user's authentication data    | `CLIENT`           |
+| `GET`    | `/users/{userId}/sessions`              | Get all not expired user's sessions. | `USER`             |
+| `POST`   | `/users`                                | Create a user                        | `CLIENT`           |
+| `POST`   | `/users/authenticate`                   | Authenticate an existing user        | `CLIENT`           |
+| `POST`   | `/users/sessions/refresh`               | Refresh accessToken for user.        | `NONE`             |
+| `PATCH`  | `/users/{userId}/password`              | Change user's password.              | `CLIENT`           |
+| `DELETE` | `/users/{userId}/sessions`              | Expire all user's session.           | `USER`             |
+| `DELETE` | `/users/{userId}/sessions/{sessionsId}` | Expire selected session of user.     | `USER`             |
 
 ### Account Service
 
-By account service we can operate with accounts. We can create, authenticate or get other account's information.
+By account service we can operate with accounts. Account service for storing sensitive data (such as passwords) contacts the auth service where it is stored.
 
 | Method | Path                             | Description                                | Authorization Type |
 |:-------|:---------------------------------|--------------------------------------------|:-------------------|
 | `GET`  | `/accounts/current`              | Get current account's details              | `USER`             |
-| `GET`  | `/accounts/{accountId}`          | Get account's details                      | `USER` or `CLIENT` |
-| `GET`  | `/accounts/{accountId}/exist`    | Check that user with given id exist.       | `USER` or `CLIENT` |
-| `GET`  | `/accounts/{accountId}/showcase` | Get account's public information           | `NONE`             |
-| `POST` | `/accounts`                      | Create an account and user in auth service | `USER`             |
+| `GET`  | `/accounts/{accountId}/exist`    | Check that user with given id exist.       | `CLIENT`           |
+| `GET`  | `/accounts/{accountId}/showcase` | Get account's public information           | `USER`             |
+| `POST` | `/accounts`                      | Create an account and user in auth service | `NONE`             |
 | `POST` | `/accounts/authenticate`         | Authenticate a user                        | `NONE`             |
 
 ### Chat Service
+Chat service allows to send and gets messages from chats.
+
 | Method | Path                 | Description                                            | Authorization Type |
 |:-------|:---------------------|--------------------------------------------------------|:-------------------|
-| `GET`  | `/chat/{memberId}`   | Get few messages from chat before/after specified date | `USER`             |
-| `POST` | `/chat/{receiverId}` | Send message to other user                             | `USER`             |
+| `GET`  | `/chat/{memberId}`   | Get few messages from chat before or after specified date | `USER`             |
+| `POST` | `/chat/{receiverId}` | Send message to user                             | `USER`             |
 
 Api is still in development!
 
 ## Infrastructure
-The distributed systems patterns are created by Spring Boot.
+The distributed systems patterns are provided by spring boot.
 
 #### Config service
 Config services keeps config files in static directory.
-If the service has the appropriate docker-compose configuration, simply add the following code (with the changed name) to the application.yml file.
+If the service has the appropriate docker-compose configuration, simply add the following code (with the changed service's name) to the application.yml file.
 ```yaml
 spring:
   application:
@@ -83,19 +94,47 @@ Registry is a simple eureka server application that provides easy communication 
 ## Common libraries
 
 #### auth client
-Library provides filter for user's authorization. To use the filter we need to add the following code in defaultSecurityFilterChain:
+Library provides filter for user's authorization and UserAuthentication class which represents data of authorized user. 
+
+To use the filter we need to add the following code in defaultSecurityFilterChain:
 
 ```
-.addFilterBefore(userAuthFilter, UsernamePasswordAuthenticationFilter.class);
+.addFilterAt(userAuthFilter, UsernamePasswordAuthenticationFilter.class);
 ```
-and create a feign client:
+Create a feign client:
 ```java
 @FeignClient("auth-service")
 public interface AuthService extends com.chatwave.authclient.client.AuthClient {}
 ```
-The library also has UserAuthentication class.
-This object is a representation of the information that is stored after successful user authorization. 
-The object stores, for example: user's id, session's id, accessToken.
+
+And set up oauth2 client configuration in config files.
+An example:
+
+```yaml
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://auth-service:8081
+      client:
+        provider:
+          microservices:
+            issuer-uri: http://auth-service:8081
+        registration:
+          microservices:
+            client-id: service-name
+            client-secret: secret
+            authorization-grant-type: client_credentials
+            client-authentication-method: client_secret_post
+            redirect-uri:  "{baseUrl}/login/oauth2/code/spring"
+            scope: server, openid
+  cloud:
+    openfeign:
+      oauth2:
+        clientRegistrationId: microservices
+        enabled: true
+```
 
 #### exception library
 The library provides common exception handler for all microservices.
@@ -103,6 +142,6 @@ To use this library, we need to add the following annotation to the main class:
 ```
 @ComponentScan({"com.chatwave.currentService","com.chatwave.exception"})
 ```
-
+CSRF
 ## License
 All Rights Reserved

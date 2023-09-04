@@ -25,11 +25,15 @@ public class UserAuthorizationTest {
     @Test
     @DisplayName("should authorize a user by provided accessToken in header")
     public void t1() {
+        var userAuthentication = new UserAuthentication();
+        userAuthentication.setUserId(1);
+        userAuthentication.setCredentials("accessToken");
+
         when(
                 authClient.getUserAuthentication("Bearer accessToken")
-        ).thenReturn(new UserAuthentication());
+        ).thenReturn(userAuthentication);
 
-        webTestClient.get().uri("/accounts/1/exist")
+        webTestClient.get().uri("/accounts/1/showcase")
                 .header("User-Authorization", "Bearer accessToken")
                 .exchange()
                 .expectStatus().isNotFound();

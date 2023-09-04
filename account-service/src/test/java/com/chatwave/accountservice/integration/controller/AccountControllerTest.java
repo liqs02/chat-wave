@@ -16,6 +16,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -115,18 +117,7 @@ public class AccountControllerTest {
     @Nested
     @DisplayName("GET /accounts/{accountId}/exist")
     public class doesAccountExist {
-        @Test
-        @DisplayName("should return OK if user exist")
-        public void t1() {
-            var accountId = createAndSaveAccount().getId();
-            mockUserAuthentication();
-
-            webTestClient.get()
-                    .uri("/accounts/{id}/exist", accountId)
-                    .header("User-Authorization", "Bearer accessToken")
-                    .exchange()
-                    .expectStatus().isOk();
-        }
+        // todo : add test (client authorization)
     }
 
     @Nested

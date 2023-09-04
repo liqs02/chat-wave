@@ -19,6 +19,7 @@ public class UserAuthentication implements Authentication { // todo: create libr
     private UserAuthenticationDetails details;
 
     public UserAuthentication() {
+        authorities = List.of();
         details = new UserAuthenticationDetails();
     }
 
