@@ -4,6 +4,7 @@ import com.chatwave.authclient.filter.UserAuthFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -35,7 +36,7 @@ public class SecurityConfig {
             )
             .addFilterAt(userAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
-        if (activeProfile.equalsIgnoreCase("tests"))
+        if (activeProfile.equalsIgnoreCase("test"))
             http.csrf(AbstractHttpConfigurer::disable);
 
         return http.build();

@@ -71,7 +71,7 @@ public class SecurityConfig {
             .authenticationProvider(authenticationProvider)
             .addFilterBefore(userAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
-        if (activeProfile.equalsIgnoreCase("tests"))
+        if (activeProfile.equalsIgnoreCase("test"))
             http.csrf(AbstractHttpConfigurer::disable);
 
         return http.build();

@@ -17,6 +17,7 @@ import static org.springframework.http.HttpMethod.GET;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+    private final String activeProfile;
     private final UserAuthFilter userAuthFilter;
 
     @Bean
@@ -30,6 +31,9 @@ public class SecurityConfig {
                     session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
             .addFilterAt(userAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
+        if (activeProfile.equalsIgnoreCase("test"))
+            http.csrf(AbstractHttpConfigurer::disable);
 
         return http.build();
     }

@@ -2,7 +2,7 @@ spring:
   cloud.config.enabled: false
   jpa.hibernate.ddl-auto: create-drop
   profiles:
-    active: tests
+    active: test
 
 eureka.client.enabled: false
 
