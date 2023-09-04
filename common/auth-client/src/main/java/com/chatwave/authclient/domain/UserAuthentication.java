@@ -1,18 +1,20 @@
 package com.chatwave.authclient.domain;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.security.auth.Subject;
 import java.util.List;
 
-@Data
+/**
+ * Principal is represented by the userId.
+ * Credentials are represented by provided accessToken.
+ */
+@Setter
 public class UserAuthentication implements Authentication { // todo: create library for microservices and share there it
-    private Integer userId; // represents principals
-    private String accessToken; // represents credentials
+    private Integer userId;
+    private String accessToken;
     private List<GrantedAuthority> authorities;
     private UserAuthenticationDetails details;
 
@@ -21,8 +23,13 @@ public class UserAuthentication implements Authentication { // todo: create libr
     }
 
     @Override
-    public List<GrantedAuthority> getAuthorities() {
-        return authorities;
+    public Integer getPrincipal() {
+        return userId;
+    }
+
+    @Override
+    public String getName() {
+        return userId.toString();
     }
 
     @Override
@@ -31,13 +38,13 @@ public class UserAuthentication implements Authentication { // todo: create libr
     }
 
     @Override
-    public UserAuthenticationDetails getDetails() {
-        return details;
+    public List<GrantedAuthority> getAuthorities() {
+        return authorities;
     }
 
     @Override
-    public Integer getPrincipal() {
-        return userId;
+    public UserAuthenticationDetails getDetails() {
+        return details;
     }
 
     @Override
@@ -48,9 +55,20 @@ public class UserAuthentication implements Authentication { // todo: create libr
     @Override
     public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {}
 
-    @Override
-    public String getName() {
-        return userId.toString();
+    public void setPrincipal(Integer userId) {
+        this.userId = userId;
+    }
+
+    public void setCredentials(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    public void setAuthorities(List<GrantedAuthority> authorities) {
+        this.authorities = authorities;
+    }
+
+    public void setDetails(UserAuthenticationDetails details) {
+        this.details = details;
     }
 
     @Override

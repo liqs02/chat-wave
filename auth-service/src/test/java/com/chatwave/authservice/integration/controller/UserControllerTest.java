@@ -1,9 +1,11 @@
 package com.chatwave.authservice.integration.controller;
 
+import com.chatwave.authclient.domain.UserAuthentication;
 import com.chatwave.authservice.domain.dto.AuthenticateUserRequest;
 import com.chatwave.authservice.domain.dto.CreateUserRequest;
 import com.chatwave.authservice.domain.dto.PatchPasswordRequest;
 import com.chatwave.authservice.domain.dto.TokenSetResponse;
+import com.chatwave.authservice.domain.session.Session;
 import com.chatwave.authservice.domain.user.User;
 import com.chatwave.authservice.integration.utils.ClientAuthUtils;
 import com.chatwave.authservice.repository.SessionRepository;
@@ -18,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Too deeper understanding tests look at {@link  ClientAuthUtils}
+ * Notice that UserAuthentication domain is taken from auth-client library to check that object will be correctly form.
  */
 @DisplayName("UserController integration tests")
 public class UserControllerTest extends ClientAuthUtils {
@@ -46,7 +49,34 @@ public class UserControllerTest extends ClientAuthUtils {
     }
 
     @Nested
-    @DisplayName("POST /users/")
+    @DisplayName("GET /users/authentication")
+    class getUserAuthentication {
+        @Test
+        @DisplayName("should create userAuthentication and return it")
+        public void t200() throws UnexpectedException {
+            var user= createAndSaveUser();
+            var session = new Session(user);
+            sessionRepository.save(session);
+
+            var userAuthentication = webTestClient.get()
+                    .uri("/users/authentication")
+                    .header("Authorization", getAuthHeader())
+                    .header("User-Authorization", "Bearer " + session.getAccessToken())
+                    .exchange()
+                    .expectStatus().isOk()
+                    .expectBody(UserAuthentication.class)
+                    .returnResult().getResponseBody();
+
+            assertNotNull(userAuthentication);
+            assertEquals(user.getId(), userAuthentication.getPrincipal());
+            assertEquals(session.getAccessToken(), userAuthentication.getCredentials());
+            assertEquals("1", userAuthentication.getName());
+            assertEquals(session.getId(), userAuthentication.getDetails().getSessionId());
+        }
+    }
+
+    @Nested
+    @DisplayName("POST /users")
     class createUser {
         private final String ENDPOINT = "/users";
 

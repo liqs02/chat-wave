@@ -26,7 +26,6 @@ services:
     environment:
       CONFIG_PASSWORD: $CONFIG_PASSWORD
       POSTGRES_PASSWORD: $AUTH_POSTGRES_PASSWORD
-      PROFILE: $PROFILE
     depends_on:
       config:
         condition: service_healthy
@@ -51,7 +50,6 @@ services:
     environment:
       CONFIG_PASSWORD: $CONFIG_PASSWORD
       POSTGRES_PASSWORD: $ACCOUNT_POSTGRES_PASSWORD
-      PROFILE: $PROFILE
     depends_on:
       config:
         condition: service_healthy
@@ -78,7 +76,6 @@ services:
     environment:
       CONFIG_PASSWORD: $CONFIG_PASSWORD
       POSTGRES_PASSWORD: $CHAT_POSTGRES_PASSWORD
-      PROFILE: $PROFILE
     depends_on:
       config:
         condition: service_healthy
