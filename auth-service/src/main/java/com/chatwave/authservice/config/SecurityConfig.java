@@ -24,6 +24,8 @@ import org.springframework.security.oauth2.server.authorization.settings.ClientS
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import static jakarta.ws.rs.HttpMethod.POST;
@@ -34,7 +36,7 @@ import static org.springframework.http.HttpMethod.GET;
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final String activeProfile;
+    private final List<String> activeProfiles;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationProvider authenticationProvider;
     private final UserAuthFilter userAuthFilter;
@@ -71,7 +73,7 @@ public class SecurityConfig {
             .authenticationProvider(authenticationProvider)
             .addFilterBefore(userAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
-        if (activeProfile.equalsIgnoreCase("test"))
+        if(activeProfiles.contains("CSRF_OFF"))
             http.csrf(AbstractHttpConfigurer::disable);
 
         return http.build();

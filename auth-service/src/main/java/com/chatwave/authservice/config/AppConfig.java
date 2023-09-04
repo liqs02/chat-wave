@@ -16,6 +16,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.List;
+import java.util.Set;
+
 import static java.lang.Integer.parseInt;
 
 @Configuration
@@ -58,7 +61,7 @@ public class AppConfig {
     }
 
     @Bean
-    public String activeProfile(@Value("${spring.profiles.active}") String activeProfile) {
+    public List<String> activeProfile(@Value("${spring.profiles.active}") List<String> activeProfile) {
         return activeProfile;
     }
 }

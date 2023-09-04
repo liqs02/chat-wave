@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.List;
+
 @Configuration
 public class AppConfig {
     @Bean
@@ -21,7 +23,7 @@ public class AppConfig {
     }
 
     @Bean
-    public String activeProfile(@Value("${spring.profiles.active}") String activeProfile) {
-        return activeProfile;
+    public List<String> activeProfiles(@Value("${spring.profiles.active}") List<String> activeProfiles) {
+        return activeProfiles;
     }
 }
