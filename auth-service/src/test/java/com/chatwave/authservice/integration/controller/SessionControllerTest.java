@@ -63,7 +63,6 @@ public class SessionControllerTest extends UserAuthUtils {
     @Nested
     @DisplayName("POST /sessions/refresh")
     class c2 {
-
         @BeforeEach
         void setUp() {
             session.setAccessTokenExpireDate(LocalDateTime.now().minusSeconds(1));

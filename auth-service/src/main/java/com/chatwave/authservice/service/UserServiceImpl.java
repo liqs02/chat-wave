@@ -14,7 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.CONFLICT;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @Service
 @RequiredArgsConstructor

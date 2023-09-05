@@ -13,7 +13,7 @@ Still in active development.
 ## Functional services
 Chat wave is decomposed into three core microservices. All of them have own database and have a different business role.
 
-Each endpoint used by users are protected by csrf protection provided by Spring Boot. You can disable this protection by setting up a special spring profile on the service (however it is not recommended):
+Each endpoint used by users are protected by csrf protection provided by spring boot. You can disable this protection by setting up a special spring profile on the service (however it is not recommended):
 ```yaml
 spring.profiles.active: CSRF_DISABLE
 ```
@@ -25,7 +25,7 @@ An auth service implements authorization for clients and users.
 Auth service is used by other services to implement easy common authorization system.
 
 
-Clients are authenticated by `client_secret_post` and authorized by `client_credentials` provided by Spring Boot.
+Clients are authenticated by `client_secret_post` and authorized by `client_credentials` provided by spring boot.
 
 Users has custom authorization based on sessions. User gets `accessToken` and `refreshToken` after authentication.
 To use `accessToken` we have to send it in `User-Authorization` header with `Bearer ` prefix like below.  

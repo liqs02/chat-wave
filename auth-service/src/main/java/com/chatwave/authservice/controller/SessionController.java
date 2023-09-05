@@ -5,10 +5,8 @@ import com.chatwave.authservice.domain.dto.SessionResponse;
 import com.chatwave.authservice.domain.dto.TokenSetResponse;
 import com.chatwave.authservice.domain.session.SessionMapper;
 import com.chatwave.authservice.service.SessionService;
-import jakarta.annotation.security.PermitAll;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 

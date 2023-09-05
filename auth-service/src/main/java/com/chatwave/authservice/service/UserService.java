@@ -1,6 +1,5 @@
 package com.chatwave.authservice.service;
 
-import com.chatwave.authservice.domain.dto.PatchUserRequest;
 import com.chatwave.authservice.domain.session.Session;
 import com.chatwave.authservice.domain.user.User;
 import com.chatwave.authservice.domain.user.UserAuthentication;
