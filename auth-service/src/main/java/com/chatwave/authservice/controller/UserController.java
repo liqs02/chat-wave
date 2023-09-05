@@ -19,7 +19,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/users", produces = APPLICATION_JSON) // todo: handle 406 all where
+@RequestMapping(value = "/users", consumes = APPLICATION_JSON, produces = APPLICATION_JSON) // todo: handle 406 all where
 @PreAuthorize("hasAuthority('SCOPE_server')")
 public class UserController {
     private final UserService service;

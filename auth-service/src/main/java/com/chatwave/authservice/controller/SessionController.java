@@ -16,7 +16,7 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/sessions", produces = APPLICATION_JSON)
+@RequestMapping(value = "/sessions", consumes = APPLICATION_JSON, produces = APPLICATION_JSON)
 public class SessionController {
     private final SessionService service;
     private final SessionMapper mapper;
