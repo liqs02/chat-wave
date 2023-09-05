@@ -38,16 +38,16 @@ Service contains methods to operate with user and user's session.
 Auth service contains just user's id and password. 
 Storing login names is the task of account service.
 
-| Method   | Path                                    | Description                          | Authorization Type |
-|:---------|:----------------------------------------|--------------------------------------|:-------------------|
-| `GET`    | `/users/authentication`                 | Get current user's authentication data    | `CLIENT`           |
-| `GET`    | `/users/{userId}/sessions`              | Get all not expired user's sessions. | `USER`             |
-| `POST`   | `/users`                                | Create a user                        | `CLIENT`           |
-| `POST`   | `/users/authenticate`                   | Authenticate an existing user        | `CLIENT`           |
-| `POST`   | `/users/sessions/refresh`               | Refresh accessToken for user.        | `NONE`             |
-| `PATCH`  | `/users/{userId}/password`              | Change user's password.              | `CLIENT`           |
-| `DELETE` | `/users/{userId}/sessions`              | Expire all user's session.           | `USER`             |
-| `DELETE` | `/users/{userId}/sessions/{sessionsId}` | Expire selected session of user.     | `USER`             |
+| Method   | Path                                    | Description                                    | Authorization Type |
+|:---------|:----------------------------------------|------------------------------------------------|:-------------------|
+| `GET`    | `/users/authentication`                 | Get current user's authentication data         | `CLIENT`           |
+| `POST`   | `/users`                                | Create a user                                  | `CLIENT`           |
+| `POST`   | `/users/authenticate`                   | Authenticate an existing user                  | `CLIENT`           |
+| `PATCH`  | `/users/{userId}`                       | Change user's data.                            | `CLIENT`           |
+| `GET`    | `/sessions`                             | Get all not expired sessions of current user.  | `USER`             |
+| `POST`   | `/sessions/refresh`                     | Refresh accessToken.                           | `NONE`             |
+| `DELETE` | `/sessions`                             | Expire all current user's session.             | `USER`             |
+| `DELETE` | `/sessions/{sessionsId}`                | Expire specified session.                      | `USER`             |
 
 ### Account Service
 
@@ -64,10 +64,10 @@ By account service we can operate with accounts. Account service for storing sen
 ### Chat Service
 Chat service allows to send and gets messages from chats.
 
-| Method | Path                 | Description                                            | Authorization Type |
-|:-------|:---------------------|--------------------------------------------------------|:-------------------|
+| Method | Path                 | Description                                               | Authorization Type |
+|:-------|:---------------------|-----------------------------------------------------------|:-------------------|
 | `GET`  | `/chat/{memberId}`   | Get few messages from chat before or after specified date | `USER`             |
-| `POST` | `/chat/{receiverId}` | Send message to user                             | `USER`             |
+| `POST` | `/chat/{receiverId}` | Send message to user                                      | `USER`             |
 
 Api is still in development!
 

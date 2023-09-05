@@ -67,12 +67,12 @@ public class SessionControllerTest {
     }
 
     @Test
-    @DisplayName("getActiveSessionsByUserId() should return list of sessions")
+    @DisplayName("getNotExpiredSessionsByUserId() should return list of sessions")
     public void getUserCurrentSessions() {
         var sessionResponse = new SessionResponse(2L, session.getExpireDate(), session.getAccessTokenExpireDate(), session.getCreatedAt());
 
         when(
-                service.getActiveSessionsByUserId(1)
+                service.getNotExpiredSessionsByUserId(1)
         ).thenReturn(List.of(session));
 
         when(
@@ -85,10 +85,10 @@ public class SessionControllerTest {
     }
 
     @Test
-    @DisplayName("expireUserSessions() should expire all user sessions")
+    @DisplayName("expireSessionsByUserId() should expire all user sessions")
     public void expireAllUserSessions() {
         controller.expireUserSessions(1);
-        verify(service).expireUserSessions(1);
+        verify(service).expireSessionsByUserId(1);
     }
 
     @Test
@@ -96,6 +96,6 @@ public class SessionControllerTest {
     @WithMockUser(username = "user", authorities = "SCOPE_ui")
     public void expireUserSession() {
         controller.expireSession(1,  2L);
-        verify(service).expireSession(1, 2L);
+        verify(service).expireSession(2L, 1);
     }
 }

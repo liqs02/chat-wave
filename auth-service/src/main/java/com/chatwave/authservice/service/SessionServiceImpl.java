@@ -55,7 +55,7 @@ public class SessionServiceImpl implements SessionService {
      * {@inheritDoc}
      */
     @Override
-    public List<Session> getActiveSessionsByUserId(Integer userId) {
+    public List<Session> getNotExpiredSessionsByUserId(Integer userId) {
         return repository.findAllNotExpiredByUserId(userId);
     }
 
@@ -63,7 +63,7 @@ public class SessionServiceImpl implements SessionService {
      * {@inheritDoc}
      */
     @Override
-    public void expireUserSessions(Integer userId) {
+    public void expireSessionsByUserId(Integer userId) {
         var sessionList = repository.findAllNotExpiredByUserId(userId);
         if(sessionList.isEmpty()) return;
 
@@ -77,7 +77,7 @@ public class SessionServiceImpl implements SessionService {
      * {@inheritDoc}
      */
     @Override
-    public void expireSession(Integer userId, Long sessionId) {
+    public void expireSession(Long sessionId, Integer userId) {
         var session = repository.findById(sessionId)
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "The session with given ID does not exist."));
 

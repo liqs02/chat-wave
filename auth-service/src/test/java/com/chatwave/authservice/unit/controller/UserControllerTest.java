@@ -3,7 +3,7 @@ package com.chatwave.authservice.unit.controller;
 import com.chatwave.authservice.controller.UserController;
 import com.chatwave.authservice.domain.dto.AuthenticateUserRequest;
 import com.chatwave.authservice.domain.dto.CreateUserRequest;
-import com.chatwave.authservice.domain.dto.PatchPasswordRequest;
+import com.chatwave.authservice.domain.dto.PatchUserRequest;
 import com.chatwave.authservice.domain.dto.TokenSetResponse;
 import com.chatwave.authservice.domain.session.Session;
 import com.chatwave.authservice.domain.session.SessionMapper;
@@ -116,9 +116,9 @@ public class UserControllerTest {
     }
 
     @Test
-    @DisplayName("patchUserPassword() should change user's password")
+    @DisplayName("patchUser() should change user's password")
     public void patchUserPassword() {
-        var changePasswordRequest = new PatchPasswordRequest("pass", "new");
+        var changePasswordRequest = new PatchUserRequest("pass", "new");
 
         var user = new User();
 
@@ -126,11 +126,11 @@ public class UserControllerTest {
                 mapper.toUser(1, changePasswordRequest)
         ).thenReturn(user);
 
-        controller.patchUserPassword(1, changePasswordRequest);
+        controller.patchUser(1, changePasswordRequest);
 
         verify(
                 service,
                 times(1)
-        ).patchUserPassword(user, "new");
+        ).patchUser(user, "new");
     }
 }

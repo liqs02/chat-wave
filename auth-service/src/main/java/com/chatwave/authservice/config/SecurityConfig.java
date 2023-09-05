@@ -54,11 +54,11 @@ public class SecurityConfig {
     @Order(2)
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf ->
-                        csrf.ignoringRequestMatchers("/users", "/users/authenticate", "/users/authentication", "/users/{userId}/password")
+                        csrf.ignoringRequestMatchers("/users/**")
             )
             .authorizeHttpRequests(auth ->
                     auth.requestMatchers(GET, "/actuator/health").permitAll()
-                            .requestMatchers(POST, "/users/sessions/refresh").permitAll()
+                            .requestMatchers(POST, "/sessions/refresh").permitAll()
                             .requestMatchers("/error").permitAll()
                             .anyRequest().authenticated()
             )

@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.junit.jupiter.api.Assertions.*;
 /**
  * Too deeper understanding tests look at {@link  UserAuthUtils}
@@ -19,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @DisplayName("SessionController integration tests")
 public class SessionControllerTest extends UserAuthUtils {
     @Nested
-    @DisplayName("GET /users/{userId}/sessions")
+    @DisplayName("GET /sessions")
     class getActiveSessionsByUserId {
         private Session secondSession;
 
@@ -33,9 +34,9 @@ public class SessionControllerTest extends UserAuthUtils {
         @Test
         @DisplayName("should return all user's sessions")
         public void t200() {
-            var sessions = webTestClient
-                    .get()
-                    .uri("/users/1/sessions")
+            var sessions = webTestClient.get()
+                    .uri("/sessions")
+                    .header("Content-type", APPLICATION_JSON)
                     .header("User-Authorization", getAuthHeader())
                     .exchange()
                     .expectStatus().isOk()
@@ -57,22 +58,11 @@ public class SessionControllerTest extends UserAuthUtils {
             assertEquals(secondSession.getAccessTokenExpireDate(), foundSession.accessTokenExpireDate());
             assertEquals(secondSession.getCreatedAt(), foundSession.createdAt());
         }
-
-        @Test
-        @DisplayName("should return FORBIDDEN if user does not have permissions")
-        public void t403() {
-            webTestClient
-                    .get()
-                    .uri("/users/2/sessions")
-                    .header("User-Authorization", getAuthHeader())
-                    .exchange()
-                    .expectStatus().isForbidden();
-            }
     }
 
     @Nested
-    @DisplayName("POST /users/sessions/refresh")
-    class refreshTokens {
+    @DisplayName("POST /sessions/refresh")
+    class c2 {
 
         @BeforeEach
         void setUp() {
@@ -83,9 +73,9 @@ public class SessionControllerTest extends UserAuthUtils {
         @Test
         @DisplayName("should return all user's sessions")
         public void t200() {
-            var tokenSet = webTestClient
-                    .post()
-                    .uri("/users/sessions/refresh")
+            var tokenSet = webTestClient.post()
+                    .uri("/sessions/refresh")
+                    .header("Content-type", APPLICATION_JSON)
                     .bodyValue(new RefreshSessionRequest(session.getRefreshToken()))
                     .exchange()
                     .expectStatus().isOk()
@@ -102,8 +92,8 @@ public class SessionControllerTest extends UserAuthUtils {
     }
 
     @Nested
-    @DisplayName("DELETE /users/{userId}/sessions")
-    class expireUserSessions {
+    @DisplayName("DELETE /sessions")
+    class c3 {
         @BeforeEach
         @SuppressWarnings("OptionalGetWithoutIsPresent")
         void setUp() {
@@ -114,9 +104,9 @@ public class SessionControllerTest extends UserAuthUtils {
         @Test
         @DisplayName("should expire all active user's sessions")
         public void t200() {
-            webTestClient
-                    .delete()
-                    .uri("/users/1/sessions")
+            webTestClient.delete()
+                    .uri("/sessions")
+                    .header("Content-type", APPLICATION_JSON)
                     .header("User-Authorization", getAuthHeader())
                     .exchange()
                     .expectStatus().isOk();
@@ -131,32 +121,17 @@ public class SessionControllerTest extends UserAuthUtils {
                 fail();
             assertTrue(optional2.get().isExpired());
         }
-
-
-        @Test
-        @DisplayName("should return FORBIDDEN if user does not have permissions")
-        public void t403() {
-            webTestClient
-                    .delete()
-                    .uri("/users/2/sessions")
-                    .header("User-Authorization", getAuthHeader())
-                    .exchange()
-                    .expectStatus().isForbidden();
-        }
     }
 
     @Nested
-    @DisplayName("DELETE /users/{userId}/sessions/{sessionId}")
-    class expireSession {
-        private String getEndpoint(Integer userId) {
-            return "/users/" + userId + "/sessions/" + session.getId();
-        }
-
+    @DisplayName("DELETE /sessions/{sessionId}")
+    class c4 {
         @Test
         @DisplayName("should expire user's session")
         public void t200() {
             webTestClient.delete()
-                    .uri(getEndpoint(1))
+                    .uri("/sessions/{id}", session.getId())
+                    .header("Content-type", APPLICATION_JSON)
                     .header("User-Authorization", getAuthHeader())
                     .exchange()
                     .expectStatus().isOk();
@@ -168,14 +143,14 @@ public class SessionControllerTest extends UserAuthUtils {
         }
 
         @Test
-        @DisplayName("should return FORBIDDEN if user does not have permissions")
-        public void t403() {
-            webTestClient
-                    .delete()
-                    .uri(getEndpoint(2))
+        @DisplayName("should return NOT_FOUND if user wants to expire other user's session")
+        public void t404() {
+            webTestClient.delete()
+                    .uri("/sessions/{id}", session.getId() + 1)
+                    .header("Content-type", APPLICATION_JSON)
                     .header("User-Authorization", getAuthHeader())
                     .exchange()
-                    .expectStatus().isForbidden();
+                    .expectStatus().isNotFound();
         }
     }
 

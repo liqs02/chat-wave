@@ -2,7 +2,7 @@ package com.chatwave.authservice.controller;
 
 import com.chatwave.authservice.domain.dto.AuthenticateUserRequest;
 import com.chatwave.authservice.domain.dto.CreateUserRequest;
-import com.chatwave.authservice.domain.dto.PatchPasswordRequest;
+import com.chatwave.authservice.domain.dto.PatchUserRequest;
 import com.chatwave.authservice.domain.dto.TokenSetResponse;
 import com.chatwave.authservice.domain.session.SessionMapper;
 import com.chatwave.authservice.domain.user.UserAuthentication;
@@ -14,11 +14,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/users")
+@RequestMapping(value = "/users", consumes = APPLICATION_JSON, produces = APPLICATION_JSON) // todo: handle 406 all where
 @PreAuthorize("hasAuthority('SCOPE_server')")
 public class UserController {
     private final UserService service;
@@ -27,7 +28,7 @@ public class UserController {
 
     @GetMapping("/authentication")
     public UserAuthentication getUserAuthentication(HttpServletRequest request) {
-        return service.getUserAuthentication(request); // todo: add integration test after refactor
+        return service.getUserAuthentication(request);
     }
 
     @PostMapping
@@ -45,10 +46,10 @@ public class UserController {
         return sessionMapper.toTokenSetResponse(session);
     }
 
-    @PatchMapping("/{id}/password")
-    public void patchUserPassword(@PathVariable Integer id, @Valid @RequestBody PatchPasswordRequest patchPasswordRequest) {
-        var user = mapper.toUser(id, patchPasswordRequest);
-        var newPassword = patchPasswordRequest.newPassword();
-        service.patchUserPassword(user, newPassword);
+    @PatchMapping("/{userId}")
+    public void patchUser(@PathVariable Integer userId, @Valid @RequestBody PatchUserRequest patchUser) {
+        var user = mapper.toUser(userId, patchUser);
+        var newPassword = patchUser.newPassword();
+        service.patchUser(user, newPassword);
     }
 }

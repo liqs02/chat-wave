@@ -23,7 +23,7 @@ public class SessionTest {
 
     @Nested
     @DisplayName("isExpired()")
-    class isExpired {
+    class c1 {
         @Test
         @DisplayName("should return false if session is not expired")
         public void t1() {
@@ -40,7 +40,7 @@ public class SessionTest {
 
     @Nested
     @DisplayName("isAccessTokenExpired()")
-    class isAccessTokenExpired {
+    class c2 {
         @Test
         @DisplayName("should return false if accessToken is not expired")
         public void t1() {
@@ -64,7 +64,7 @@ public class SessionTest {
 
     @Nested
     @DisplayName("expire()")
-    class expire {
+    class c3 {
         @Test
         @DisplayName("should update expire date")
         public void t1() {
