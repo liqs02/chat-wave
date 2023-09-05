@@ -7,9 +7,8 @@ import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWeb
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-
-import static org.springframework.http.HttpStatus.*;
-import static org.springframework.http.MediaType.*;
+import static org.springframework.http.HttpStatus.METHOD_NOT_ALLOWED;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
@@ -31,5 +30,4 @@ public class ExceptionHandlerTest {
                 .jsonPath("$.status").isEqualTo("METHOD_NOT_ALLOWED")
                 .jsonPath("$.timestamp").isNotEmpty();
     }
-
 }

@@ -3,8 +3,6 @@ package com.chatwave.authservice.config;
 import com.chatwave.authservice.domain.session.SessionMapper;
 import com.chatwave.authservice.domain.user.UserMapper;
 import com.chatwave.authservice.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
