@@ -26,7 +26,7 @@ class SessionMapperTest {
 
     @Test
     @DisplayName("toTokenSetResponse(Session) should map session entity to TokenSetResponse")
-    void ToTokenSetResponse() {
+    void toTokenSetResponse() {
         var result = mapper.toTokenSetResponse(session);
 
         assertEquals("refresh", result.refreshToken());

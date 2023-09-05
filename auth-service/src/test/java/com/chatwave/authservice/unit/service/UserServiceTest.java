@@ -52,7 +52,7 @@ public class UserServiceTest {
 
     @Nested
     @DisplayName("createUser( user )")
-    class createUser {
+    class c1 {
         @Test
         @DisplayName("should create user, return new session")
          void t1() {
@@ -99,7 +99,7 @@ public class UserServiceTest {
 
     @Nested
     @DisplayName("authenticateUser( user )")
-    class authenticateUser {
+    class c2 {
         @Test
         @DisplayName("should authenticate a user and return new session")
          void t1() {
@@ -123,8 +123,8 @@ public class UserServiceTest {
     }
 
     @Nested
-    @DisplayName("patchUserPassword( user, new password )")
-    class patchUserPassword {
+    @DisplayName("patchUser( user, new password )")
+    class c3 {
         @Test
         @DisplayName("should authenticate user and change password")
         void t1() {
@@ -136,7 +136,7 @@ public class UserServiceTest {
                     passwordEncoder.encode("new")
             ).thenReturn("encoded");
 
-            service.patchUserPassword(user, "new");
+            service.patchUser(user, "new");
 
             var captor = ArgumentCaptor.forClass(User.class);
 

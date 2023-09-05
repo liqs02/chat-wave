@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.Length;
 
-public record PatchPasswordRequest(
+public record PatchUserRequest(
         @NotEmpty(message = "The password can not be empty.")
         String password,
         @NotEmpty(message = "New password can not be empty.")

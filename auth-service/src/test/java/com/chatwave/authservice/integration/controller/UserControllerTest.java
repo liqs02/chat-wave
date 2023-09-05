@@ -3,7 +3,7 @@ package com.chatwave.authservice.integration.controller;
 import com.chatwave.authclient.domain.UserAuthentication;
 import com.chatwave.authservice.domain.dto.AuthenticateUserRequest;
 import com.chatwave.authservice.domain.dto.CreateUserRequest;
-import com.chatwave.authservice.domain.dto.PatchPasswordRequest;
+import com.chatwave.authservice.domain.dto.PatchUserRequest;
 import com.chatwave.authservice.domain.dto.TokenSetResponse;
 import com.chatwave.authservice.domain.session.Session;
 import com.chatwave.authservice.domain.user.User;
@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.rmi.UnexpectedException;
 
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -50,7 +51,7 @@ public class UserControllerTest extends ClientAuthUtils {
 
     @Nested
     @DisplayName("GET /users/authentication")
-    class getUserAuthentication {
+    class c1 {
         @Test
         @DisplayName("should create userAuthentication and return it")
         public void t200() throws UnexpectedException {
@@ -60,6 +61,7 @@ public class UserControllerTest extends ClientAuthUtils {
 
             var userAuthentication = webTestClient.get()
                     .uri("/users/authentication")
+                    .header("Content-type", APPLICATION_JSON)
                     .header("Authorization", getAuthHeader())
                     .header("User-Authorization", "Bearer " + session.getAccessToken())
                     .exchange()
@@ -77,7 +79,7 @@ public class UserControllerTest extends ClientAuthUtils {
 
     @Nested
     @DisplayName("POST /users")
-    class createUser {
+    class c2 {
         private final String ENDPOINT = "/users";
 
         @Test
@@ -134,7 +136,7 @@ public class UserControllerTest extends ClientAuthUtils {
 
     @Nested
     @DisplayName("POST /users/authenticate")
-    class authenticateUser {
+    class c3 {
         private final String ENDPOINT = "/users/authenticate";
         @BeforeEach
         void setUp() {
@@ -195,9 +197,9 @@ public class UserControllerTest extends ClientAuthUtils {
     }
 
     @Nested
-    @DisplayName("PATCH /users/{userId}/password")
-    class patchUserPassword {
-        private final String ENDPOINT = "/users/1/password";
+    @DisplayName("PATCH /users/{userId}")
+    class c4 {
+        private final String ENDPOINT = "/users/1";
         private User user;
         @BeforeEach
         void setUp() {
@@ -207,12 +209,13 @@ public class UserControllerTest extends ClientAuthUtils {
         @Test
         @DisplayName("should change user's password")
         public void t200() throws UnexpectedException {
-            var patchPasswordRequest = new PatchPasswordRequest("Pass1234", "NewPass1");
+            var patchUserRequest = new PatchUserRequest("Pass1234", "NewPass1");
 
             webTestClient.patch()
                     .uri(ENDPOINT)
-                    .bodyValue(patchPasswordRequest)
+                    .header("Content-type", APPLICATION_JSON)
                     .header("Authorization", getAuthHeader())
+                    .bodyValue(patchUserRequest)
                     .exchange()
                     .expectStatus().isOk()
                     .expectBody().isEmpty();
@@ -228,12 +231,13 @@ public class UserControllerTest extends ClientAuthUtils {
         @Test
         @DisplayName("should throw BAD_REQUEST if data is invalid (validation test)")
         public void t400() throws UnexpectedException {
-            var patchPasswordRequest = new PatchPasswordRequest("Pass1234", "invalid");
+            var patchUserRequest = new PatchUserRequest("Pass1234", "invalid");
 
             webTestClient.patch()
                     .uri(ENDPOINT)
-                    .bodyValue(patchPasswordRequest)
+                    .header("Content-type", APPLICATION_JSON)
                     .header("Authorization", getAuthHeader())
+                    .bodyValue(patchUserRequest)
                     .exchange()
                     .expectStatus().isBadRequest()
                     .expectBody()
@@ -243,11 +247,11 @@ public class UserControllerTest extends ClientAuthUtils {
         @Test
         @DisplayName("should return 401 if no authorities are provided")
         public void t401() {
-            var patchPasswordRequest = new PatchPasswordRequest("Pass1234", "NewPass1");
+            var patchUserRequest = new PatchUserRequest("Pass1234", "NewPass1");
 
             webTestClient.patch()
                     .uri(ENDPOINT)
-                    .bodyValue(patchPasswordRequest)
+                    .bodyValue(patchUserRequest)
                     .exchange()
                     .expectStatus().isUnauthorized();
         }

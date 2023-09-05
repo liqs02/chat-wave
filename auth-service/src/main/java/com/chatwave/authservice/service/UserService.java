@@ -1,5 +1,6 @@
 package com.chatwave.authservice.service;
 
+import com.chatwave.authservice.domain.dto.PatchUserRequest;
 import com.chatwave.authservice.domain.session.Session;
 import com.chatwave.authservice.domain.user.User;
 import com.chatwave.authservice.domain.user.UserAuthentication;
@@ -37,10 +38,10 @@ public interface UserService {
 
     /**
      * Authenticates a user by id and password.
-     * Changes user's password.
+     * Patches user.
      *
-     * @param user with id and old password
-     * @param newPassword
+     * @param user with data to authenticate (id and password)
+     * @param newPassword to update a user
      */
-    void patchUserPassword(User user, String newPassword);
+    void patchUser(User user, String newPassword);
 }

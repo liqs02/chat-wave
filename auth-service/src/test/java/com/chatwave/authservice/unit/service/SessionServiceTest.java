@@ -48,7 +48,7 @@ public class SessionServiceTest {
 
     @Nested
     @DisplayName("createSession(user)")
-    class createSession {
+    class c1 {
         @Test
         @DisplayName("should create and return session")
         public void t1() {
@@ -73,7 +73,7 @@ public class SessionServiceTest {
 
     @Nested
     @DisplayName("refreshSession(refreshToken)")
-    class refreshSession {
+    class c2 {
         @Test
         @DisplayName("should refresh session")
         public void t1() {
@@ -145,8 +145,8 @@ public class SessionServiceTest {
     }
 
     @Nested
-    @DisplayName("getActiveSessionsByUserId(userId)")
-    class getUserCurrentSessions {
+    @DisplayName("getNotExpiredSessionsByUserId(userId)")
+    class c3 {
         @Test
         @DisplayName("should return all user's current sessions")
         public void t1() {
@@ -156,14 +156,14 @@ public class SessionServiceTest {
                     repository.findAllNotExpiredByUserId(1)
             ).thenReturn(sessions);
 
-            var result = service.getActiveSessionsByUserId(1);
+            var result = service.getNotExpiredSessionsByUserId(1);
             assertEquals(sessions, result);
         }
     }
 
     @Nested
-    @DisplayName("expireUserSessions(userId)")
-    class expireAllUserSessions {
+    @DisplayName("expireSessionsByUserId(userId)")
+    class c4 {
         @Test
         @DisplayName("should expire all unexpired user's session")
         public void t1() {
@@ -175,7 +175,7 @@ public class SessionServiceTest {
                     repository.findAllNotExpiredByUserId(1)
             ).thenReturn(List.of(session1, session2, session3));
 
-            service.expireUserSessions(1);
+            service.expireSessionsByUserId(1);
 
             var inOrder = inOrder(session1, session2, session3, repository);
 
@@ -203,13 +203,13 @@ public class SessionServiceTest {
                     repository.findAllNotExpiredByUserId(1)
             ).thenReturn(List.of());
 
-            service.expireUserSessions(1);
+            service.expireSessionsByUserId(1);
         }
     }
 
     @Nested
     @DisplayName("expireSession(sessionId, userId)")
-    class expireUserSession {
+    class c5 {
         @Test
         @DisplayName("should expire user's session")
         public void t1() {
@@ -225,7 +225,7 @@ public class SessionServiceTest {
                     session.getUser()
             ).thenReturn(user);
 
-            service.expireSession(1, 2L);
+            service.expireSession(2L, 1);
 
             verify(session, times(1))
                     .expire();
@@ -239,7 +239,7 @@ public class SessionServiceTest {
         public void t2() {
             var thrown = assertThrows(
                     ResponseStatusException.class,
-                    () -> service.expireSession(1, 2L)
+                    () -> service.expireSession(2L, 1)
             );
 
             assertEquals(NOT_FOUND, thrown.getStatusCode());
@@ -262,7 +262,7 @@ public class SessionServiceTest {
 
             var thrown = assertThrows(
                     ResponseStatusException.class,
-                    () -> service.expireSession(1, 2L)
+                    () -> service.expireSession(2L, 1)
             );
 
             assertEquals(NOT_FOUND, thrown.getStatusCode());
@@ -292,7 +292,7 @@ public class SessionServiceTest {
 
             var thrown = assertThrows(
                     ResponseStatusException.class,
-                    () -> service.expireSession(1, 2L)
+                    () -> service.expireSession(2L, 1)
             );
 
             assertEquals(BAD_REQUEST, thrown.getStatusCode());

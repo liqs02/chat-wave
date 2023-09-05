@@ -36,13 +36,13 @@ public class UserServiceImpl implements UserService {
             return null;
 
         if(!authHeader.startsWith("Bearer "))
-            throw new ResponseStatusException(UNAUTHORIZED, "Invalid accessToken.");
+            throw new ResponseStatusException(UNAUTHORIZED, "Invalid accessToken");
 
         var accessToken = authHeader.substring(7);
         var optionalSession = sessionRepository.findNotExpiredByAccessToken(accessToken);
 
         if(optionalSession.isEmpty())
-            throw new ResponseStatusException(UNAUTHORIZED, "Invalid accessToken.");
+            throw new ResponseStatusException(UNAUTHORIZED, "Invalid accessToken");
 
         var session = optionalSession.get();
         return new UserAuthentication(session, request);
@@ -53,14 +53,13 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public Session createUser(User user){
-        var optional = repository.findById(user.getId());
-        if(optional.isPresent()) {
+        if(repository.findById(user.getId()).isPresent()) {
             log.warn("Possible data inconsistency! Client tried to create user with busy ID: " + user.getId());
-            throw new ResponseStatusException(CONFLICT, "User with given id already exists.");
+            throw new ResponseStatusException(CONFLICT, "User with given id already exists");
         }
 
-        var hash = passwordEncoder.encode(user.getPassword());
-        user.setPassword(hash);
+        var encoded = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encoded);
 
         repository.save(user);
         log.info("new user has been created: " + user.getId());
@@ -73,18 +72,9 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public Session authenticateUser(User user) {
-        try {
-            authManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            user.getId(),
-                            user.getPassword()
-                    )
-            );
-        } catch(Exception e) {
-            throw new ResponseStatusException(BAD_REQUEST, "Invalid login or password.");
-        }
+        authenticate(user);
 
-        log.info("user has been authenticated: " + user.getId());
+        log.info("User has been authenticated: " + user.getId());
         return sessionService.createSession(user);
     }
 
@@ -94,7 +84,21 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     @SuppressWarnings("OptionalGetWithoutIsPresent")
-    public void patchUserPassword(User user, String newPassword) {
+    public void patchUser(User user, String newPassword) {
+        authenticate(user);
+        var founduser = repository.findById(user.getId()).get();
+
+        var encoded = passwordEncoder.encode(newPassword);
+        founduser.setPassword(encoded);
+
+        repository.save(founduser);
+    }
+
+    /**
+     * Authenticates user without creating a session.
+     * @param user with id and password
+     */
+    private void authenticate(User user) {
         try {
             authManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -103,14 +107,7 @@ public class UserServiceImpl implements UserService {
                     )
             );
         } catch(Exception e) {
-            throw new ResponseStatusException(BAD_REQUEST, "Invalid login or password.");
+            throw new ResponseStatusException(UNAUTHORIZED, "Invalid password");
         }
-
-        var found = repository.findById(user.getId()).get();
-
-        var hash = passwordEncoder.encode(newPassword);
-        found.setPassword(hash);
-
-        repository.save(found);
     }
 }

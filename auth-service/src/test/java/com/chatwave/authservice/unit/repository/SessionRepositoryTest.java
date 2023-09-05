@@ -97,7 +97,7 @@ public class SessionRepositoryTest {
 
     @Nested
     @DisplayName("findNotExpiredByAccessToken()")
-    class findNotExpiredByAccessToken {
+    class c1 {
         @Test
         @DisplayName("should returns valid session")
         public void t1() {
@@ -129,7 +129,7 @@ public class SessionRepositoryTest {
 
     @Nested
     @DisplayName("findNotExpiredByIdAndUserId( sessionId, userId )")
-    class findByIdAndUserId {
+    class c2 {
         @Test
         @DisplayName("should find session")
         public void t1() {
@@ -156,7 +156,7 @@ public class SessionRepositoryTest {
 
     @Nested
     @DisplayName("findAllExpiredWithAccessOrRefreshToken()")
-    class findAllExpiredWithAccessOrRefreshToken {
+    class c3 {
         @Test
         @DisplayName("should find expired sessions that have a accessToken or refreshToken")
         public void t1() {

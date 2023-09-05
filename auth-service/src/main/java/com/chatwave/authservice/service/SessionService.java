@@ -29,7 +29,7 @@ public interface SessionService {
      * @param userId
      * @return user's sessions
      */
-    List<Session> getActiveSessionsByUserId(Integer userId);
+    List<Session> getNotExpiredSessionsByUserId(Integer userId);
 
     /**
      * Finds not expired session of specified users.
@@ -37,7 +37,7 @@ public interface SessionService {
      *
      * @param userId
      */
-    void expireUserSessions(Integer userId);
+    void expireSessionsByUserId(Integer userId);
 
     /**
      * Expires session of specified user.
@@ -45,5 +45,5 @@ public interface SessionService {
      * @param sessionId
      * @param userId check value used to ensure that the session is owned by the user
      */
-    void expireSession(Integer userId, Long sessionId);
+    void expireSession(Long sessionId, Integer userId);
 }

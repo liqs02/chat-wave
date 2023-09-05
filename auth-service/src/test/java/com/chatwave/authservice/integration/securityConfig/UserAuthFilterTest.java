@@ -13,6 +13,8 @@ import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWeb
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
 @DisplayName("UserAuthFilter integration tests")
@@ -23,7 +25,7 @@ public class UserAuthFilterTest {
     private UserRepository userRepository;
     @Autowired
     private SessionRepository sessionRepository;
-    private final String ENDPOINT = "/users/1/sessions";
+    private final String ENDPOINT = "/sessions";
 
     private String accessToken;
 
@@ -51,6 +53,7 @@ public class UserAuthFilterTest {
     public void t1() {
         webTestClient.get()
                 .uri(ENDPOINT)
+                .header("Content-type", APPLICATION_JSON)
                 .header("User-Authorization", "Bearer " + accessToken)
                 .exchange()
                 .expectStatus().isOk();
