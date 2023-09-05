@@ -9,11 +9,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RestController
-@RequestMapping("/accounts")
+@RequestMapping(value = "/accounts", consumes = APPLICATION_JSON, produces = APPLICATION_JSON)
 @RequiredArgsConstructor
 public class AccountController {
     private final AccountService service;
@@ -44,9 +45,9 @@ public class AccountController {
         return mapper.toAccountShowcase(account);
     }
 
-    @PatchMapping("/{accountId}/password")
+    @PatchMapping("/{accountId}")
     @PreAuthorize("#accountId == authentication.principal")
-    public void patchAccountPassword(@PathVariable Integer accountId, @Valid @RequestBody PatchPasswordRequest patchPasswordRequest) {
-        service.patchAccountPassword(accountId, patchPasswordRequest);
+    public void patchAccount(@PathVariable Integer accountId, @Valid @RequestBody PatchAccountRequest patchAccountRequest) {
+        service.patchAccount(accountId, patchAccountRequest); // todo: add displayName patching
     }
 }

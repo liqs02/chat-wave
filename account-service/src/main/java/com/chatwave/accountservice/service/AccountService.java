@@ -1,7 +1,7 @@
 package com.chatwave.accountservice.service;
 
 import com.chatwave.accountservice.domain.Account;
-import com.chatwave.accountservice.domain.dto.PatchPasswordRequest;
+import com.chatwave.accountservice.domain.dto.PatchAccountRequest;
 import com.chatwave.accountservice.domain.dto.TokenSet;
 
 public interface AccountService {
@@ -40,10 +40,10 @@ public interface AccountService {
     Boolean doesAccountExist(Integer accountId);
 
     /**
-     * Changes password of user with given id.
+     * Patch password of user with given id.
      *
      * @param accountId
-     * @param patchPasswordRequest
+     * @param patchAccountRequest
      */
-    void patchAccountPassword(Integer accountId, PatchPasswordRequest patchPasswordRequest);
+    void patchAccount(Integer accountId, PatchAccountRequest patchAccountRequest);
 }

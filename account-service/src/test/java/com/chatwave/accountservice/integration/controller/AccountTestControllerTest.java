@@ -150,7 +150,7 @@ public class AccountTestControllerTest {
             var accountId = createAndSaveAccount().getId();
             mockUserAuthentication();
 
-            var patchPasswordRequest = new PatchPasswordRequest("Pass1234", "New12345");
+            var patchPasswordRequest = new PatchAccountRequest("Pass1234", "New12345");
 
             webTestClient.patch()
                     .uri("/accounts/{id}/password", accountId)
@@ -161,7 +161,7 @@ public class AccountTestControllerTest {
 
             verify(
                     authClient, times(1)
-            ).patchUserPassword(1, patchPasswordRequest);
+            ).patchUser(1, patchPasswordRequest);
         }
 
         @Test
@@ -170,7 +170,7 @@ public class AccountTestControllerTest {
             var accountId = createAndSaveAccount().getId();
             mockUserAuthentication();
 
-            var patchPasswordRequest = new PatchPasswordRequest("Pass1234", "New12345");
+            var patchPasswordRequest = new PatchAccountRequest("Pass1234", "New12345");
 
             webTestClient.patch()
                     .uri("/accounts/{id}/password", accountId + 1)

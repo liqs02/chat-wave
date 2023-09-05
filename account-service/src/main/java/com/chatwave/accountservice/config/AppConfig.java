@@ -13,6 +13,11 @@ import java.util.List;
 @Configuration
 public class AppConfig {
     @Bean
+    public List<String> activeProfiles(@Value("${spring.profiles.active}") List<String> activeProfiles) {
+        return activeProfiles;
+    }
+
+    @Bean
     public AccountMapper accountMapper() {
         return AccountMapper.INSTANCE;
     }
@@ -20,10 +25,5 @@ public class AppConfig {
     @Bean
     public UserAuthFilter userAuthFilter(@Autowired AuthClient authService) {
         return new UserAuthFilter(authService);
-    }
-
-    @Bean
-    public List<String> activeProfiles(@Value("${spring.profiles.active}") List<String> activeProfiles) {
-        return activeProfiles;
     }
 }

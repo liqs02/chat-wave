@@ -4,7 +4,7 @@ import com.chatwave.accountservice.client.AuthClient;
 import com.chatwave.accountservice.domain.Account;
 import com.chatwave.accountservice.domain.dto.AuthenticateUserRequest;
 import com.chatwave.accountservice.domain.dto.CreateUserRequest;
-import com.chatwave.accountservice.domain.dto.PatchPasswordRequest;
+import com.chatwave.accountservice.domain.dto.PatchAccountRequest;
 import com.chatwave.accountservice.domain.dto.TokenSet;
 import com.chatwave.accountservice.repository.AccountRepository;
 import feign.FeignException;
@@ -87,7 +87,7 @@ public class AccountServiceImpl implements AccountService {
      * {@inheritDoc}
      */
     @Override
-    public void patchAccountPassword(Integer accountId, PatchPasswordRequest patchPasswordRequest) {
-        authService.patchUserPassword(accountId, patchPasswordRequest);
+    public void patchAccount(Integer accountId, PatchAccountRequest patchAccountRequest) {
+        authService.patchUser(accountId, patchAccountRequest);
     }
 }

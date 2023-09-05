@@ -4,7 +4,7 @@ import com.chatwave.accountservice.client.AuthClient;
 import com.chatwave.accountservice.domain.Account;
 import com.chatwave.accountservice.domain.dto.AuthenticateUserRequest;
 import com.chatwave.accountservice.domain.dto.CreateUserRequest;
-import com.chatwave.accountservice.domain.dto.PatchPasswordRequest;
+import com.chatwave.accountservice.domain.dto.PatchAccountRequest;
 import com.chatwave.accountservice.domain.dto.TokenSet;
 import com.chatwave.accountservice.repository.AccountRepository;
 import com.chatwave.accountservice.service.AccountServiceImpl;
@@ -134,14 +134,14 @@ public class AccountServiceTest {
     }
 
     @Test
-    @DisplayName("patchAccountPassword() should change password in auth service")
+    @DisplayName("patchAccount() should change password in auth service")
     public void t3() {
-        var patchPasswordRequest = new PatchPasswordRequest("pass", "new");
+        var patchPasswordRequest = new PatchAccountRequest("pass", "new");
 
-        service.patchAccountPassword(1, patchPasswordRequest);
+        service.patchAccount(1, patchPasswordRequest);
 
         verify(
                 authService, times(1)
-        ).patchUserPassword(1, patchPasswordRequest);
+        ).patchUser(1, patchPasswordRequest);
     }
 }

@@ -121,14 +121,14 @@ public class AccountTestControllerTest {
         }
 
         @Test
-        @DisplayName("patchAccountPassword() should invoke service's change password method")
+        @DisplayName("patchAccount() should invoke service's change password method")
         public void patchAccountPassword() {
-                var patchPasswordRequest = new PatchPasswordRequest("pass", "new");
+                var patchPasswordRequest = new PatchAccountRequest("pass", "new");
 
-                controller.patchAccountPassword(1, patchPasswordRequest);
+                controller.patchAccount(1, patchPasswordRequest);
 
                 verify(
                         service
-                ).patchAccountPassword(1, patchPasswordRequest);
+                ).patchAccount(1, patchPasswordRequest);
         }
 }
