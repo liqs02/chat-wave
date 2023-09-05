@@ -24,7 +24,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @AutoConfigureWebTestClient
 @DisplayName("AccountController integration tests")
-public class AccountControllerTest {
+public class AccountTestControllerTest {
     @Autowired
     private WebTestClient webTestClient;
     @Autowired

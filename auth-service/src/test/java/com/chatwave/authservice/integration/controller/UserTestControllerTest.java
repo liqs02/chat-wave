@@ -7,7 +7,7 @@ import com.chatwave.authservice.domain.dto.PatchUserRequest;
 import com.chatwave.authservice.domain.dto.TokenSetResponse;
 import com.chatwave.authservice.domain.session.Session;
 import com.chatwave.authservice.domain.user.User;
-import com.chatwave.authservice.integration.utils.ClientAuthUtils;
+import com.chatwave.authservice.utils.ClientAuthUtils;
 import com.chatwave.authservice.repository.SessionRepository;
 import com.chatwave.authservice.repository.UserRepository;
 import org.junit.jupiter.api.*;
@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Notice that UserAuthentication domain is taken from auth-client library to check that object will be correctly form.
  */
 @DisplayName("UserController integration tests")
-public class UserControllerTest extends ClientAuthUtils {
+public class UserTestControllerTest extends ClientAuthUtils {
     @Autowired
     private UserRepository userRepository;
     @Autowired

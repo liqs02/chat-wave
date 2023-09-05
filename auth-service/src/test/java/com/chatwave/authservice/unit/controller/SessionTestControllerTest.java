@@ -25,7 +25,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("SessionController")
-public class SessionControllerTest {
+public class SessionTestControllerTest {
     @InjectMocks
     private SessionController controller;
     @Mock

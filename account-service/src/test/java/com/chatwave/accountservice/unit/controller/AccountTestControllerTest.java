@@ -22,8 +22,8 @@ import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @ExtendWith(MockitoExtension.class)
-@DisplayName("AccountControllerTest")
-public class AccountControllerTest {
+@DisplayName("AccountTestControllerTest")
+public class AccountTestControllerTest {
         @InjectMocks
         private AccountController controller;
         @Mock

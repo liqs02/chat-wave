@@ -4,7 +4,7 @@ import com.chatwave.authservice.domain.dto.RefreshSessionRequest;
 import com.chatwave.authservice.domain.dto.SessionResponse;
 import com.chatwave.authservice.domain.dto.TokenSetResponse;
 import com.chatwave.authservice.domain.session.Session;
-import com.chatwave.authservice.integration.utils.UserAuthUtils;
+import com.chatwave.authservice.utils.UserAuthUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * Too deeper understanding tests look at {@link  UserAuthUtils}
  */
 @DisplayName("SessionController integration tests")
-public class SessionControllerTest extends UserAuthUtils {
+public class SessionTestControllerTest extends UserAuthUtils {
     @Nested
     @DisplayName("GET /sessions")
     class getActiveSessionsByUserId {

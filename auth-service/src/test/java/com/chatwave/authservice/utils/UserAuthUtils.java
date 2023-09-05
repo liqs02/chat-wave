@@ -1,4 +1,4 @@
-package com.chatwave.authservice.integration.utils;
+package com.chatwave.authservice.utils;
 
 import com.chatwave.authservice.domain.session.Session;
 import com.chatwave.authservice.domain.user.User;

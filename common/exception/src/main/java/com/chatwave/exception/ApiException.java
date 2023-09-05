@@ -9,9 +9,9 @@ import static java.time.temporal.ChronoUnit.SECONDS;
 
 @Getter
 public class ApiException {
-    private String message;
-    private HttpStatusCode status;
-    private LocalDateTime timestamp;
+    private final String message;
+    private final HttpStatusCode status;
+    private final LocalDateTime timestamp;
 
     public ApiException(String message, HttpStatusCode status) {
         this.message = message;

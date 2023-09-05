@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("ChatController")
-public class ChatControllerTest {
+public class ChatTestControllerTest {
     @InjectMocks
     private ChatController controller;
     @Mock

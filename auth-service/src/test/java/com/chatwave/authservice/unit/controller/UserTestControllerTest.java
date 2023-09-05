@@ -25,7 +25,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("UserController")
-public class UserControllerTest {
+public class UserTestControllerTest {
     @InjectMocks
     private UserController controller;
     @Mock

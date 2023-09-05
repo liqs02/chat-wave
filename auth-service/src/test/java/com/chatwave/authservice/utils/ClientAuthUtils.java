@@ -1,4 +1,4 @@
-package com.chatwave.authservice.integration.utils;
+package com.chatwave.authservice.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
