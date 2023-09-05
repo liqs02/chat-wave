@@ -36,7 +36,6 @@ public class SessionControllerTest extends UserAuthUtils {
         public void t200() {
             var sessions = webTestClient.get()
                     .uri("/sessions")
-                    .header("Content-type", APPLICATION_JSON)
                     .header("User-Authorization", getAuthHeader())
                     .exchange()
                     .expectStatus().isOk()
@@ -74,7 +73,6 @@ public class SessionControllerTest extends UserAuthUtils {
         public void t200() {
             var tokenSet = webTestClient.post()
                     .uri("/sessions/refresh")
-                    .header("Content-type", APPLICATION_JSON)
                     .bodyValue(new RefreshSessionRequest(session.getRefreshToken()))
                     .exchange()
                     .expectStatus().isOk()
@@ -105,7 +103,6 @@ public class SessionControllerTest extends UserAuthUtils {
         public void t200() {
             webTestClient.delete()
                     .uri("/sessions")
-                    .header("Content-type", APPLICATION_JSON)
                     .header("User-Authorization", getAuthHeader())
                     .exchange()
                     .expectStatus().isOk();
@@ -130,7 +127,6 @@ public class SessionControllerTest extends UserAuthUtils {
         public void t200() {
             webTestClient.delete()
                     .uri("/sessions/{id}", session.getId())
-                    .header("Content-type", APPLICATION_JSON)
                     .header("User-Authorization", getAuthHeader())
                     .exchange()
                     .expectStatus().isOk();
@@ -146,7 +142,6 @@ public class SessionControllerTest extends UserAuthUtils {
         public void t404() {
             webTestClient.delete()
                     .uri("/sessions/{id}", session.getId() + 1)
-                    .header("Content-type", APPLICATION_JSON)
                     .header("User-Authorization", getAuthHeader())
                     .exchange()
                     .expectStatus().isNotFound();

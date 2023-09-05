@@ -61,7 +61,6 @@ public class UserControllerTest extends ClientAuthUtils {
 
             var userAuthentication = webTestClient.get()
                     .uri("/users/authentication")
-                    .header("Content-type", APPLICATION_JSON)
                     .header("Authorization", getAuthHeader())
                     .header("User-Authorization", "Bearer " + session.getAccessToken())
                     .exchange()
@@ -213,7 +212,6 @@ public class UserControllerTest extends ClientAuthUtils {
 
             webTestClient.patch()
                     .uri(ENDPOINT)
-                    .header("Content-type", APPLICATION_JSON)
                     .header("Authorization", getAuthHeader())
                     .bodyValue(patchUserRequest)
                     .exchange()
@@ -235,7 +233,6 @@ public class UserControllerTest extends ClientAuthUtils {
 
             webTestClient.patch()
                     .uri(ENDPOINT)
-                    .header("Content-type", APPLICATION_JSON)
                     .header("Authorization", getAuthHeader())
                     .bodyValue(patchUserRequest)
                     .exchange()
