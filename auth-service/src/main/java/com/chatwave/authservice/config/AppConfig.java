@@ -4,6 +4,7 @@ import com.chatwave.authservice.domain.session.SessionMapper;
 import com.chatwave.authservice.domain.user.UserMapper;
 import com.chatwave.authservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,9 +22,11 @@ import java.util.List;
 import static java.lang.Integer.parseInt;
 
 @Configuration
-@RequiredArgsConstructor
 public class AppConfig {
-    private final UserRepository userRepository;
+    @Bean
+    public List<String> activeProfile(@Value("${spring.profiles.active}") List<String> activeProfile) {
+        return activeProfile;
+    }
 
     @Bean
     public UserMapper userMapper() {
@@ -41,26 +44,20 @@ public class AppConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    public AuthenticationProvider authenticationProvider(final UserDetailsService userDetailsService) {
+        var authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
     }
-
     @Bean
-    public UserDetailsService userDetailsService() {
-        return user -> userRepository.findById(parseInt(user))
+    public UserDetailsService userDetailsService(final UserRepository userRepository) {
+        return userId -> userRepository.findById(parseInt(userId))
                 .orElseThrow(() ->  new UsernameNotFoundException("User with given id does not exist."));
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider() {
-        var authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService());
-        authProvider.setPasswordEncoder(passwordEncoder());
-        return authProvider;
-    }
-
-    @Bean
-    public List<String> activeProfile(@Value("${spring.profiles.active}") List<String> activeProfile) {
-        return activeProfile;
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }
