@@ -13,14 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 @FeignClient("auth-service")
-@RequestMapping(consumes = APPLICATION_JSON, produces = APPLICATION_JSON)
 public interface AuthClient extends com.chatwave.authclient.client.AuthClient {
-    @PostMapping(value = "/users")
+    @PostMapping(value = "/users", consumes = APPLICATION_JSON, produces = APPLICATION_JSON)
     TokenSet createUser(CreateUserRequest createUserRequest);
 
-    @PostMapping(value = "/users/authenticate")
+    @PostMapping(value = "/users/authenticate", consumes = APPLICATION_JSON, produces = APPLICATION_JSON)
     TokenSet authenticateUser(AuthenticateUserRequest authenticateUserRequest);
 
-    @PatchMapping(value = "/users/{userId}")
+    @PatchMapping(value = "/users/{userId}", consumes = APPLICATION_JSON, produces = APPLICATION_JSON)
     void patchUser(@PathVariable Integer userId, PatchAccountRequest patchAccountRequest);
 }

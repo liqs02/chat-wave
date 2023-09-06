@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 @FeignClient("account-service")
-@RequestMapping(consumes = APPLICATION_JSON, produces = APPLICATION_JSON)
 public interface AccountClient {
-    @GetMapping("/{accountId}/exist")
+    @GetMapping(value = "/{accountId}/exist", consumes = APPLICATION_JSON, produces = APPLICATION_JSON)
     void doesAccountExist(@PathVariable Integer accountId);
 }
