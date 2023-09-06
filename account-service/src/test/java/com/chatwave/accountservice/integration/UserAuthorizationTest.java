@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.mockito.Mockito.when;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
@@ -33,6 +34,7 @@ public class UserAuthorizationTest {
         ).thenReturn(userAuthentication);
 
         webTestClient.get().uri("/accounts/1/showcase")
+                .header("Content-type", APPLICATION_JSON)
                 .header("User-Authorization", "Bearer accessToken")
                 .exchange()
                 .expectStatus().isNotFound();

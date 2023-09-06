@@ -16,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -129,6 +130,7 @@ public class AccountTestControllerTest {
 
             var result = webTestClient.get()
                     .uri("/accounts/{id}/showcase", accountId)
+                    .header("Content-type", APPLICATION_JSON)
                     .header("User-Authorization", "Bearer accessToken")
                     .exchange()
                     .expectStatus().isOk()
@@ -142,7 +144,7 @@ public class AccountTestControllerTest {
     }
 
     @Nested
-    @DisplayName("PATCH /accounts/{accountId}/password")
+    @DisplayName("PATCH /accounts/{accountId}")
     public class patchAccountPassword {
         @Test
         @DisplayName("should update user's password")
@@ -153,7 +155,7 @@ public class AccountTestControllerTest {
             var patchPasswordRequest = new PatchAccountRequest("Pass1234", "New12345");
 
             webTestClient.patch()
-                    .uri("/accounts/{id}/password", accountId)
+                    .uri("/accounts/{id}", accountId)
                     .bodyValue(patchPasswordRequest)
                     .header("User-Authorization", "Bearer accessToken")
                     .exchange()
@@ -173,7 +175,7 @@ public class AccountTestControllerTest {
             var patchPasswordRequest = new PatchAccountRequest("Pass1234", "New12345");
 
             webTestClient.patch()
-                    .uri("/accounts/{id}/password", accountId + 1)
+                    .uri("/accounts/{id}", accountId + 1)
                     .bodyValue(patchPasswordRequest)
                     .header("User-Authorization", "Bearer accessToken")
                     .exchange()

@@ -7,7 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @EnableFeignClients
-@ComponentScan({"com.chatwave.chatservice","com.chatwave.exception"})
+@ComponentScan({"com.chatwave.chatservice", "com.chatwave.exception"})
 public class ChatServiceApplication {
 
     public static void main(String[] args) {
