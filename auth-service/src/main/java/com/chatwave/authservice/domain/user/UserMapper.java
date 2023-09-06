@@ -18,5 +18,6 @@ public interface UserMapper {
     User toUser(AuthenticateUserRequest authenticateUserRequest);
 
     @Mapping(source = "userId", target = "id")
+    @Mapping(target = "authorities", ignore = true)
     User toUser(Integer userId, PatchUserRequest patchUserRequest);
 }
