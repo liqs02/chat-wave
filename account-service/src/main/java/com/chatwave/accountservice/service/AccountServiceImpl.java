@@ -86,7 +86,6 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     @Override
     public void patchAccount(Integer accountId, PatchAccountRequest patchAccountRequest) {
-        // todo: add tests
         var displayName = patchAccountRequest.displayName();
         if(displayName != null) {
             var account = repository.findById(accountId)

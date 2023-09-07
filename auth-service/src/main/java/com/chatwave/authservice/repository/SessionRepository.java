@@ -19,8 +19,11 @@ public interface SessionRepository extends JpaRepository<Session, Long>  {
     @Query("SELECT s FROM Session s WHERE s.accessToken = ?1 AND CURRENT_TIMESTAMP < s.accessTokenExpireDate AND CURRENT_DATE < s.expireDate")
     Optional<Session> findNotExpiredByAccessToken(String accessToken);
 
+    /**
+     * @return all expired sessions which accessToken or refreshToken is not null
+     */
     @Query("SELECT s FROM Session s WHERE s.expireDate <= CURRENT_DATE AND (s.accessToken != null or s.refreshToken != null)")
-    List<Session> findAllExpiredWithAccessOrRefreshToken();
+    List<Session> findAllExpiredNotCleaned();
 
     @Query("SELECT s FROM Session s WHERE s.user.id = ?1 AND CURRENT_DATE < s.expireDate")
     List<Session> findAllNotExpiredByUserId(Integer userId);
