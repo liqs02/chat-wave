@@ -33,7 +33,7 @@ public class AccountController {
     }
 
     @GetMapping("/{accountId}/exist")
-    @PreAuthorize("hasAuthority('SCOPE_server')") // todo: add integration tests
+    @PreAuthorize("hasAuthority('SCOPE_server')")
     public void doesAccountExist(@PathVariable Integer accountId) {
         var doesExist = service.doesAccountExist(accountId);
         if(!doesExist) throw new ResponseStatusException(NOT_FOUND, "User with given id does not exist");
