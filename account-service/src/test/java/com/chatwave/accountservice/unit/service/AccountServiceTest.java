@@ -2,10 +2,7 @@ package com.chatwave.accountservice.unit.service;
 
 import com.chatwave.accountservice.client.AuthClient;
 import com.chatwave.accountservice.domain.Account;
-import com.chatwave.accountservice.domain.dto.AuthenticateUserRequest;
-import com.chatwave.accountservice.domain.dto.CreateUserRequest;
-import com.chatwave.accountservice.domain.dto.PatchAccountRequest;
-import com.chatwave.accountservice.domain.dto.TokenSet;
+import com.chatwave.accountservice.domain.dto.*;
 import com.chatwave.accountservice.repository.AccountRepository;
 import com.chatwave.accountservice.service.AccountServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -134,14 +131,28 @@ public class AccountServiceTest {
     }
 
     @Test
-    @DisplayName("patchAccount() should change password in auth service")
+    @DisplayName("patchAccount() should update user's displayName and password")
     public void t3() {
-        var patchPasswordRequest = new PatchAccountRequest("pass", "new");
+        var patchAccountRequest = new PatchAccountRequest("display", "pass", "new");
 
-        service.patchAccount(1, patchPasswordRequest);
+        var account = new Account();
+        account.setId(1);
+        account.setLoginName("loginName");
+
+        when(
+                repository.findById(1)
+        ).thenReturn(Optional.of(account));
+
+        service.patchAccount(1, patchAccountRequest);
+
+        account.setDisplayName("display");
+
+        verify(
+                repository, times(1)
+        ).save(account);
 
         verify(
                 authService, times(1)
-        ).patchUser(1, patchPasswordRequest);
+        ).patchUser(1, new PatchUserRequest("pass", "new"));
     }
 }

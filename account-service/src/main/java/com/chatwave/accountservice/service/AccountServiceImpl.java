@@ -2,10 +2,7 @@ package com.chatwave.accountservice.service;
 
 import com.chatwave.accountservice.client.AuthClient;
 import com.chatwave.accountservice.domain.Account;
-import com.chatwave.accountservice.domain.dto.AuthenticateUserRequest;
-import com.chatwave.accountservice.domain.dto.CreateUserRequest;
-import com.chatwave.accountservice.domain.dto.PatchAccountRequest;
-import com.chatwave.accountservice.domain.dto.TokenSet;
+import com.chatwave.accountservice.domain.dto.*;
 import com.chatwave.accountservice.repository.AccountRepository;
 import feign.FeignException;
 import jakarta.transaction.Transactional;
@@ -86,8 +83,20 @@ public class AccountServiceImpl implements AccountService {
     /**
      * {@inheritDoc}
      */
+    @Transactional
     @Override
     public void patchAccount(Integer accountId, PatchAccountRequest patchAccountRequest) {
-        authService.patchUser(accountId, patchAccountRequest);
+        // todo: add tests
+        var displayName = patchAccountRequest.displayName();
+        if(displayName != null) {
+            var account = repository.findById(accountId)
+                    .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Account with given id does not exist."));
+            account.setDisplayName(displayName);
+            repository.save(account);
+        }
+        if(patchAccountRequest.password() != null && patchAccountRequest.newPassword() != null) {
+            var patchUserRequest = new PatchUserRequest(patchAccountRequest.password(), patchAccountRequest.newPassword());
+            authService.patchUser(accountId, patchUserRequest);
+        }
     }
 }
