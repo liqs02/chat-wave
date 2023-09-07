@@ -48,6 +48,6 @@ public class AccountController {
     @PatchMapping("/{accountId}")
     @PreAuthorize("#accountId == authentication.principal")
     public void patchAccount(@PathVariable Integer accountId, @Valid @RequestBody PatchAccountRequest patchAccountRequest) {
-        service.patchAccount(accountId, patchAccountRequest); // todo: add displayName patching
+        service.patchAccount(accountId, patchAccountRequest);
     }
 }

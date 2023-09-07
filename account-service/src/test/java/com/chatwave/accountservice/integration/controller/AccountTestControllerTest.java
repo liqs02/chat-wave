@@ -6,15 +6,17 @@ import com.chatwave.accountservice.domain.dto.*;
 import com.chatwave.accountservice.repository.AccountRepository;
 import com.chatwave.authclient.domain.UserAuthentication;
 import com.chatwave.authclient.domain.UserAuthenticationDetails;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import feign.FeignException;
+import feign.Request;
+import feign.RequestTemplate;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
+
+import java.util.HashMap;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.junit.jupiter.api.Assertions.*;
@@ -44,21 +46,17 @@ public class AccountTestControllerTest {
         account.setDisplayName("displayName");
 
         accountRepository.save(account);
-        return account;
-    }
 
-    private void mockUserAuthentication() {
         var userAuthentication = new UserAuthentication();
-
-        userAuthentication.setUserId(1);
+        userAuthentication.setUserId(account.getId());
         userAuthentication.setDetails(new UserAuthenticationDetails());
 
         when(
                 authClient.getUserAuthentication("Bearer accessToken")
         ).thenReturn(userAuthentication);
+
+        return account;
     }
-
-
 
     @Nested
     @DisplayName("POST /accounts")
@@ -126,7 +124,6 @@ public class AccountTestControllerTest {
         @DisplayName("should return information about user")
         public void t1() {
             var accountId = createAndSaveAccount().getId();
-            mockUserAuthentication();
 
             var result = webTestClient.get()
                     .uri("/accounts/{id}/showcase", accountId)
@@ -146,37 +143,60 @@ public class AccountTestControllerTest {
     @Nested
     @DisplayName("PATCH /accounts/{accountId}")
     public class patchAccountPassword {
+        private final String ENDPOINT = "/accounts/{accountId}";
+        private Integer accountId;
+
+        @BeforeEach
+        void setUp() {
+            accountId = createAndSaveAccount().getId();
+        }
+
         @Test
-        @DisplayName("should update user's password")
-        public void t1() {
-            var accountId = createAndSaveAccount().getId();
-            mockUserAuthentication();
-
-            var patchPasswordRequest = new PatchUserRequest("Pass1234", "New12345");
-
+        @DisplayName("should update user's displayName and password")
+        public void t200() {
             webTestClient.patch()
-                    .uri("/accounts/{id}", accountId)
-                    .bodyValue(patchPasswordRequest)
+                    .uri(ENDPOINT, accountId)
+                    .bodyValue(new PatchAccountRequest("newName", "Pass1234", "New12345"))
                     .header("User-Authorization", "Bearer accessToken")
                     .exchange()
                     .expectStatus().isOk();
 
             verify(
                     authClient, times(1)
-            ).patchUser(1, patchPasswordRequest);
+            ).patchUser(1, new PatchUserRequest("Pass1234", "New12345"));
+
+            var account = accountRepository.findById(accountId);
+            assertTrue(account.isPresent());
+            assertEquals("newName", account.get().getDisplayName());
+        }
+
+        @Test
+        @DisplayName("should do not update displayName if feignClient will throw exception")
+        public void t400() {
+            var request = Request.create(Request.HttpMethod.PATCH, "auth-service", new HashMap<>(), null, new RequestTemplate());
+
+            doThrow(new FeignException.BadRequest("Message", request, null, null))
+                    .when(authClient)
+                    .patchUser(accountId, new PatchUserRequest("Pass1234", "New12345"));
+
+            webTestClient.patch()
+                    .uri(ENDPOINT, accountId)
+                    .bodyValue(new PatchAccountRequest("newName","Pass1234", "New12345"))
+                    .header("User-Authorization", "Bearer accessToken")
+                    .exchange()
+                    .expectStatus().isBadRequest();
+
+            var account = accountRepository.findById(accountId);
+            assertTrue(account.isPresent());
+            assertEquals("displayName", account.get().getDisplayName());
         }
 
         @Test
         @DisplayName("should return 403 if user wants to update other user's password")
-        public void t2() {
-            var accountId = createAndSaveAccount().getId();
-            mockUserAuthentication();
-
-            var patchPasswordRequest = new PatchUserRequest("Pass1234", "New12345");
-
+        public void t403() {
             webTestClient.patch()
-                    .uri("/accounts/{id}", accountId + 1)
-                    .bodyValue(patchPasswordRequest)
+                    .uri(ENDPOINT, accountId + 1)
+                    .bodyValue(new PatchUserRequest("Pass1234", "New12345"))
                     .header("User-Authorization", "Bearer accessToken")
                     .exchange()
                     .expectStatus().isForbidden();
