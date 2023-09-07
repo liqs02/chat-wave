@@ -1,4 +1,4 @@
-package com.chatwave.authservice.unit.repository;
+package com.chatwave.authservice.integration.repository;
 
 import com.chatwave.authservice.domain.session.Session;
 import com.chatwave.authservice.domain.user.User;
@@ -155,7 +155,7 @@ public class SessionRepositoryTest {
     }
 
     @Nested
-    @DisplayName("findAllExpiredWithAccessOrRefreshToken()")
+    @DisplayName("findAllExpiredNotCleaned()")
     class c3 {
         @Test
         @DisplayName("should find expired sessions that have a accessToken or refreshToken")
@@ -178,7 +178,7 @@ public class SessionRepositoryTest {
             repository.saveAll(List.of(session1, session2, session3));
 
 
-            var found = repository.findAllExpiredWithAccessOrRefreshToken();
+            var found = repository.findAllExpiredNotCleaned();
             assertEquals(
                     List.of(session1, session2), found
             );

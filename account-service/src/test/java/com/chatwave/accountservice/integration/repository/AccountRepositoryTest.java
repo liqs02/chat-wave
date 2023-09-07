@@ -1,4 +1,4 @@
-package com.chatwave.accountservice.unit.repository;
+package com.chatwave.accountservice.integration.repository;
 
 import com.chatwave.accountservice.client.AuthClient;
 import com.chatwave.accountservice.domain.Account;
