@@ -5,10 +5,7 @@ import com.chatwave.authservice.domain.dto.SessionResponse;
 import com.chatwave.authservice.domain.dto.TokenSetResponse;
 import com.chatwave.authservice.domain.session.Session;
 import com.chatwave.authservice.utils.UserAuthUtils;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.time.LocalDateTime;
 
@@ -29,6 +26,12 @@ public class SessionTestControllerTest extends UserAuthUtils {
         void setUp() {
             secondSession = new Session(userRepository.findById(1).get());
             sessionRepository.save(secondSession);
+        }
+
+        @AfterEach
+        void tearDown() {
+            sessionRepository.deleteAll();
+            userRepository.deleteAll();
         }
 
         @Test
