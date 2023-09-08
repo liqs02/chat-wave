@@ -1,9 +1,7 @@
 package com.chatwave.authservice.unit.service;
 
-import com.chatwave.authservice.domain.session.Session;
 import com.chatwave.authservice.domain.user.User;
 import com.chatwave.authservice.repository.UserRepository;
-import com.chatwave.authservice.service.SessionService;
 import com.chatwave.authservice.service.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -21,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
+import static com.chatwave.authservice.utils.TestVariables.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -28,55 +27,58 @@ import static org.mockito.Mockito.*;
 @DisplayName("UserService")
 public class UserServiceTest {
     @InjectMocks
-    private UserServiceImpl service;
+    private UserServiceImpl userService;
     @Mock
-    private UserRepository repository;
+    private UserRepository userRepository;
     @Mock
     private PasswordEncoder passwordEncoder;
     @Mock
-    private SessionService sessionService;
-    @Mock
     private AuthenticationManager authManager;
+
     private User user;
-    private Session session;
 
     @BeforeEach
     void setup() {
         user = new User();
-        user.setId(1);
-        user.setPassword("pass");
-
-        session = new Session(user);
-        session.setId(1L);
+        user.setLoginName(LOGIN_NAME);
+        user.setPassword(PASSWORD);
     }
 
     @Nested
-    @DisplayName("createUser( user )")
+    @DisplayName("createUser(user)")
     class c1 {
         @Test
         @DisplayName("should create user, return new session")
          void t1() {
             when(
-                passwordEncoder.encode("pass")
-            ).thenReturn("encoded");
+                    passwordEncoder.encode(PASSWORD)
+            ).thenReturn(ENCODED);
 
             when(
-                sessionService.createSession(user)
-            ).thenReturn(session);
+                    userRepository.save( user )
+            ).thenAnswer(i -> {
+                var user = (User) i.getArgument(0);
+                user.setId(1);
+                return user;
+            });
 
-            var result = service.createUser(user);
+            var userWithId = user;
+            userWithId.setId(USER_ID);
 
-            assertEquals(session, result);
 
-            var captor = ArgumentCaptor.forClass(User.class);
+            when(
+                    userRepository.save(user)
+            ).thenReturn(userWithId);
+
+            var result = userService.createUser(user);
+
+            assertEquals(user, result);
 
             verify(passwordEncoder, times(1))
-                    .encode("pass");
+                    .encode(PASSWORD);
 
-            verify(repository, times(1))
-                    .save(captor.capture());
-
-            assertEquals("encoded", captor.getValue().getPassword());
+            verify(userRepository, times(1))
+                    .save(user);
         }
 
         @Test
@@ -84,69 +86,69 @@ public class UserServiceTest {
          void t2() {
             user.setPassword(null);
 
-            when(repository.findById( eq(1) ))
+            when(userRepository.findByLoginName(LOGIN_NAME))
                     .thenReturn(Optional.of(user));
 
             var thrown = assertThrows(
                     ResponseStatusException.class,
-                    () -> service.createUser(user)
+                    () -> userService.createUser(user)
             );
 
-            assertTrue(thrown.getMessage().contains("id"));
+            assertTrue(thrown.getMessage().contains("loginName"));
             assertTrue(thrown.getMessage().contains("exists"));
         }
     }
 
     @Nested
-    @DisplayName("authenticateUser( user )")
+    @DisplayName("authenticateUser(user)")
     class c2 {
         @Test
-        @DisplayName("should authenticate a user and return new session")
+        @DisplayName("should authenticate a user and return a user")
          void t1() {
             when(
-                    sessionService.createSession(user)
-            ).thenReturn(session);
+                    userRepository.findByLoginName(LOGIN_NAME)
+            ).thenReturn(Optional.of(user));
 
-            var result = service.authenticateUser(user);
+            var result = userService.authenticateUser(user);
 
-            assertEquals(1L, result.getId());
+            assertEquals(user, result);
 
             verify(
                     authManager, times(1)
             ).authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            1,
-                           "pass"
-                    )
+                    new UsernamePasswordAuthenticationToken(LOGIN_NAME, PASSWORD)
             );
         }
     }
 
     @Nested
-    @DisplayName("patchUser( user, new password )")
+    @DisplayName("updateUserPassword(user, newPassword)")
     class c3 {
         @Test
         @DisplayName("should authenticate user and change password")
         void t1() {
+            user.setId(1);
+
             when(
-                    repository.findById(1)
+                    userRepository.findById(USER_ID)
             ).thenReturn(Optional.of(user));
 
             when(
-                    passwordEncoder.encode("new")
-            ).thenReturn("encoded");
+                    passwordEncoder.encode(PASSWORD)
+            ).thenReturn(ENCODED);
 
-            service.patchUser(user, "new");
+
+            userService.updateUserPassword(USER_ID, PASSWORD);
 
             var captor = ArgumentCaptor.forClass(User.class);
 
             verify(passwordEncoder, times(1))
-                    .encode("new");
+                    .encode(PASSWORD);
 
-            verify(repository, times(1))
+            verify(userRepository, times(1))
                     .save(captor.capture());
 
-            assertEquals("encoded", captor.getValue().getPassword());
+            assertEquals(ENCODED, captor.getValue().getPassword());
         }
     }
 }

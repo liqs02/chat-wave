@@ -1,8 +1,10 @@
 package com.chatwave.authservice.service;
 
 import com.chatwave.authservice.domain.session.Session;
-import com.chatwave.authservice.domain.user.User;
+import com.chatwave.authservice.domain.user.UserAuthentication;
 import com.chatwave.authservice.repository.SessionRepository;
+import com.chatwave.authservice.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -10,23 +12,25 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.*;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class SessionServiceImpl implements SessionService {
-    private final SessionRepository repository;
+    private final SessionRepository sessionRepository;
+    private final UserRepository userRepository;
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Session createSession(User user) {
-        var session = new Session(user);
+    public Session createSession(Integer userId) {
+        var user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, "User with given id does not exist."));
 
-        repository.save(session);
+        var session = new Session(user);
+        sessionRepository.save(session);
         log.info("new session has been created: " + session.getId());
 
         return session;
@@ -37,7 +41,7 @@ public class SessionServiceImpl implements SessionService {
      */
     @Override
     public Session refreshSession(String refreshToken)  {
-        var session = repository.findByRefreshToken(refreshToken)
+        var session = sessionRepository.findByRefreshToken(refreshToken)
                 .orElseThrow(() -> new ResponseStatusException(BAD_REQUEST, "Invalid refresh token."));
 
         if(!session.isAccessTokenExpired() || session.isExpired()) {
@@ -46,7 +50,7 @@ public class SessionServiceImpl implements SessionService {
         }
 
         session.refreshTokens();
-        repository.save(session);
+        sessionRepository.save(session);
 
         return session;
     }
@@ -55,8 +59,27 @@ public class SessionServiceImpl implements SessionService {
      * {@inheritDoc}
      */
     @Override
+    public UserAuthentication getAuthentication(HttpServletRequest request) {
+        var authHeader = request.getHeader("User-Authorization");
+        if(authHeader == null)
+            throw new ResponseStatusException(BAD_REQUEST, "No accessToken is provided");
+
+        if(!authHeader.startsWith("Bearer "))
+            throw new ResponseStatusException(UNAUTHORIZED, "Invalid accessToken");
+
+        var accessToken = authHeader.substring(7);
+        var session = sessionRepository.findNotExpiredByAccessToken(accessToken)
+                .orElseThrow(() -> new ResponseStatusException(UNAUTHORIZED, "Invalid accessToken"));
+
+        return new UserAuthentication(session, request);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public List<Session> getNotExpiredSessionsByUserId(Integer userId) {
-        return repository.findAllNotExpiredByUserId(userId);
+        return sessionRepository.findAllNotExpiredByUserId(userId);
     }
 
     /**
@@ -64,13 +87,14 @@ public class SessionServiceImpl implements SessionService {
      */
     @Override
     public void expireSessionsByUserId(Integer userId) {
-        var sessionList = repository.findAllNotExpiredByUserId(userId);
-        if(sessionList.isEmpty()) return;
+        var sessions = sessionRepository.findAllNotExpiredByUserId(userId);
+        if(sessions.isEmpty()) return;
 
-        for(var session : sessionList)
-            session.expire();
-
-        repository.saveAll(sessionList);
+        sessionRepository.saveAll(
+                sessions.parallelStream()
+                        .peek(Session::expire)
+                        .toList()
+        );
     }
 
     /**
@@ -78,7 +102,7 @@ public class SessionServiceImpl implements SessionService {
      */
     @Override
     public void expireSession(Long sessionId, Integer userId) {
-        var session = repository.findById(sessionId)
+        var session = sessionRepository.findById(sessionId)
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "The session with given ID does not exist."));
 
         var sessionUserId = session.getUser().getId();
@@ -92,6 +116,6 @@ public class SessionServiceImpl implements SessionService {
             throw new ResponseStatusException(BAD_REQUEST, "The session has been already expired.");
 
         session.expire();
-        repository.save(session);
+        sessionRepository.save(session);
     }
 }

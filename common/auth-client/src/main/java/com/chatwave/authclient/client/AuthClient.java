@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 @FeignClient("auth-service")
 public interface AuthClient {
-    @GetMapping(value = "/users/authentication")
+    @GetMapping(value = "/sessions/authentication", consumes = "application/json", produces = "application/json")
     UserAuthentication getUserAuthentication(@RequestHeader("User-Authorization") String userAuthorizationHeader);
 }

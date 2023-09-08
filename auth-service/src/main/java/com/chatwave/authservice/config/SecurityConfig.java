@@ -1,11 +1,11 @@
 package com.chatwave.authservice.config;
 
+import com.chatwave.authservice.domain.Client;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -28,6 +28,7 @@ import java.util.UUID;
 
 import static jakarta.ws.rs.HttpMethod.POST;
 import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
@@ -44,7 +45,7 @@ public class SecurityConfig {
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
         http.sessionManagement(session ->
-                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                    session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 );
 
         return http.build();
@@ -54,7 +55,7 @@ public class SecurityConfig {
     @Order(2)
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf ->
-                        csrf.ignoringRequestMatchers("/users/**")
+                        csrf.ignoringRequestMatchers("/users/**", "/sessions")
             )
             .authorizeHttpRequests(auth ->
                     auth.requestMatchers(GET, "/actuator/health").permitAll()
@@ -63,10 +64,7 @@ public class SecurityConfig {
                             .anyRequest().authenticated()
             )
             .oauth2ResourceServer(resourceServer ->
-                    resourceServer.jwt(Customizer.withDefaults())
-            )
-            .sessionManagement((session) -> session
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                    resourceServer.jwt(withDefaults())
             )
             .authenticationProvider(authenticationProvider)
             .addFilterBefore(userAuthFilter, UsernamePasswordAuthenticationFilter.class);
@@ -79,32 +77,27 @@ public class SecurityConfig {
 
     @Bean
     public RegisteredClientRepository registeredClientRepository() {
-        var accountClient = RegisteredClient.withId(UUID.randomUUID().toString())
-                .clientId("account-service")
-                .clientSecret(passwordEncoder.encode("secret")) // TODO: inject secret from environment variables
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
-                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .redirectUri("http://account-service:8082/login/oauth2/code/spring")
-                .postLogoutRedirectUri("http://127.0.0.1:8080/")
-                .scope(OidcScopes.OPENID)
-                .scope("server")
-                .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
-                .build();
+        var clients = List.of(
+                new Client("account-service", "secret", "http://account-service:8082"),
+                new Client("chat-service", "secret", "http://chat-service:8083")
+        ); // todo: move this to application.yml
 
-        var chatClient = RegisteredClient.withId(UUID.randomUUID().toString())
-                .clientId("chat-service")
-                .clientSecret(passwordEncoder.encode("secret"))
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
-                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .redirectUri("http://chat-service:8083/login/oauth2/code/spring")
-                .postLogoutRedirectUri("http://127.0.0.1:8080/")
-                .scope(OidcScopes.OPENID)
-                .scope("server")
-                .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
-                .build();
+        var registeredClients = clients.parallelStream()
+                .map(client ->
+                        RegisteredClient.withId(UUID.randomUUID().toString())
+                                .clientId(client.getId())
+                                .clientSecret(passwordEncoder.encode(client.getSecret()))
+                                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
+                                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
+                                .redirectUri(client.getUrl())
+                                .scope(OidcScopes.OPENID)
+                                .scope("server")
+                                .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
+                                .build()
+                )
+                .toList();
 
-        return new InMemoryRegisteredClientRepository(accountClient, chatClient);
+        return new InMemoryRegisteredClientRepository(registeredClients);
     }
+
 }

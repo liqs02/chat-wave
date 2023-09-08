@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import static com.chatwave.authservice.utils.TestVariables.ACCESS_TOKEN;
+import static com.chatwave.authservice.utils.TestVariables.REFRESH_TOKEN;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SessionTest {
@@ -85,8 +87,8 @@ public class SessionTest {
     @Test
     @DisplayName("refreshTokens() should generate new tokens and change expire dates")
     public void refreshTokens() {
-        session.setAccessToken("access");
-        session.setRefreshToken("refresh");
+        session.setAccessToken(ACCESS_TOKEN);
+        session.setRefreshToken(REFRESH_TOKEN);
 
         var tomorrow = LocalDate.now().plusDays(1);
         session.setExpireDate(tomorrow);
@@ -96,8 +98,8 @@ public class SessionTest {
 
         session.refreshTokens();
 
-        assertNotEquals("access", session.getAccessToken());
-        assertNotEquals("refresh", session.getRefreshToken());
+        assertNotEquals(ACCESS_TOKEN, session.getAccessToken());
+        assertNotEquals(REFRESH_TOKEN, session.getRefreshToken());
 
         assertEquals(192, session.getAccessToken().length());
         assertEquals(255, session.getRefreshToken().length());

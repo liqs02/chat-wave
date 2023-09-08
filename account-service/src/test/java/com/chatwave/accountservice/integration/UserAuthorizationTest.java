@@ -10,6 +10,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
+import static com.chatwave.accountservice.utils.TestVariables.*;
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.mockito.Mockito.when;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
@@ -25,15 +27,16 @@ public class UserAuthorizationTest {
     @DisplayName("should authorize a user by provided accessToken in header")
     public void t1() {
         var userAuthentication = new UserAuthentication();
-        userAuthentication.setUserId(1);
-        userAuthentication.setCredentials("accessToken");
+        userAuthentication.setUserId(USER_ID);
+        userAuthentication.setCredentials(ACCESS_TOKEN);
 
         when(
-                authClient.getUserAuthentication("Bearer accessToken")
+                authClient.getUserAuthentication(BEARER_TOKEN)
         ).thenReturn(userAuthentication);
 
         webTestClient.get().uri("/accounts/1/showcase")
-                .header("User-Authorization", "Bearer accessToken")
+                .header("Content-type", APPLICATION_JSON)
+                .header("User-Authorization", BEARER_TOKEN)
                 .exchange()
                 .expectStatus().isNotFound();
     }

@@ -31,13 +31,13 @@ public class Session {
     private String accessToken;
 
     @Column(nullable = false)
-    private LocalDateTime accessTokenExpireDate;  // then we have to refresh token.
+    private LocalDateTime accessTokenExpireDate; // The dateTime from which accessToken is expired and have to be refreshed.
 
     @Column(unique = true)
     private String refreshToken;
 
     @Column(nullable = false, columnDefinition = "DATE")
-    private LocalDate expireDate; // then we can not use access and refresh token!
+    private LocalDate expireDate; // The date from which accessToken and refreshToken is expired.
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;

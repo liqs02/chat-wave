@@ -2,21 +2,10 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/account-service/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/account-service/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/auth-service/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/auth-service/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/chat-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/common/auth-client/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/common/auth-client/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/common/exception/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/common/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/common/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/config/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/config/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/gateway/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/gateway/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/registry/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/registry/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
   </component>

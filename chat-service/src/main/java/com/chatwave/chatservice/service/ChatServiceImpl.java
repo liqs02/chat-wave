@@ -40,7 +40,7 @@ public class ChatServiceImpl implements ChatService{
         try {
             accountClient.doesAccountExist(message.getReceiverId());
         } catch(FeignException.NotFound e) {
-            throw new ResponseStatusException(BAD_REQUEST,"ReceiverId is invalid, user with this ID does not exist");
+            throw new ResponseStatusException(BAD_REQUEST, "ReceiverId is invalid, user with this ID does not exist");
         }
         repository.save(message);
         return message;

@@ -1,67 +1,52 @@
 package com.chatwave.accountservice.service;
 
 import com.chatwave.accountservice.client.AuthClient;
+import com.chatwave.accountservice.client.dto.*;
 import com.chatwave.accountservice.domain.Account;
-import com.chatwave.accountservice.domain.dto.AuthenticateUserRequest;
-import com.chatwave.accountservice.domain.dto.CreateUserRequest;
-import com.chatwave.accountservice.domain.dto.PatchPasswordRequest;
-import com.chatwave.accountservice.domain.dto.TokenSet;
+import com.chatwave.accountservice.domain.dto.PatchAccountRequest;
 import com.chatwave.accountservice.repository.AccountRepository;
-import feign.FeignException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.CONFLICT;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class AccountServiceImpl implements AccountService {
     private final AccountRepository repository;
-    private final AuthClient authService;
+    private final AuthClient authClient;
 
     /**
      * {@inheritDoc}
      */
     @Override
     @Transactional
-    public TokenSet createAccount(Account account, String password) {
-        var optional = repository.findByLoginOrDisplayName(account.getLoginName(), account.getDisplayName());
+    public TokenSet createAccount(Account account, String loginName, String password) { // todo: change tests
+        if(repository.findByDisplayName(account.getDisplayName()).isPresent())
+            throw new ResponseStatusException(CONFLICT, "Account with given displayName already exists");
 
-        if(optional.isPresent()) {
-            var found = optional.get();
-            if(found.getLoginName().equals( account.getLoginName() ))
-                throw new ResponseStatusException(CONFLICT, "Account with given loginName already exists.");
-            else
-                throw new ResponseStatusException(CONFLICT, "Account with given displayName already exists.");
-        }
-
+        var response = authClient.createUser(new RegisterRequest(loginName, password));
+        account.setId(response.userId());
         repository.save(account);
 
-        var createUserRequest = new CreateUserRequest(account.getId(), password);
-        try {
-            return authService.createUser(createUserRequest);
-        } catch(FeignException.Conflict e) {
-            log.warn("Inconsistency in data. Conflict when tried to create user with id " + account.getId());
-            throw new ResponseStatusException(INTERNAL_SERVER_ERROR, "An unexpected error occurred.");
-        }
+        return authClient.createSessions(new CreateSessionRequest(account.getId()));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public TokenSet authenticateAccount(String loginName, String password) {
-        var account = repository.findByLoginName(loginName)
-                .orElseThrow( () ->
-                        new ResponseStatusException(BAD_REQUEST, "Invalid loginName or password.")
-                );
+    public TokenSet authenticateAccount(AuthenticationRequest authentication) { // todo: change tests
+        var userId = authClient
+                .authenticateUser(authentication)
+                .userId();
 
-        var authenticateUserRequest = new AuthenticateUserRequest(account.getId(), password);
-        return authService.authenticateUser(authenticateUserRequest);
+        return authClient.createSessions(new CreateSessionRequest(userId));
     }
 
     /**
@@ -79,15 +64,29 @@ public class AccountServiceImpl implements AccountService {
      * {@inheritDoc}
      */
     @Override
-    public Boolean doesAccountExist(Integer accountId) {
-        return repository.findById(accountId).isPresent();
+    public void doesAccountExist(Integer accountId) {
+        var optional = repository.findById(accountId);
+        if(optional.isEmpty())
+            throw new ResponseStatusException(NOT_FOUND, "User with given id does not exist");
     }
 
     /**
      * {@inheritDoc}
      */
+    @Transactional
     @Override
-    public void patchAccountPassword(Integer accountId, PatchPasswordRequest patchPasswordRequest) {
-        authService.patchUserPassword(accountId, patchPasswordRequest);
+    public void patchAccount(Integer accountId, PatchAccountRequest patchAccountRequest) {
+        var displayName = patchAccountRequest.displayName();
+        if(displayName != null) {
+            var account = repository.findById(accountId)
+                    .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Account with given id does not exist."));
+
+            account.setDisplayName(displayName);
+            repository.save(account);
+        }
+
+        if(patchAccountRequest.newPassword() != null)
+            authClient.patchUser(accountId, new PatchUserRequest(patchAccountRequest.newPassword()));
+
     }
 }

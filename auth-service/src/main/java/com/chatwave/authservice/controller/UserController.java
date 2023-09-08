@@ -1,14 +1,12 @@
 package com.chatwave.authservice.controller;
 
-import com.chatwave.authservice.domain.dto.AuthenticateUserRequest;
-import com.chatwave.authservice.domain.dto.CreateUserRequest;
-import com.chatwave.authservice.domain.dto.PatchUserRequest;
-import com.chatwave.authservice.domain.dto.TokenSetResponse;
-import com.chatwave.authservice.domain.session.SessionMapper;
-import com.chatwave.authservice.domain.user.UserAuthentication;
+import com.chatwave.authservice.domain.dto.request.AuthenticationRequest;
+import com.chatwave.authservice.domain.dto.request.UpdatePasswordRequest;
+import com.chatwave.authservice.domain.dto.request.RegisterRequest;
+import com.chatwave.authservice.domain.dto.response.AuthenticationResponse;
+import com.chatwave.authservice.domain.dto.response.RegisterResponse;
 import com.chatwave.authservice.domain.user.UserMapper;
 import com.chatwave.authservice.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,37 +17,29 @@ import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/users", consumes = APPLICATION_JSON, produces = APPLICATION_JSON) // todo: handle 406 all where
+@RequestMapping(value = "/users", consumes = APPLICATION_JSON, produces = APPLICATION_JSON)
 @PreAuthorize("hasAuthority('SCOPE_server')")
 public class UserController {
     private final UserService service;
     private final UserMapper mapper;
-    private final SessionMapper sessionMapper;
-
-    @GetMapping("/authentication")
-    public UserAuthentication getUserAuthentication(HttpServletRequest request) {
-        return service.getUserAuthentication(request);
-    }
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public TokenSetResponse createUser(@Valid @RequestBody CreateUserRequest createUserRequest) {
-        var user = mapper.toUser(createUserRequest);
-        var session = service.createUser(user);
-        return sessionMapper.toTokenSetResponse(session);
+    public RegisterResponse createUser(@Valid @RequestBody RegisterRequest body) {
+        var data = mapper.toUser(body);
+        var user = service.createUser(data);
+        return mapper.toCreateUserResponse(user);
     }
 
     @PostMapping("/authenticate")
-    public TokenSetResponse authenticateUser(@Valid @RequestBody AuthenticateUserRequest authenticateUserRequest) {
-        var user = mapper.toUser(authenticateUserRequest);
-        var session = service.authenticateUser(user);
-        return sessionMapper.toTokenSetResponse(session);
+    public AuthenticationResponse authenticateUser(@Valid @RequestBody AuthenticationRequest body) {
+        var authData = mapper.toUser(body);
+        var user = service.authenticateUser(authData);
+        return mapper.toAuthenticateUserResponse(user);
     }
 
-    @PatchMapping("/{userId}")
-    public void patchUser(@PathVariable Integer userId, @Valid @RequestBody PatchUserRequest patchUser) {
-        var user = mapper.toUser(userId, patchUser);
-        var newPassword = patchUser.newPassword();
-        service.patchUser(user, newPassword);
+    @PutMapping("/{userId}/password")
+    public void updateUserPassword(@PathVariable Integer userId, @Valid @RequestBody UpdatePasswordRequest body) {
+        service.updateUserPassword(userId, body.newPassword());
     }
 }

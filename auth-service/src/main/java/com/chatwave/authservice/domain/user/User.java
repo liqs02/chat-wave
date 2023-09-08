@@ -1,9 +1,6 @@
 package com.chatwave.authservice.domain.user;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,10 +11,16 @@ import java.util.List;
 @Data
 @Entity
 @NoArgsConstructor
-@Table( name = "users" )
+@Table( name = "users",
+    indexes = @Index(name = "user_login_name_index", columnList = "loginName")
+)
 public class User implements UserDetails {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
+    @Column(nullable = false, unique = true, updatable = false, length = 30)
+    private String loginName;
 
     @Column(nullable = false)
     private String password;

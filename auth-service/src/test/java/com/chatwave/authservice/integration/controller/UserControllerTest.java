@@ -1,80 +1,61 @@
 package com.chatwave.authservice.integration.controller;
 
-import com.chatwave.authclient.domain.UserAuthentication;
-import com.chatwave.authservice.domain.dto.AuthenticateUserRequest;
-import com.chatwave.authservice.domain.dto.CreateUserRequest;
-import com.chatwave.authservice.domain.dto.PatchUserRequest;
-import com.chatwave.authservice.domain.dto.TokenSetResponse;
-import com.chatwave.authservice.domain.session.Session;
+import com.chatwave.authservice.domain.dto.request.AuthenticationRequest;
+import com.chatwave.authservice.domain.dto.request.UpdatePasswordRequest;
+import com.chatwave.authservice.domain.dto.request.RegisterRequest;
+import com.chatwave.authservice.domain.dto.response.AuthenticationResponse;
+import com.chatwave.authservice.domain.dto.response.RegisterResponse;
 import com.chatwave.authservice.domain.user.User;
-import com.chatwave.authservice.integration.utils.ClientAuthUtils;
-import com.chatwave.authservice.repository.SessionRepository;
 import com.chatwave.authservice.repository.UserRepository;
+import com.chatwave.authservice.utils.OAuthClientService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.web.reactive.server.WebTestClient;
 
-import java.rmi.UnexpectedException;
-
+import static com.chatwave.authservice.utils.TestVariables.*;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
-/**
- * Too deeper understanding tests look at {@link  ClientAuthUtils}
- * Notice that UserAuthentication domain is taken from auth-client library to check that object will be correctly form.
- */
+@SpringBootTest(webEnvironment = RANDOM_PORT)
+@AutoConfigureWebTestClient
 @DisplayName("UserController integration tests")
-public class UserControllerTest extends ClientAuthUtils {
+public class UserControllerTest {
+    @Autowired
+    private WebTestClient webTestClient;
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private SessionRepository sessionRepository;
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
+    private OAuthClientService oauthClientService;
+    private Integer userId;
+
     private User createAndSaveUser() {
-        var encoded = passwordEncoder.encode("Pass1234");
+        var encoded = passwordEncoder.encode(PASSWORD);
 
         var user = new User();
-        user.setId(1);
+        user.setLoginName(LOGIN_NAME);
         user.setPassword(encoded);
+
         userRepository.save(user);
+        userId = user.getId();
 
         return user;
     }
 
-    @AfterEach
-    public void tearDown() {
-        sessionRepository.deleteAll();
-        userRepository.deleteAll();
+    @BeforeEach
+    void setUp() {
+        if(oauthClientService == null)
+            oauthClientService = new OAuthClientService(webTestClient);
     }
 
-    @Nested
-    @DisplayName("GET /users/authentication")
-    class c1 {
-        @Test
-        @DisplayName("should create userAuthentication and return it")
-        public void t200() throws UnexpectedException {
-            var user= createAndSaveUser();
-            var session = new Session(user);
-            sessionRepository.save(session);
-
-            var userAuthentication = webTestClient.get()
-                    .uri("/users/authentication")
-                    .header("Content-type", APPLICATION_JSON)
-                    .header("Authorization", getAuthHeader())
-                    .header("User-Authorization", "Bearer " + session.getAccessToken())
-                    .exchange()
-                    .expectStatus().isOk()
-                    .expectBody(UserAuthentication.class)
-                    .returnResult().getResponseBody();
-
-            assertNotNull(userAuthentication);
-            assertEquals(user.getId(), userAuthentication.getPrincipal());
-            assertEquals(session.getAccessToken(), userAuthentication.getCredentials());
-            assertEquals("1", userAuthentication.getName());
-            assertEquals(session.getId(), userAuthentication.getDetails().getSessionId());
-        }
+    @AfterEach
+    public void tearDown() {
+        userRepository.deleteAll();
     }
 
     @Nested
@@ -83,39 +64,35 @@ public class UserControllerTest extends ClientAuthUtils {
         private final String ENDPOINT = "/users";
 
         @Test
-        @DisplayName("should create user and return tokens")
-        public void t200() throws UnexpectedException {
-            var createUserRequest = new CreateUserRequest(1, "Pass1234");
+        @DisplayName("should create user and return id")
+        public void t200() {
+            var createUserRequest = new RegisterRequest(LOGIN_NAME, PASSWORD);
 
-            var tokenSet = webTestClient.post()
+            var createUserResponse = webTestClient.post()
                     .uri(ENDPOINT)
                     .bodyValue(createUserRequest)
-                    .header("Authorization", getAuthHeader())
+                    .header("Authorization", oauthClientService.getAuthHeader())
                     .exchange()
                     .expectStatus().isCreated()
-                    .expectBody(TokenSetResponse.class)
+                    .expectBody(RegisterResponse.class)
                     .returnResult().getResponseBody();
 
-            assertNotNull(tokenSet);
-            assertNotNull(tokenSet.accessToken());
-            assertNotNull(tokenSet.refreshToken());
+            assertNotNull(createUserResponse);
+            assertNotNull(createUserResponse.userId());
 
-            if(userRepository.findById(1).isEmpty())
+            if(userRepository.findById(createUserResponse.userId()).isEmpty())
                 fail("User was not saved.");
-
-            if(sessionRepository.findByAccessToken(tokenSet.accessToken()).isEmpty() || sessionRepository.findByRefreshToken(tokenSet.refreshToken()).isEmpty())
-                fail("Session was not saved.");
         }
 
         @Test
         @DisplayName("should throw BAD_REQUEST if data is invalid (validation test)")
-        public void t400() throws UnexpectedException {
-        var createUserRequest = new CreateUserRequest(1, "invalid");
+        public void t400() {
+        var createUserRequest = new RegisterRequest(LOGIN_NAME, INVALID_PASSWORD);
 
         webTestClient.post()
                 .uri(ENDPOINT)
                 .bodyValue(createUserRequest)
-                .header("Authorization", getAuthHeader())
+                .header("Authorization", oauthClientService.getAuthHeader())
                 .exchange()
                 .expectStatus().isBadRequest()
                 .expectBody()
@@ -125,7 +102,7 @@ public class UserControllerTest extends ClientAuthUtils {
         @Test
         @DisplayName("should return 401 if no authorities are provided")
         public void t401() {
-            var createUserRequest = new CreateUserRequest(1, "Pass1234");
+            var createUserRequest = new RegisterRequest(LOGIN_NAME, PASSWORD);
             webTestClient.post()
                     .uri(ENDPOINT)
                     .bodyValue(createUserRequest)
@@ -144,39 +121,28 @@ public class UserControllerTest extends ClientAuthUtils {
         }
 
         @Test
-        @DisplayName("should return tokens")
-        public void t200() throws UnexpectedException {
-            var authenticateUserRequest = new AuthenticateUserRequest(1, "Pass1234");
-
-            var tokenSet = webTestClient.post()
+        @DisplayName("should return OK status")
+        public void t200() {
+           var result = webTestClient.post()
                     .uri(ENDPOINT)
-                    .bodyValue(authenticateUserRequest)
-                    .header("Authorization", getAuthHeader())
+                    .bodyValue(new AuthenticationRequest(LOGIN_NAME, PASSWORD))
+                    .header("Authorization", oauthClientService.getAuthHeader())
                     .exchange()
                     .expectStatus().isOk()
-                    .expectBody(TokenSetResponse.class)
+                    .expectBody(AuthenticationResponse.class)
                     .returnResult().getResponseBody();
 
-            assertNotNull(tokenSet);
-            assertNotNull(tokenSet.accessToken());
-            assertNotNull(tokenSet.refreshToken());
-
-            if(userRepository.findById(1).isEmpty())
-                fail("User was not saved.");
-
-            if(sessionRepository.findByAccessToken(tokenSet.accessToken()).isEmpty() || sessionRepository.findByRefreshToken(tokenSet.refreshToken()).isEmpty())
-                fail("Session was not saved.");
+            assertNotNull(result);
+            assertEquals(userId, result.userId());
         }
 
         @Test
         @DisplayName("should throw BAD_REQUEST if data is invalid (validation test)")
-        public void t400() throws UnexpectedException {
-            var authenticateUserRequest = new AuthenticateUserRequest(null, "Pass1234");
-
+        public void t400() {
             webTestClient.post()
                     .uri(ENDPOINT)
-                    .bodyValue(authenticateUserRequest)
-                    .header("Authorization", getAuthHeader())
+                    .bodyValue(new AuthenticationRequest("", PASSWORD))
+                    .header("Authorization", oauthClientService.getAuthHeader())
                     .exchange()
                     .expectStatus().isBadRequest()
                     .expectBody()
@@ -186,7 +152,7 @@ public class UserControllerTest extends ClientAuthUtils {
         @Test
         @DisplayName("should return 401 if no authorities are provided")
         public void t401() {
-            var authenticateUserRequest = new AuthenticateUserRequest(null, "Pass1234");
+            var authenticateUserRequest = new AuthenticationRequest(null, PASSWORD);
 
             webTestClient.post()
                     .uri(ENDPOINT)
@@ -197,9 +163,9 @@ public class UserControllerTest extends ClientAuthUtils {
     }
 
     @Nested
-    @DisplayName("PATCH /users/{userId}")
+    @DisplayName("PUT /users/{userId}/password") // todo: update readme
     class c4 {
-        private final String ENDPOINT = "/users/1";
+        private final String ENDPOINT = "/users/{userId}/password";
         private User user;
         @BeforeEach
         void setUp() {
@@ -208,19 +174,17 @@ public class UserControllerTest extends ClientAuthUtils {
 
         @Test
         @DisplayName("should change user's password")
-        public void t200() throws UnexpectedException {
-            var patchUserRequest = new PatchUserRequest("Pass1234", "NewPass1");
-
-            webTestClient.patch()
-                    .uri(ENDPOINT)
+        public void t200() {
+            webTestClient.put()
+                    .uri(ENDPOINT, userId)
                     .header("Content-type", APPLICATION_JSON)
-                    .header("Authorization", getAuthHeader())
-                    .bodyValue(patchUserRequest)
+                    .header("Authorization", oauthClientService.getAuthHeader())
+                    .bodyValue(new UpdatePasswordRequest(PASSWORD_2))
                     .exchange()
                     .expectStatus().isOk()
                     .expectBody().isEmpty();
 
-            var optionalUser = userRepository.findById(1);
+            var optionalUser = userRepository.findById(userId);
 
             if(optionalUser.isEmpty())
                 fail("User was not saved.");
@@ -230,14 +194,12 @@ public class UserControllerTest extends ClientAuthUtils {
 
         @Test
         @DisplayName("should throw BAD_REQUEST if data is invalid (validation test)")
-        public void t400() throws UnexpectedException {
-            var patchUserRequest = new PatchUserRequest("Pass1234", "invalid");
-
-            webTestClient.patch()
-                    .uri(ENDPOINT)
+        public void t400() {
+            webTestClient.put()
+                    .uri(ENDPOINT, userId)
                     .header("Content-type", APPLICATION_JSON)
-                    .header("Authorization", getAuthHeader())
-                    .bodyValue(patchUserRequest)
+                    .header("Authorization", oauthClientService.getAuthHeader())
+                    .bodyValue(new UpdatePasswordRequest(INVALID_PASSWORD))
                     .exchange()
                     .expectStatus().isBadRequest()
                     .expectBody()
@@ -247,11 +209,9 @@ public class UserControllerTest extends ClientAuthUtils {
         @Test
         @DisplayName("should return 401 if no authorities are provided")
         public void t401() {
-            var patchUserRequest = new PatchUserRequest("Pass1234", "NewPass1");
-
-            webTestClient.patch()
-                    .uri(ENDPOINT)
-                    .bodyValue(patchUserRequest)
+            webTestClient.put()
+                    .uri(ENDPOINT, userId)
+                    .bodyValue(new UpdatePasswordRequest(PASSWORD_2))
                     .exchange()
                     .expectStatus().isUnauthorized();
         }

@@ -12,7 +12,7 @@ import java.util.List;
  * Credentials are represented by provided accessToken.
  */
 @Setter
-public class UserAuthentication implements Authentication { // todo: create library for microservices and share there it
+public class UserAuthentication implements Authentication {
     private Integer userId;
     private String accessToken;
     private List<GrantedAuthority> authorities;
@@ -31,7 +31,7 @@ public class UserAuthentication implements Authentication { // todo: create libr
     @Override
     public String getName() {
         return userId.toString();
-    }
+    } // todo: change it to loginname
 
     @Override
     public String getCredentials() {
