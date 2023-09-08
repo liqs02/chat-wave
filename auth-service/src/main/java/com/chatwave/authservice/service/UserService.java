@@ -1,46 +1,30 @@
 package com.chatwave.authservice.service;
 
-import com.chatwave.authservice.domain.session.Session;
 import com.chatwave.authservice.domain.user.User;
-import com.chatwave.authservice.domain.user.UserAuthentication;
-import jakarta.servlet.http.HttpServletRequest;
 
 public interface UserService {
     /**
-     * Gets accessToken from User-Authorization header.
-     * Searches session by accessToken.
-     * Creates UserAuthentication.
+     * Encodes password.
+     * Saves user in database.
      *
-     * @param request with User-Authorization header with accessToken
-     * @return user's authentication
+     * @param user with completed loginName and password
+     * @return user
      */
-    UserAuthentication getUserAuthentication(HttpServletRequest request);
+    User createUser(User user);
 
     /**
-     * Creates a new user by provided id and password.
-     * Creates session for user.
+     * Authenticates a user by login and password.
      *
-     * @param user
-     * @return new session
+     * @param user completed loginName and password
+     * @return found user
      */
-    Session createUser(User user);
+    User authenticateUser(User user);
 
     /**
-     * Authenticates a user by id and password.
-     * Downloads user from database.
-     * Creates session for user.
+     * Patches user's password.
      *
-     * @param user
-     * @return new session
+     * @param userId
+     * @param newPassword
      */
-    Session authenticateUser(User user);
-
-    /**
-     * Authenticates a user by id and password.
-     * Patches user.
-     *
-     * @param user with data to authenticate (id and password)
-     * @param newPassword to update a user
-     */
-    void patchUser(User user, String newPassword);
+    void updateUserPassword(Integer userId, String newPassword);
 }

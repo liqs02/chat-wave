@@ -1,6 +1,9 @@
 package com.chatwave.accountservice.domain;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Data;
 
 @Data
@@ -8,12 +11,8 @@ import lombok.Data;
 @Table( name = "accounts" )
 public class Account {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    Integer id;
-
-    @Column(nullable = false, unique = true, updatable = false, length = 30)
-    String loginName;
+    private Integer id;
 
     @Column(nullable = false, unique = true, length = 30)
-    String displayName;
+    private String displayName;
 }

@@ -1,6 +1,7 @@
 package com.chatwave.accountservice.unit.service;
 
 import com.chatwave.accountservice.client.AuthClient;
+import com.chatwave.accountservice.client.dto.*;
 import com.chatwave.accountservice.domain.Account;
 import com.chatwave.accountservice.domain.dto.*;
 import com.chatwave.accountservice.repository.AccountRepository;
@@ -17,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
+import static com.chatwave.accountservice.utils.TestVariables.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -25,55 +27,56 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @DisplayName("AccountService")
 public class AccountServiceTest {
     @InjectMocks
-    AccountServiceImpl service;
+    private AccountServiceImpl service;
     @Mock
-    AccountRepository repository;
+    private AccountRepository repository;
     @Mock
-    AuthClient authService;
-    private TokenSet tokenSet;
+    private AuthClient authService;
     private Account account;
 
     @BeforeEach
     void setup() {
-        tokenSet = new TokenSet("refresh", "access");
         account = new Account();
-        account.setId(1);
-        account.setLoginName("login");
+        account.setId(USER_ID);
         account.setDisplayName("displayName");
     }
 
     @Test
     @DisplayName("createAccount() should create an account")
-    public void t1() {
+    public void t1() { // todo: change test to new code
         var accountWithId = account;
-        accountWithId.setId(1);
+        accountWithId.setId(USER_ID);
+
+        when(
+            authService.createUser(REGISTER_REQUEST)
+        ).thenReturn(new RegisterResponse(USER_ID));
 
         when(
                 repository.save(account)
         ).thenReturn(accountWithId);
 
         when(
-            authService.createUser(new CreateUserRequest(1, "pass"))
-        ).thenReturn(tokenSet);
+                authService.createSessions(CREATE_SESSION_REQUEST)
+        ).thenReturn(TOKEN_SET);
 
-        var result = service.createAccount(account, "pass");
-        assertEquals(tokenSet, result);
+        var result = service.createAccount(account, LOGIN_NAME, PASSWORD);
+        assertEquals(TOKEN_SET, result);
     }
 
     @Test
     @DisplayName("authenticateAccount() should authenticate an account")
     public void t2() {
         when(
-                repository.findByLoginName("login")
-        ).thenReturn(Optional.of(account));
+                authService.authenticateUser(AUTHENTICATION_REQUEST)
+        ).thenReturn(AUTHENTICATION_RESPONSE);
 
         when(
-                authService.authenticateUser(new AuthenticateUserRequest(1, "pass"))
-        ).thenReturn(tokenSet);
+                authService.createSessions(CREATE_SESSION_REQUEST)
+        ).thenReturn(TOKEN_SET);
 
-        var result = service.authenticateAccount("login", "pass");
+        var result = service.authenticateAccount(AUTHENTICATION_REQUEST);
 
-        assertEquals(tokenSet, result);
+        assertEquals(TOKEN_SET, result);
     }
 
     @Nested
@@ -83,22 +86,22 @@ public class AccountServiceTest {
         @DisplayName("should get an account")
         public void t1() {
             when(
-                    repository.findById(1)
+                    repository.findById(USER_ID)
             ).thenReturn(Optional.of(account));
 
-            var result = service.getAccountById(1);
+            var result = service.getAccountById(USER_ID);
 
             assertEquals(account, result);
         }
         @Test
         @DisplayName("should throw NOT_FOUND ResponseStatusException if account does not exist")
         public void t2() {
-            var thrown = assertThrows(
+            var result = assertThrows(
                     ResponseStatusException.class,
-                    () -> service.getAccountById(1)
+                    () -> service.getAccountById(USER_ID)
             );
 
-            assertEquals(NOT_FOUND, thrown.getStatusCode());
+            assertEquals(NOT_FOUND, result.getStatusCode());
         }
     }
 
@@ -106,46 +109,45 @@ public class AccountServiceTest {
     @DisplayName("doesAccountExist()")
     class doesAccountExist {
         @Test
-        @DisplayName("should get an account and return true")
+        @DisplayName("should get an account and do not throw exception")
         public void t1() {
             when(
-                    repository.findById(1)
+                    repository.findById(USER_ID)
             ).thenReturn(Optional.of(account));
 
-            var result = service.doesAccountExist(1);
-
-            assertTrue(result);
+            service.doesAccountExist(USER_ID);
         }
 
         @Test
-        @DisplayName("should get an account and return false if account doesn't exists")
+        @DisplayName("should get an account and throw NOT_FOUND")
         public void t2() {
             when(
-                    repository.findById(1)
+                    repository.findById(USER_ID)
             ).thenReturn(Optional.empty());
 
-            var result = service.doesAccountExist(1);
 
-            assertFalse(result);
+            var result = assertThrows(
+                    ResponseStatusException.class,
+                    () -> service.getAccountById(USER_ID)
+            );
+
+            assertEquals(NOT_FOUND, result.getStatusCode());
         }
     }
 
     @Test
     @DisplayName("patchAccount() should update user's displayName and password")
     public void t3() {
-        var patchAccountRequest = new PatchAccountRequest("display", "pass", "new");
-
         var account = new Account();
-        account.setId(1);
-        account.setLoginName("loginName");
+        account.setId(USER_ID);
 
         when(
-                repository.findById(1)
+                repository.findById(USER_ID)
         ).thenReturn(Optional.of(account));
 
-        service.patchAccount(1, patchAccountRequest);
+        service.patchAccount(USER_ID, PATCH_ACCOUNT_REQUEST);
 
-        account.setDisplayName("display");
+        account.setDisplayName(DISPLAY_NAME);
 
         verify(
                 repository, times(1)
@@ -153,6 +155,6 @@ public class AccountServiceTest {
 
         verify(
                 authService, times(1)
-        ).patchUser(1, new PatchUserRequest("pass", "new"));
+        ).patchUser(USER_ID, PATCH_USER_REQUEST);
     }
 }

@@ -1,18 +1,19 @@
 package com.chatwave.authservice.service;
 
 import com.chatwave.authservice.domain.session.Session;
-import com.chatwave.authservice.domain.user.User;
+import com.chatwave.authservice.domain.user.UserAuthentication;
+import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
 
 public interface SessionService {
     /**
-     * Creates session for user.
+     * Creates session for user with given id.
      *
-     * @param user
+     * @param userId
      * @return new session
      * */
-    Session createSession(User user);
+    Session createSession(Integer userId);
 
     /**
      * Searches session by refresh token.
@@ -22,6 +23,16 @@ public interface SessionService {
      * @return new refresh token
      */
     Session refreshSession(String refreshToken);
+
+    /**
+     * Gets accessToken from User-Authorization header.
+     * Searches session by accessToken.
+     * Creates UserAuthentication.
+     *
+     * @param request with User-Authorization header with accessToken
+     * @return user's authentication data
+     */
+    UserAuthentication getAuthentication(HttpServletRequest request);
 
     /**
      * Gets all not expired user's sessions.

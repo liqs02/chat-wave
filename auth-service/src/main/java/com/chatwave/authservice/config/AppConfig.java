@@ -17,8 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 
-import static java.lang.Integer.parseInt;
-
 @Configuration
 public class AppConfig {
     @Bean
@@ -48,10 +46,11 @@ public class AppConfig {
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
+
     @Bean
     public UserDetailsService userDetailsService(final UserRepository userRepository) {
-        return userId -> userRepository.findById(parseInt(userId))
-                .orElseThrow(() ->  new UsernameNotFoundException("User with given id does not exist."));
+        return loginName -> userRepository.findByLoginName(loginName)
+                .orElseThrow(() ->  new UsernameNotFoundException("User with given loginName does not exist."));
     }
 
     @Bean

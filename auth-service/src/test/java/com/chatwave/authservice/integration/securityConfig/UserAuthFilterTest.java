@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWeb
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
+import static com.chatwave.authservice.utils.TestVariables.*;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -27,19 +28,16 @@ public class UserAuthFilterTest {
     private SessionRepository sessionRepository;
     private final String ENDPOINT = "/sessions";
 
-    private String accessToken;
-
     @BeforeEach
     void setUp() {
         var user = new User();
-        user.setId(1);
-        user.setPassword("pass");
+        user.setLoginName(LOGIN_NAME);
+        user.setPassword(PASSWORD);
         userRepository.save(user);
 
         var session = new Session(user);
+        session.setAccessToken(ACCESS_TOKEN);
         sessionRepository.save(session);
-
-        accessToken = session.getAccessToken();
     }
 
     @AfterEach
@@ -54,7 +52,7 @@ public class UserAuthFilterTest {
         webTestClient.get()
                 .uri(ENDPOINT)
                 .header("Content-type", APPLICATION_JSON)
-                .header("User-Authorization", "Bearer " + accessToken)
+                .header("User-Authorization", "Bearer " + ACCESS_TOKEN)
                 .exchange()
                 .expectStatus().isOk();
     }
@@ -64,7 +62,7 @@ public class UserAuthFilterTest {
     public void t4() {
         webTestClient.get()
                 .uri(ENDPOINT)
-                .header("User-Authorization", accessToken)
+                .header("User-Authorization", ACCESS_TOKEN)
                 .exchange()
                 .expectStatus().isUnauthorized();
     }

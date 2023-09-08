@@ -5,7 +5,10 @@ import com.chatwave.authservice.domain.user.User;
 import com.chatwave.authservice.repository.SessionRepository;
 import com.chatwave.authservice.repository.UserRepository;
 import com.chatwave.authservice.scheduler.SessionScheduler;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -14,6 +17,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.chatwave.authservice.utils.TestVariables.LOGIN_NAME;
+import static com.chatwave.authservice.utils.TestVariables.PASSWORD;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -27,28 +32,27 @@ public class SessionSchedulerTest {
     private SessionRepository sessionRepository;
     @Autowired
     private SessionScheduler sessionScheduler;
-    private List<Session> sessions;
 
     @BeforeEach
     void setUp() {
         var user = new User();
-        user.setId(1);
-        user.setPassword("Pass1234");
+        user.setLoginName(LOGIN_NAME);
+        user.setPassword(PASSWORD);
         userRepository.save(user);
 
-        sessions = new ArrayList<Session>();
+        var sessions = new ArrayList<Session>();
 
         // expired not cleaned session
-        var session = new Session(user);
-        session.setExpireDate(LocalDate.now());
-        sessions.add(session);
+        var session1 = new Session(user);
+        session1.setExpireDate(LocalDate.now());
 
         // not expired session with expired accessToken
-        session = new Session(user);
-        session.setAccessTokenExpireDate(LocalDateTime.now());
-        sessions.add(session);
+        var session2 = new Session(user);
+        session2.setAccessTokenExpireDate(LocalDateTime.now());
 
-        sessionRepository.saveAll(sessions);
+        sessionRepository.saveAll(
+                List.of(session1, session2)
+        );
     }
 
     @AfterEach

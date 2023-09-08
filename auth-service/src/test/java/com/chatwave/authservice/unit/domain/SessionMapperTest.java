@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
+import static com.chatwave.authservice.utils.TestVariables.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DisplayName("SessionMapper")
@@ -18,9 +19,9 @@ class SessionMapperTest {
     @BeforeEach
     void setup() {
         session = new Session();
-        session.setId(1L);
-        session.setRefreshToken("refresh");
-        session.setAccessToken("access");
+        session.setId(SESSION_ID);
+        session.setRefreshToken(REFRESH_TOKEN);
+        session.setAccessToken(ACCESS_TOKEN);
         session.setCreatedAt(LocalDateTime.now());
     }
 
@@ -29,16 +30,16 @@ class SessionMapperTest {
     void toTokenSetResponse() {
         var result = mapper.toTokenSetResponse(session);
 
-        assertEquals("refresh", result.refreshToken());
-        assertEquals("access", result.accessToken());
+        assertEquals(REFRESH_TOKEN, result.refreshToken());
+        assertEquals(ACCESS_TOKEN, result.accessToken());
     }
 
     @Test
-    @DisplayName("toSessionResponse(Session) should map session entity to SessionResponse")
+    @DisplayName("toSessionResponse(Session) should map session entity to GetSessionResponse")
     void toSessionResponse() {
         var result = mapper.toSessionResponse(session);
 
-        assertEquals(1L, result.id());
+        assertEquals(SESSION_ID, result.id());
         assertEquals(session.getExpireDate(), result.expireDate());
         assertEquals(session.getAccessTokenExpireDate(), result.accessTokenExpireDate());
         assertEquals(session.getCreatedAt(), result.createdAt());

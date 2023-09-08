@@ -1,7 +1,7 @@
 package com.chatwave.authservice.domain.session;
 
-import com.chatwave.authservice.domain.dto.SessionResponse;
-import com.chatwave.authservice.domain.dto.TokenSetResponse;
+import com.chatwave.authservice.domain.dto.response.GetSessionResponse;
+import com.chatwave.authservice.domain.dto.response.TokenSetResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -11,5 +11,5 @@ public interface SessionMapper {
 
     TokenSetResponse toTokenSetResponse(Session session);
 
-    SessionResponse toSessionResponse(Session session);
+    GetSessionResponse toSessionResponse(Session session);
 }

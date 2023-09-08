@@ -1,28 +1,31 @@
 package com.chatwave.accountservice.service;
 
+import com.chatwave.accountservice.client.dto.AuthenticationRequest;
+import com.chatwave.accountservice.client.dto.TokenSet;
 import com.chatwave.accountservice.domain.Account;
 import com.chatwave.accountservice.domain.dto.PatchAccountRequest;
-import com.chatwave.accountservice.domain.dto.PatchUserRequest;
-import com.chatwave.accountservice.domain.dto.TokenSet;
 
 public interface AccountService {
     /**
      * Creates an account.
      * Creates a user in auth-service.
+     * Creates session in auth-service.
      *
-     * @param createAccountRequest
-     * @return access and refresh token from auth-service.
+     * @param account
+     * @param loginName
+     * @param password
+     * @return accessToken and refreshToken
      */
-    TokenSet createAccount(Account account, String password);
+    TokenSet createAccount(Account account, String loginName, String password);
 
     /**
-     * Searches account with given loginName.
      * Authenticates user in auth-service.
+     * Creates session in auth-service.
      *
-     * @param authenticateUserRequest
+     * @param authenticationRequest
      * @return access and refresh token from auth-service.
      */
-    TokenSet authenticateAccount(String loginName, String password);
+    TokenSet authenticateAccount(AuthenticationRequest authenticationRequest);
 
     /**
      * Searches an account with given id.
@@ -33,19 +36,18 @@ public interface AccountService {
     Account getAccountById(Integer accountId);
 
     /**
-     * Checks that account with given id does exist.
+     * Checks that account with given id does exist if not throws NOT_FOUND.
      *
      * @param accountId
-     * @return boolean represents that account exists
      */
-    Boolean doesAccountExist(Integer accountId);
+    void doesAccountExist(Integer accountId);
 
     /**
-     * Patch displayName if is provided.
-     * Patch password if is provided.
+     * Patches displayName if is provided.
+     * Patches password if is provided.
      *
      * @param accountId
-     * @param patchUserRequest
+     * @param patchAccountRequest
      */
-    void patchAccount(Integer accountId, PatchAccountRequest patchUserRequest);
+    void patchAccount(Integer accountId, PatchAccountRequest patchAccountRequest);
 }

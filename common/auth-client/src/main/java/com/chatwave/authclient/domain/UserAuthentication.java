@@ -31,7 +31,7 @@ public class UserAuthentication implements Authentication {
     @Override
     public String getName() {
         return userId.toString();
-    }
+    } // todo: change it to loginname
 
     @Override
     public String getCredentials() {

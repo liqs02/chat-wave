@@ -1,7 +1,6 @@
 package com.chatwave.accountservice.domain;
 
-import com.chatwave.accountservice.domain.dto.AccountDetails;
-import com.chatwave.accountservice.domain.dto.AccountShowcase;
+import com.chatwave.accountservice.domain.dto.AccountResponse;
 import com.chatwave.accountservice.domain.dto.CreateAccountRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -13,7 +12,5 @@ public interface AccountMapper {
     @Mapping(target = "id", ignore = true)
     Account toAccount(CreateAccountRequest createAccountRequest);
 
-    AccountShowcase toAccountShowcase(Account account);
-
-    AccountDetails toAccountDetails(Account account);
+    AccountResponse toAccountShowcase(Account account);
 }

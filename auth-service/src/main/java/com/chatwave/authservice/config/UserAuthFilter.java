@@ -19,7 +19,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @Slf4j
 public class UserAuthFilter extends OncePerRequestFilter {
-        private final SessionRepository repository;
+        private final SessionRepository sessionRepository;
 
         @Override
         public void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
@@ -36,7 +36,7 @@ public class UserAuthFilter extends OncePerRequestFilter {
             }
 
             var accessToken = authHeader.substring(7);
-            var optionalSession = repository.findNotExpiredByAccessToken(accessToken);
+            var optionalSession = sessionRepository.findNotExpiredByAccessToken(accessToken);
 
             if(optionalSession.isEmpty()) {
                 filterChain.doFilter(request, response);

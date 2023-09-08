@@ -55,7 +55,7 @@ public class SecurityConfig {
     @Order(2)
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf ->
-                        csrf.ignoringRequestMatchers("/users/**")
+                        csrf.ignoringRequestMatchers("/users/**", "/sessions")
             )
             .authorizeHttpRequests(auth ->
                     auth.requestMatchers(GET, "/actuator/health").permitAll()
