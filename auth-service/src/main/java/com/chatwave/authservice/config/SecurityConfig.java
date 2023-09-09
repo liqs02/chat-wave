@@ -19,6 +19,7 @@ import org.springframework.security.oauth2.server.authorization.client.InMemoryR
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
+import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -58,7 +59,7 @@ public class SecurityConfig {
                         csrf.ignoringRequestMatchers("/users/**", "/sessions")
             )
             .authorizeHttpRequests(auth ->
-                    auth.requestMatchers(GET, "/actuator/health").permitAll()
+                    auth.requestMatchers(GET, "/actuator/health", "/oauth2/jwks").permitAll()
                             .requestMatchers(POST, "/sessions/refresh").permitAll()
                             .requestMatchers("/error").permitAll()
                             .anyRequest().authenticated()
@@ -69,7 +70,7 @@ public class SecurityConfig {
             .authenticationProvider(authenticationProvider)
             .addFilterBefore(userAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
-        if(activeProfiles.contains("CSRF_DISABLE"))
+        if(activeProfiles.contains("csrf_disable"))
             http.csrf(AbstractHttpConfigurer::disable);
 
         return http.build();
@@ -100,4 +101,10 @@ public class SecurityConfig {
         return new InMemoryRegisteredClientRepository(registeredClients);
     }
 
+    @Bean
+    public AuthorizationServerSettings authorizationServerSettings() {
+        return AuthorizationServerSettings.builder()
+                .issuer("http://auth-service:8081")
+                .build();
+    }
 }

@@ -2,13 +2,17 @@ spring:
   cloud.config.enabled: false
   jpa.hibernate.ddl-auto: create-drop
   profiles:
-    active: CSRF_DISABLE
+    active: test, csrf_disable
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://auth-service:8081
+          issuer-uri: auth-service
 
 eureka.client.enabled: false
 
 server.port: 8082
+
+logging:
+  level:
+    root: debug

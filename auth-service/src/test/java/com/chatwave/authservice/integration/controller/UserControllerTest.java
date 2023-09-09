@@ -1,8 +1,8 @@
 package com.chatwave.authservice.integration.controller;
 
 import com.chatwave.authservice.domain.dto.request.AuthenticationRequest;
-import com.chatwave.authservice.domain.dto.request.UpdatePasswordRequest;
 import com.chatwave.authservice.domain.dto.request.RegisterRequest;
+import com.chatwave.authservice.domain.dto.request.UpdatePasswordRequest;
 import com.chatwave.authservice.domain.dto.response.AuthenticationResponse;
 import com.chatwave.authservice.domain.dto.response.RegisterResponse;
 import com.chatwave.authservice.domain.user.User;

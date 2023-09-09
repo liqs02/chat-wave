@@ -2,10 +2,9 @@ package com.chatwave.chatservice.service;
 
 import com.chatwave.chatservice.client.AccountClient;
 import com.chatwave.chatservice.domain.Message;
-import com.chatwave.chatservice.repository.MessageRepository;
+import com.chatwave.chatservice.repository.ChatRepository;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -16,9 +15,8 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
-public class ChatServiceImpl implements ChatService{
-    private final MessageRepository repository;
+public class ChatServiceImpl implements ChatService {
+    private final ChatRepository repository;
     private final AccountClient accountClient;
 
     /**
@@ -29,7 +27,7 @@ public class ChatServiceImpl implements ChatService{
         if(newer)
             return repository.findMessagesAfter(firstMemberId, secondMemberId, from);
         else
-            return repository.findMessagesBefore(firstMemberId, secondMemberId, from);
+            return repository.findMessagesBefore(firstMemberId, secondMemberId, from); // propably doesn't work, todo: integration tests
     }
 
     /**

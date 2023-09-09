@@ -5,7 +5,9 @@ import com.chatwave.accountservice.client.dto.AuthenticationResponse;
 import com.chatwave.accountservice.client.dto.RegisterResponse;
 import com.chatwave.accountservice.client.dto.TokenSet;
 import com.chatwave.accountservice.domain.Account;
-import com.chatwave.accountservice.domain.dto.*;
+import com.chatwave.accountservice.domain.dto.AccountResponse;
+import com.chatwave.accountservice.domain.dto.CreateAccountRequest;
+import com.chatwave.accountservice.domain.dto.PatchAccountRequest;
 import com.chatwave.accountservice.repository.AccountRepository;
 import com.chatwave.authclient.domain.UserAuthentication;
 import com.chatwave.authclient.domain.UserAuthenticationDetails;
@@ -63,7 +65,7 @@ public class AccountControllerTest {
 
     @Nested
     @DisplayName("POST /accounts")
-    public class createAccount {
+    public class c1 {
         @Test
         @DisplayName("should create an account")
         public void t1() {
@@ -94,7 +96,7 @@ public class AccountControllerTest {
 
     @Nested
     @DisplayName("POST /accounts/authenticate")
-    public class authenticateAccount {
+    public class c2 {
         @Test
         @DisplayName("should authenticate a user and return created session")
         public void t1() {
@@ -126,7 +128,7 @@ public class AccountControllerTest {
 
     @Nested
     @DisplayName("GET /accounts/{accountId}/showcase")
-    public class getAccountResponse {
+    public class c3 {
         @Test
         @DisplayName("should return information about user")
         public void t1() {
@@ -149,7 +151,7 @@ public class AccountControllerTest {
 
     @Nested
     @DisplayName("PATCH /accounts/{accountId}")
-    public class patchAccountPassword {
+    public class c4 {
         private final String ENDPOINT = "/accounts/{accountId}";
         private Integer accountId;
 

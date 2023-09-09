@@ -1,6 +1,5 @@
 package com.chatwave.accountservice.integration.repository;
 
-import com.chatwave.accountservice.client.AuthClient;
 import com.chatwave.accountservice.domain.Account;
 import com.chatwave.accountservice.repository.AccountRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -9,9 +8,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
-import static com.chatwave.accountservice.utils.TestVariables.*;
+import static com.chatwave.accountservice.utils.TestVariables.DISPLAY_NAME;
+import static com.chatwave.accountservice.utils.TestVariables.USER_ID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 

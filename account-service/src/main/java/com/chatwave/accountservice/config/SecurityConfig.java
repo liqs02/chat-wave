@@ -16,6 +16,7 @@ import java.util.List;
 
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
@@ -34,14 +35,18 @@ public class SecurityConfig {
                         .requestMatchers(POST, "/accounts", "/accounts/authenticate").permitAll()
                         .anyRequest().authenticated()
             )
+            .oauth2ResourceServer(resourceServer ->
+                    resourceServer.jwt(withDefaults())
+            )
             .sessionManagement((session) -> session
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
             .addFilterAt(userAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
-        if(activeProfiles.contains("CSRF_DISABLE"))
+        if(activeProfiles.contains("csrf_disable"))
             http.csrf(AbstractHttpConfigurer::disable);
 
         return http.build();
     }
+
 }
