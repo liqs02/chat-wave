@@ -2,7 +2,7 @@ spring:
   cloud.config.enabled: false
   jpa.hibernate.ddl-auto: create-drop
   profiles:
-    active: CSRF_DISABLE
+    active: csrf_disable
 
 eureka.client.enabled: false
 

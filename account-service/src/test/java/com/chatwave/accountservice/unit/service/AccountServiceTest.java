@@ -1,9 +1,8 @@
 package com.chatwave.accountservice.unit.service;
 
 import com.chatwave.accountservice.client.AuthClient;
-import com.chatwave.accountservice.client.dto.*;
+import com.chatwave.accountservice.client.dto.RegisterResponse;
 import com.chatwave.accountservice.domain.Account;
-import com.chatwave.accountservice.domain.dto.*;
 import com.chatwave.accountservice.repository.AccountRepository;
 import com.chatwave.accountservice.service.AccountServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +18,8 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Optional;
 
 import static com.chatwave.accountservice.utils.TestVariables.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 

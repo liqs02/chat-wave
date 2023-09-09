@@ -1,15 +1,16 @@
-package com.chatwave.chatservice.domain;
+package com.chatwave.chatservice.unit.domain;
 
+import com.chatwave.chatservice.domain.Message;
+import com.chatwave.chatservice.domain.MessageMapper;
 import com.chatwave.chatservice.domain.dto.SendMessageRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("MessageMapper")
 public class MessageMapperTest {
-     MessageMapper mapper = MessageMapper.INSTANCE;
+     private final MessageMapper mapper = MessageMapper.INSTANCE;
 
      @Test
      @DisplayName("should map SendMessageRequest and authorId to message entity")
@@ -21,8 +22,8 @@ public class MessageMapperTest {
          assertEquals(1, result.getAuthorId());
          assertEquals(2, result.getReceiverId());
 
-         assertTrue(result.getId() != null);
-         assertTrue(result.getCreatedAt() != null);
+         assertNotNull(result.getId());
+         assertNotNull(result.getCreatedAt());
      }
 
     @Test

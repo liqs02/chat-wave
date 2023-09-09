@@ -1,8 +1,9 @@
-package com.chatwave.chatservice.service;
+package com.chatwave.chatservice.unit.service;
 
 import com.chatwave.chatservice.client.AccountClient;
 import com.chatwave.chatservice.domain.Message;
-import com.chatwave.chatservice.repository.MessageRepository;
+import com.chatwave.chatservice.repository.ChatRepository;
+import com.chatwave.chatservice.service.ChatServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,9 +22,9 @@ import static org.mockito.Mockito.*;
 @DisplayName("ChatService")
 public class ChatServiceTest {
     @InjectMocks
-    ChatServiceImpl service;
+    private ChatServiceImpl service;
     @Mock
-    private MessageRepository repository;
+    private ChatRepository repository;
     @Mock
     private AccountClient accountClient;
 

@@ -1,4 +1,4 @@
-package com.chatwave.chatservice;
+package com.chatwave.chatservice.integration;
 
 import com.chatwave.authclient.filter.UserAuthFilter;
 import org.junit.jupiter.api.Test;

@@ -8,6 +8,6 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 @FeignClient("account-service")
 public interface AccountClient {
-    @GetMapping(value = "/{accountId}/exist", consumes = APPLICATION_JSON, produces = APPLICATION_JSON)
+    @GetMapping(value = "/accounts/{accountId}/exist", consumes = APPLICATION_JSON, produces = APPLICATION_JSON)
     void doesAccountExist(@PathVariable Integer accountId);
 }

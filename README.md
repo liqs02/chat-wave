@@ -13,7 +13,7 @@ Chat wave is decomposed into three core microservices. All of them have own data
 
 Each endpoint used by users are protected by csrf protection provided by spring boot. You can disable this protection by setting up a special spring profile on the service (however it is not recommended):
 ```yaml
-spring.profiles.active: CSRF_DISABLE
+spring.profiles.active: csrf_disable
 ```
 
 
