@@ -3,6 +3,11 @@ spring:
   jpa.hibernate.ddl-auto: create-drop
   profiles:
     active: CSRF_DISABLE
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://auth-service:8081
 
 eureka.client.enabled: false
 
