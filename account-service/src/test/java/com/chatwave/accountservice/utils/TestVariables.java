@@ -10,8 +10,6 @@ public class TestVariables {
     public static final String DISPLAY_NAME_2 = "NewDisplayName";
     public static final String PASSWORD = "Pass1234";
     public static final String PASSWORD_2 = "1234Pass";
-    public static final String ENCODED = "encoded";
-    public static final String INVALID_PASSWORD = "invalid";
 
     public static final String ACCESS_TOKEN = "accessTokenValue";
     public static final String REFRESH_TOKEN = "refreshTokenValue";
@@ -24,6 +22,6 @@ public class TestVariables {
     public static final AuthenticationResponse AUTHENTICATION_RESPONSE = new AuthenticationResponse(USER_ID);
     public static final CreateSessionRequest CREATE_SESSION_REQUEST = new CreateSessionRequest(USER_ID);
     public static final PatchUserRequest PATCH_USER_REQUEST = new PatchUserRequest(PASSWORD_2);
-    public static final PatchAccountRequest PATCH_ACCOUNT_REQUEST = new PatchAccountRequest(DISPLAY_NAME, PASSWORD_2);
+    public static final PatchAccountRequest PATCH_ACCOUNT_REQUEST = new PatchAccountRequest(DISPLAY_NAME_2, PASSWORD_2);
 
 }

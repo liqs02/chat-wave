@@ -1,37 +1,37 @@
 package com.chatwave.chatservice.domain;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
+
+import static jakarta.persistence.GenerationType.AUTO;
 
 @Data
 @Entity
 @Table(
         name = "messages",
         indexes = {
-                @Index(name = "mess_author_id_index", columnList = "authorId"),
-                @Index(name = "mess_receiver_id_index", columnList = "receiverId"),
-                @Index(name = "mess_created_at_index", columnList = "createdAt")
+                @Index(name = "messAuthorIdIndex", columnList = "authorId"),
+                @Index(name = "messReceiverIdIndex", columnList = "receiverId"),
+                @Index(name = "messCreatedAtIndex", columnList = "createdAt")
         }
 )
 public class Message {
-    @Id
+    @Id @GeneratedValue
     private UUID id;
-
     @Column(nullable = false, updatable = false)
     private Integer authorId;
     @Column(nullable = false, updatable = false)
     private Integer receiverId;
     @Column(nullable = false, updatable = false, length = 2000)
     private String content;
-
     @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    private final LocalDateTime createdAt;
 
     public Message() {
-        this.id = UUID.randomUUID();
         this.createdAt = LocalDateTime.now();
     }
 

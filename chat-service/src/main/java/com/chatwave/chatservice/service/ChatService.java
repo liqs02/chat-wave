@@ -12,11 +12,11 @@ public interface ChatService {
      *
      * @param firstMemberId first chat's memberId
      * @param secondMemberId second chat's memberId
-     * @param from datetime from which we should take a messages (excluding this message with exactly this datetime)
+     * @param since datetime since which we should take a messages (excluding this message with exactly this datetime)
      * @param newer if true, method returns newer messages than given datetime
      * @return message list
      */
-    List<Message> getMessages(Integer firstMemberId, Integer secondMemberId, LocalDateTime from, Boolean newer);
+    List<Message> getMessages(Integer firstMemberId, Integer secondMemberId, LocalDateTime since, Boolean newer);
 
     /**
      * Checks that receiver with given id does exist.
