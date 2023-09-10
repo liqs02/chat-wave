@@ -60,7 +60,7 @@ public class SecurityConfig {
                         csrf.ignoringRequestMatchers("/users/**", "/sessions")
             )
             .authorizeHttpRequests(auth ->
-                    auth.requestMatchers(GET, "/actuator/health", "/oauth2/jwks").permitAll()
+                    auth.requestMatchers(GET, "/actuator/health").permitAll()
                             .requestMatchers(POST, "/sessions/refresh").permitAll()
                             .requestMatchers("/error").permitAll()
                             .anyRequest().authenticated()

@@ -16,7 +16,7 @@ spring:
 
 app:
   clients:
-    - id: accounts-service
+    - id: account-service
       secret: secret
       url: http://account-service:8082
 
