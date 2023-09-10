@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(encoded);
 
         userRepository.save(user);
-        log.info("new user has been created: {userId}. {loginName}", user.getId(), user.getLoginName()); //todo: check it
+        log.info("new user has been created: " + user.getId() + ". " +  user.getLoginName()); //todo: check it
 
         return user;
     }
@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
             throw new ResponseStatusException(UNAUTHORIZED, "Invalid password");
         }
 
-        log.info("User has been authenticated: {userId}. {loginName}", user.getId(), user.getLoginName());
+        log.info("User has been authenticated: " + user.getId() + ". " +  user.getLoginName());
         return userRepository.findByLoginName(user.getLoginName()).get();
     }
 
