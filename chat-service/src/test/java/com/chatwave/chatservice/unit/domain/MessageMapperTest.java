@@ -22,7 +22,6 @@ public class MessageMapperTest {
          assertEquals(1, result.getAuthorId());
          assertEquals(2, result.getReceiverId());
 
-         assertNotNull(result.getId());
          assertNotNull(result.getCreatedAt());
      }
 

@@ -23,11 +23,11 @@ public class ChatServiceImpl implements ChatService {
      * {@inheritDoc}
      */
     @Override
-    public List<Message> getMessages(Integer firstMemberId, Integer secondMemberId, LocalDateTime from, Boolean newer) {
+    public List<Message> getMessages(Integer firstMemberId, Integer secondMemberId, LocalDateTime since, Boolean newer) {
         if(newer)
-            return repository.findMessagesAfter(firstMemberId, secondMemberId, from);
+            return repository.findMessagesAfter(firstMemberId, secondMemberId, since);
         else
-            return repository.findMessagesBefore(firstMemberId, secondMemberId, from); // propably doesn't work, todo: integration tests
+            return repository.findMessagesBefore(firstMemberId, secondMemberId, since); // propably doesn't work, todo: integration tests
     }
 
     /**
