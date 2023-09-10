@@ -24,6 +24,7 @@ import org.springframework.security.oauth2.server.authorization.settings.ClientS
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,6 +41,7 @@ public class SecurityConfig {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationProvider authenticationProvider;
     private final UserAuthFilter userAuthFilter;
+    private final List<Client> clients;
 
     @Bean
     @Order(1)
@@ -78,11 +80,6 @@ public class SecurityConfig {
 
     @Bean
     public RegisteredClientRepository registeredClientRepository() {
-        var clients = List.of(
-                new Client("account-service", "secret", "http://account-service:8082"),
-                new Client("chat-service", "secret", "http://chat-service:8083")
-        ); // todo: move this to application.yml
-
         var registeredClients = clients.parallelStream()
                 .map(client ->
                         RegisteredClient.withId(UUID.randomUUID().toString())

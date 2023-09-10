@@ -16,7 +16,7 @@ public class OAuthClientService {
     public String getAccessToken() {
         var formData = new LinkedMultiValueMap<>();
         formData.add("grant_type", "client_credentials");
-        formData.add("client_id", "account-service");
+        formData.add("client_id", "micro-service");
         formData.add("client_secret", "secret");
         formData.add("scope", "openid server");
 
