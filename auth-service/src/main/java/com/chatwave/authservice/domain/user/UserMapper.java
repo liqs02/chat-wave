@@ -21,7 +21,7 @@ public interface UserMapper {
     User toUser(AuthenticationRequest authenticationRequest);
 
     @Mapping(source = "id", target = "userId")
-    RegisterResponse toCreateUserResponse(User user); // todo: add test
+    RegisterResponse toCreateUserResponse(User user);
 
     @Mapping(source = "id", target = "userId")
     AuthenticationResponse toAuthenticateUserResponse(User user);

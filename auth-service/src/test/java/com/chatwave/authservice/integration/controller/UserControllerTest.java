@@ -163,7 +163,7 @@ public class UserControllerTest {
     }
 
     @Nested
-    @DisplayName("PUT /users/{userId}/password") // todo: update readme
+    @DisplayName("PUT /users/{userId}/password")
     class c4 {
         private final String ENDPOINT = "/users/{userId}/password";
         private User user;

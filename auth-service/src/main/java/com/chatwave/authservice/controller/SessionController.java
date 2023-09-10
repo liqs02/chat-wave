@@ -28,7 +28,7 @@ public class SessionController {
     @GetMapping("/authentication")
     public UserAuthentication getUserAuthentication(HttpServletRequest request) {
         return service.getAuthentication(request);
-    } // TODO: update readme
+    }
 
     @GetMapping
     public List<GetSessionResponse> getActiveSessionsByUserId(@AuthenticationPrincipal Integer userId) {
@@ -43,7 +43,7 @@ public class SessionController {
     public TokenSetResponse createSessions(@Valid @RequestBody CreateSessionRequest body) {
         var session = service.createSession(body.userId());
         return mapper.toTokenSetResponse(session);
-    } // todo: add integration tests
+    }
 
     @PostMapping("/refresh")
     public TokenSetResponse refreshTokens(@Valid @RequestBody RefreshSessionRequest body) {

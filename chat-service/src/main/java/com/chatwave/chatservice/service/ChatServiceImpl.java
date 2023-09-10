@@ -27,7 +27,7 @@ public class ChatServiceImpl implements ChatService {
         if(newer)
             return repository.findMessagesAfter(firstMemberId, secondMemberId, since);
         else
-            return repository.findMessagesBefore(firstMemberId, secondMemberId, since); // propably doesn't work, todo: integration tests
+            return repository.findMessagesBefore(firstMemberId, secondMemberId, since);
     }
 
     /**
