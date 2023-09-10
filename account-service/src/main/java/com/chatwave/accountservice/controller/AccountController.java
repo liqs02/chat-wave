@@ -37,7 +37,7 @@ public class AccountController {
     @GetMapping("/{accountId}/exist")
     @PreAuthorize("hasAuthority('SCOPE_server')")
     public void doesAccountExist(@PathVariable Integer accountId) {
-        service.doesAccountExist(accountId);
+        service.getAccountById(accountId);
     }
 
     @GetMapping("/{accountId}/showcase")

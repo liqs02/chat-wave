@@ -37,23 +37,15 @@ public class AccountServiceTest {
     @BeforeEach
     void setup() {
         account = new Account();
-        account.setId(USER_ID);
-        account.setDisplayName("displayName");
+        account.setDisplayName(DISPLAY_NAME);
     }
 
     @Test
     @DisplayName("createAccount() should create an account")
     public void t1() { // todo: change test to new code
-        var accountWithId = account;
-        accountWithId.setId(USER_ID);
-
         when(
             authService.createUser(REGISTER_REQUEST)
         ).thenReturn(new RegisterResponse(USER_ID));
-
-        when(
-                repository.save(account)
-        ).thenReturn(accountWithId);
 
         when(
                 authService.createSessions(CREATE_SESSION_REQUEST)
@@ -61,6 +53,10 @@ public class AccountServiceTest {
 
         var result = service.createAccount(account, LOGIN_NAME, PASSWORD);
         assertEquals(TOKEN_SET, result);
+
+        verify(
+                repository, times(1)
+        ).save(account);
     }
 
     @Test
@@ -105,36 +101,6 @@ public class AccountServiceTest {
         }
     }
 
-    @Nested
-    @DisplayName("doesAccountExist()")
-    class doesAccountExist {
-        @Test
-        @DisplayName("should get an account and do not throw exception")
-        public void t1() {
-            when(
-                    repository.findById(USER_ID)
-            ).thenReturn(Optional.of(account));
-
-            service.doesAccountExist(USER_ID);
-        }
-
-        @Test
-        @DisplayName("should get an account and throw NOT_FOUND")
-        public void t2() {
-            when(
-                    repository.findById(USER_ID)
-            ).thenReturn(Optional.empty());
-
-
-            var result = assertThrows(
-                    ResponseStatusException.class,
-                    () -> service.getAccountById(USER_ID)
-            );
-
-            assertEquals(NOT_FOUND, result.getStatusCode());
-        }
-    }
-
     @Test
     @DisplayName("patchAccount() should update user's displayName and password")
     public void t3() {
@@ -146,8 +112,6 @@ public class AccountServiceTest {
         ).thenReturn(Optional.of(account));
 
         service.patchAccount(USER_ID, PATCH_ACCOUNT_REQUEST);
-
-        account.setDisplayName(DISPLAY_NAME);
 
         verify(
                 repository, times(1)

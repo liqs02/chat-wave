@@ -63,16 +63,6 @@ public class AccountServiceImpl implements AccountService {
     /**
      * {@inheritDoc}
      */
-    @Override
-    public void doesAccountExist(Integer accountId) {
-        var optional = repository.findById(accountId);
-        if(optional.isEmpty())
-            throw new ResponseStatusException(NOT_FOUND, "User with given id does not exist");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Transactional
     @Override
     public void patchAccount(Integer accountId, PatchAccountRequest patchAccountRequest) {
@@ -87,6 +77,5 @@ public class AccountServiceImpl implements AccountService {
 
         if(patchAccountRequest.newPassword() != null)
             authClient.patchUser(accountId, new PatchUserRequest(patchAccountRequest.newPassword()));
-
     }
 }

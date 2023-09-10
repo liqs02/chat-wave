@@ -184,7 +184,7 @@ public class AccountControllerTest {
         public void t400() {
             var request = Request.create(Request.HttpMethod.PATCH, "auth-service", new HashMap<>(), null, new RequestTemplate());
 
-            doThrow(new FeignException.BadRequest("Message", request, null, null))
+            doThrow(new FeignException.BadRequest("", request, null, null))
                     .when(authClient)
                     .patchUser(accountId, PATCH_USER_REQUEST);
 

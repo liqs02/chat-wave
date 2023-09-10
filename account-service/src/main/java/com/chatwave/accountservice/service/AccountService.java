@@ -36,13 +36,6 @@ public interface AccountService {
     Account getAccountById(Integer accountId);
 
     /**
-     * Checks that account with given id does exist if not throws NOT_FOUND.
-     *
-     * @param accountId
-     */
-    void doesAccountExist(Integer accountId);
-
-    /**
      * Patches displayName if is provided.
      * Patches password if is provided.
      *

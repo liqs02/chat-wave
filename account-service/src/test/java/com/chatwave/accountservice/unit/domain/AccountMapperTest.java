@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import static com.chatwave.accountservice.utils.TestVariables.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @DisplayName("AccountMapper")
 public class AccountMapperTest {
@@ -16,7 +17,7 @@ public class AccountMapperTest {
     private Account account;
 
     @BeforeEach
-    void setup() {
+    void setUp() {
         account = new Account();
         account.setId(USER_ID);
         account.setDisplayName(DISPLAY_NAME);
@@ -28,7 +29,7 @@ public class AccountMapperTest {
         var createUserRequest = new CreateAccountRequest(LOGIN_NAME, DISPLAY_NAME, PASSWORD);
         var result = mapper.toAccount(createUserRequest);
 
-        assertEquals(null, result.getId());
+        assertNull(result.getId());
         assertEquals(DISPLAY_NAME, result.getDisplayName());
     }
 
