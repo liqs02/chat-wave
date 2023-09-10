@@ -11,7 +11,7 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 @FeignClient("auth-service")
 public interface AuthClient extends com.chatwave.authclient.client.AuthClient {
     @PostMapping(value = "/users", consumes = APPLICATION_JSON, produces = APPLICATION_JSON)
-    RegisterResponse createUser(RegisterRequest registerRequest); // todo @RequestParam check it
+    RegisterResponse createUser(RegisterRequest registerRequest);
 
     @PostMapping(value = "/users/authenticate", consumes = APPLICATION_JSON, produces = APPLICATION_JSON)
     AuthenticationResponse authenticateUser(AuthenticationRequest authenticationRequest);

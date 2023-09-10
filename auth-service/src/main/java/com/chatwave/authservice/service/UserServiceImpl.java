@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
                     )
             );
         } catch(Exception e) {
-            throw new ResponseStatusException(UNAUTHORIZED, "Invalid password"); // todo: check in account-service correctness of handling
+            throw new ResponseStatusException(UNAUTHORIZED, "Invalid password");
         }
 
         log.info("User has been authenticated: {userId}. {loginName}", user.getId(), user.getLoginName());
