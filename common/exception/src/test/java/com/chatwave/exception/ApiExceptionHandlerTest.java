@@ -1,61 +1,63 @@
 package com.chatwave.exception;
 
-import feign.FeignException;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatusCode;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.reactive.server.WebTestClient;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.http.MediaType.APPLICATION_PDF;
 
-@ExtendWith(MockitoExtension.class)
-@DisplayName("ApiExceptionHandler")
-public class ApiExceptionHandlerTest extends ApiExceptionHandler {
-    private final String exampleMessage = "[400] during [POST] to [http://micro-service/endpoint] [MicroService#method(param)]: [{\"message\":\"Valid message.\",\"status\":\"BAD_REQUEST\",\"timestamp\":\"2023-01-01T00:00:00\"}]";
-    @Mock
-    private FeignException feignException;
+@SpringBootTest(webEnvironment = RANDOM_PORT)
+@AutoConfigureWebTestClient
+public class ApiExceptionHandlerTest {
+    @Autowired
+    protected WebTestClient webTestClient;
 
-    @Nested
-    @DisplayName("handleFeignException()")
-    class HandleFeignException {
-        @Test
-        @DisplayName("should return default message from response message")
-        public void t1() {
-            when(
-                    feignException.getMessage()
-            ).thenReturn(exampleMessage);
+    @Test
+    @DisplayName("should throw correct exception if not supported contentType is provided")
+    public void t1() {
+        webTestClient.get()
+                .uri("/")
+                .exchange()
+                .expectStatus().isEqualTo(UNSUPPORTED_MEDIA_TYPE)
+                .expectBody()
+                .jsonPath("$.message").isEqualTo("Content-Type 'null' is not supported.")
+                .jsonPath("$.status").isEqualTo("UNSUPPORTED_MEDIA_TYPE")
+                .jsonPath("$.timestamp").isNotEmpty();
+    }
 
-            when(
-                    feignException.status()
-            ).thenReturn(400);
+    @Test
+    @DisplayName("should throw correct exception if not supported accept mediaType is provided")
+    public void t2() {
+        webTestClient.get()
+                .uri("/")
+                .header("Content-Type", "application/json")
+                .accept(APPLICATION_PDF)
+                .exchange()
+                .expectStatus().isEqualTo(NOT_ACCEPTABLE)
+                .expectBody()
+                .jsonPath("$.message").isEqualTo("No acceptable representation")
+                .jsonPath("$.status").isEqualTo("NOT_ACCEPTABLE")
+                .jsonPath("$.timestamp").isNotEmpty();
+    }
 
-            var result = handleFeignException(feignException);
-            var apiException = (ApiException) result.getBody();
-
-            assertEquals("Valid message.", apiException.getMessage());
-            assertEquals(HttpStatusCode.valueOf(400), result.getStatusCode());
-        }
-
-        @Test
-        @DisplayName("should return message from basic message")
-        public void t2() {
-            when(
-                    feignException.getMessage()
-            ).thenReturn("Valid message.");
-
-            when(
-                    feignException.status()
-            ).thenReturn(400);
-
-            var result = handleFeignException(feignException);
-            var apiException = (ApiException) result.getBody();
-
-            assertEquals("Valid message.", apiException.getMessage());
-            assertEquals(HttpStatusCode.valueOf(400), result.getStatusCode());
-        }
+    @Test
+    @DisplayName("should throw correct exception if method is not allowed")
+    public void t3() {
+        webTestClient.post()
+                .uri("/")
+                .header("Content-Type", "application/json")
+                .accept(APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isEqualTo(METHOD_NOT_ALLOWED)
+                .expectBody()
+                .jsonPath("$.message").isEqualTo("Method 'POST' is not supported.")
+                .jsonPath("$.status").isEqualTo("METHOD_NOT_ALLOWED")
+                .jsonPath("$.timestamp").isNotEmpty();
     }
 }

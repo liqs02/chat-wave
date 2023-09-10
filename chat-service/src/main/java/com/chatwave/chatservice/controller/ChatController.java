@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +24,12 @@ public class ChatController {
     private final MessageMapper mapper;
 
     @GetMapping("/{memberId}")
-    public List<MessageResponse> getMessages(@NotNull @RequestParam("since") LocalDateTime since, @NotNull @RequestParam("newer") Boolean newer, @AuthenticationPrincipal Integer authorId, @PathVariable Integer memberId) {
+    public List<MessageResponse> getMessages(
+            @NotNull @RequestParam("since") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime since,
+            @NotNull @RequestParam("newer") Boolean newer,
+            @AuthenticationPrincipal Integer authorId,
+            @PathVariable Integer memberId)
+    {
         return service
                 .getMessages(authorId, memberId, since, newer)
                 .parallelStream()

@@ -10,7 +10,7 @@ import java.util.List;
 
 public class UserAuthentication implements Authentication {
     private final Integer userId; // represents principals
-
+    private final String userLoginName;
     private final String accessToken; // represents credentials
 
     private final List<GrantedAuthority> authorities;
@@ -19,6 +19,7 @@ public class UserAuthentication implements Authentication {
 
     public UserAuthentication(Session session, HttpServletRequest request) {
         this.userId = session.getUser().getId();
+        this.userLoginName = session.getUser().getLoginName();
         this.accessToken = session.getAccessToken();
         this.authorities = session.getUser().getAuthorities();
         this.details = new UserAuthenticationDetails(session, request);
@@ -31,7 +32,7 @@ public class UserAuthentication implements Authentication {
 
     @Override
     public String getName() {
-        return userId.toString();
+        return userLoginName;
     }
 
     @Override

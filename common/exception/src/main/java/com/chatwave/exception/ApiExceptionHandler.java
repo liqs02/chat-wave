@@ -30,7 +30,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(FeignException.class)
-    protected ResponseEntity<ApiException> handleFeignException(FeignException e) { // todo : change it
+    protected ResponseEntity<ApiException> handleFeignException(FeignException e) {
         var status = HttpStatus.valueOf(e.status());
         if(status.is5xxServerError()) {
             log.info("Feign client throw " + status + " error: " + e.getMessage());
@@ -38,19 +38,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             return new ResponseEntity<>(apiException, status);
         }
 
-        var exceptionMessage = e.getMessage();
-        var startIndex = exceptionMessage.indexOf("\"message\":\"");
-        if(startIndex == -1)
-            return new ResponseEntity<>(new ApiException(exceptionMessage, status), status);
-        startIndex += "\"message\":\"".length();
-
-        var endIndex = exceptionMessage.indexOf("\"", startIndex);
-        if(endIndex == -1)
-            return new ResponseEntity<>(new ApiException(exceptionMessage, status), status);
-
-        var message = exceptionMessage.substring(startIndex, endIndex);
-
-        var apiException = new ApiException(message, status);
+        var apiException = new ApiException("", status);
         return new ResponseEntity<>(apiException, status);
     }
 
