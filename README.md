@@ -113,10 +113,12 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://auth-service:8081
+          jwk-set-uri: http://auth-service:8081/oauth2/jwks
       client:
         provider:
           microservices:
             issuer-uri: http://auth-service:8081
+            jwk-set-uri: http://auth-service:8081/oauth2/jwks
         registration:
           microservices:
             client-id: service-name
