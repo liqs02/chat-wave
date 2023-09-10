@@ -22,7 +22,7 @@ spring.profiles.active: csrf_disable
 An auth service implements easy common client and user authorization system for microservices.
 
 Clients are authenticated by `client_secret_post` and authorized by `client_credentials` provided by spring boot.
-If you wish to add a new client, add the following lines to the configuration file
+If you wish to add a new client, add the following lines to the configuration file:
 ```yaml
 app:
   clients:
@@ -42,15 +42,15 @@ User is authenticated by login and password.
 
 | Method   | Path                                    | Description                                    | Authorization Type |
 |:---------|:----------------------------------------|------------------------------------------------|:-------------------|
-| `GET`    | `/sessions`                             | Get all not expired sessions of current user.  | `USER`             |
+| `GET`    | `/sessions`                             | Get all not expired sessions of current user   | `USER`             |
 | `GET`    | `/session/authentication`               | Get user's authentication data                 | `CLIENT`           |
 | `POST`   | `/users`                                | Create a user                                  | `CLIENT`           |
 | `POST`   | `/users/authenticate`                   | Authenticate an user                           | `CLIENT`           |
-| `POST`   | `/sessions`                             | Create a session for user.                     | `CLIENT`           |
-| `POST`   | `/sessions/refresh`                     | Refresh accessToken.                           | `NONE`             |
-| `PUT`    | `/users/{userId}/password`              | Change user's password.                        | `CLIENT`           |
-| `DELETE` | `/sessions`                             | Expire all user's session.                     | `USER`             |
-| `DELETE` | `/sessions/{sessionId}`                 | Expire specified session.                      | `USER`             |
+| `POST`   | `/sessions`                             | Create a session for user                      | `CLIENT`           |
+| `POST`   | `/sessions/refresh`                     | Refresh accessToken                            | `NONE`             |
+| `PUT`    | `/users/{userId}/password`              | Change user's password                         | `CLIENT`           |
+| `DELETE` | `/sessions`                             | Expire all user's session                      | `USER`             |
+| `DELETE` | `/sessions/{sessionId}`                 | Expire specified session                       | `USER`             |
 
 ### Account Service
 
@@ -58,7 +58,7 @@ The accounts service stores non-sensitive user data. It communicates with the au
 
 | Method | Path                             | Description                                | Authorization Type |
 |:-------|:---------------------------------|--------------------------------------------|:-------------------|
-| `GET`  | `/accounts/{accountId}/exist`    | Check that user with given id exist.       | `CLIENT`           |
+| `GET`  | `/accounts/{accountId}/exist`    | Check that user with given id exist        | `CLIENT`           |
 | `GET`  | `/accounts/{accountId}/showcase` | Get account's public information           | `USER`             |
 | `POST` | `/accounts`                      | Create an account and user in auth service | `NONE`             |
 | `POST` | `/accounts/authenticate`         | Authenticate a user                        | `NONE`             |
@@ -76,7 +76,7 @@ Chat service allows to send and gets messages from chats.
 ## Infrastructure
 The distributed systems patterns are provided by spring boot.
 
-#### Config service
+### Config service
 Config services keeps config files in static directory.
 If the service has the appropriate docker-compose configuration, simply add the following code (with the changed service's name) to the application yaml file.
 ```yaml
@@ -87,15 +87,15 @@ spring:
     import: configserver:http://user:${CONFIG_PASSWORD}@config:8888
 ```
 
-#### Gateway
+### Gateway
 Gateway introduces easy access for customer to microservices from single place.
 
-#### Registry
+### Registry
 Registry is a simple eureka server application that provides easy communication between services and many useful tools for tracking and managing microservices.
 
 ## Common libraries
 
-#### Auth Client
+### Auth Client
 Library provides filter for user's authorization and UserAuthentication class which represents data of authorized user. 
 
 To use the filter we need to add the following code in SecurityFilterChain:
@@ -140,7 +140,7 @@ spring:
         enabled: true
 ```
 
-#### Exception Library
+### Exception Library
 The library provides common exception handler for all microservices.
 To use this library, we need to add the following annotation to the main class:
 ```java
