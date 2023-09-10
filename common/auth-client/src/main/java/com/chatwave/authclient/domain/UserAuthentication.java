@@ -14,6 +14,7 @@ import java.util.List;
 @Setter
 public class UserAuthentication implements Authentication {
     private Integer userId;
+    private String userLoginName;
     private String accessToken;
     private List<GrantedAuthority> authorities;
     private UserAuthenticationDetails details;
@@ -30,8 +31,8 @@ public class UserAuthentication implements Authentication {
 
     @Override
     public String getName() {
-        return userId.toString();
-    } // todo: change it to loginname
+        return userLoginName;
+    }
 
     @Override
     public String getCredentials() {
@@ -58,6 +59,10 @@ public class UserAuthentication implements Authentication {
 
     public void setPrincipal(Integer userId) {
         this.userId = userId;
+    }
+
+    public void setName(String name) {
+        this.userLoginName = name;
     }
 
     public void setCredentials(String accessToken) {
