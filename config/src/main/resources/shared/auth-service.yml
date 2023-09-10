@@ -14,5 +14,15 @@ spring:
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
+app:
+  clients:
+    - id: accounts-service
+      secret: secret
+      url: http://account-service:8082
+
+    - id: chat-service
+      secret: secret
+      url: http://chat-service:8083
+
 server:
   port: 8081
