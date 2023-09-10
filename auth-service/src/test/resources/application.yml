@@ -4,6 +4,12 @@ spring:
   profiles:
     active: csrf_disable
 
+app:
+  clients:
+    - id: micro-service
+      secret: secret
+      url: http://micro-service:8081
+
 eureka.client.enabled: false
 
 server.port: 8081

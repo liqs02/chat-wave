@@ -40,6 +40,7 @@ public class SecurityConfig {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationProvider authenticationProvider;
     private final UserAuthFilter userAuthFilter;
+    private final List<Client> clients;
 
     @Bean
     @Order(1)
@@ -59,7 +60,7 @@ public class SecurityConfig {
                         csrf.ignoringRequestMatchers("/users/**", "/sessions")
             )
             .authorizeHttpRequests(auth ->
-                    auth.requestMatchers(GET, "/actuator/health", "/oauth2/jwks").permitAll()
+                    auth.requestMatchers(GET, "/actuator/health").permitAll()
                             .requestMatchers(POST, "/sessions/refresh").permitAll()
                             .requestMatchers("/error").permitAll()
                             .anyRequest().authenticated()
@@ -78,11 +79,6 @@ public class SecurityConfig {
 
     @Bean
     public RegisteredClientRepository registeredClientRepository() {
-        var clients = List.of(
-                new Client("account-service", "secret", "http://account-service:8082"),
-                new Client("chat-service", "secret", "http://chat-service:8083")
-        ); // todo: move this to application.yml
-
         var registeredClients = clients.parallelStream()
                 .map(client ->
                         RegisteredClient.withId(UUID.randomUUID().toString())

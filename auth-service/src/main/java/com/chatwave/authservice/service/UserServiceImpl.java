@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(encoded);
 
         userRepository.save(user);
-        log.info("new user has been created: " + user.getId() + ". " +  user.getLoginName()); //todo: check it
+        log.info("new user has been created: " + user.getId() + ". " +  user.getLoginName());
 
         return user;
     }

@@ -22,7 +22,7 @@ public class ClientAuthTest {
     public void t1() {
         var formData = new LinkedMultiValueMap<String, String>();
         formData.add("grant_type", "client_credentials");
-        formData.add("client_id", "account-service");
+        formData.add("client_id", "micro-service");
         formData.add("client_secret", "secret");
         formData.add("scope", "openid server");
 

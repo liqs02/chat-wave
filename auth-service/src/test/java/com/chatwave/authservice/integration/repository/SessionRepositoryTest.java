@@ -27,7 +27,6 @@ public class SessionRepositoryTest {
 
     @BeforeEach
     void setup() {
-        // todo: check why here exists user with login=LOGIN_NAME when I try to package it.
         sessionRepository.deleteAll();
         userRepository.deleteAll();
 

@@ -22,6 +22,14 @@ spring.profiles.active: csrf_disable
 An auth service implements easy common client and user authorization system for microservices.
 
 Clients are authenticated by `client_secret_post` and authorized by `client_credentials` provided by spring boot.
+If you wish to add a new client, add the following lines to the configuration file
+```yaml
+app:
+  clients:
+    - id: micro-service
+      secret: secret
+      url: http://micro-service:8080
+```
 
 Users has custom authorization based on sessions. Client can create new session for user, then client receives `accessToken` and `refreshToken` which can send to user.
 To use `accessToken` we have to send it in `User-Authorization` header with `Bearer ` prefix like below.  
@@ -50,11 +58,11 @@ The accounts service stores non-sensitive user data. It communicates with the au
 
 | Method | Path                             | Description                                | Authorization Type |
 |:-------|:---------------------------------|--------------------------------------------|:-------------------|
-| `GET`  | `/accounts/current`              | Get current account's details              | `USER`             |
 | `GET`  | `/accounts/{accountId}/exist`    | Check that user with given id exist.       | `CLIENT`           |
 | `GET`  | `/accounts/{accountId}/showcase` | Get account's public information           | `USER`             |
 | `POST` | `/accounts`                      | Create an account and user in auth service | `NONE`             |
 | `POST` | `/accounts/authenticate`         | Authenticate a user                        | `NONE`             |
+| `PATCH`| `/accounts/{accountId}`          | Update user                                | `USER`             |
 
 ### Chat Service
 
@@ -65,8 +73,6 @@ Chat service allows to send and gets messages from chats.
 | `GET`  | `/chat/{memberId}`   | Get few messages from chat before or after specified date | `USER`             |
 | `POST` | `/chat/{receiverId}` | Send message to user                                      | `USER`             |
 
-This API is still in development!
-
 ## Infrastructure
 The distributed systems patterns are provided by spring boot.
 
@@ -76,7 +82,7 @@ If the service has the appropriate docker-compose configuration, simply add the 
 ```yaml
 spring:
   application:
-    name: name-service
+    name: micro-service
   config:
     import: configserver:http://user:${CONFIG_PASSWORD}@config:8888
 ```
@@ -94,8 +100,8 @@ Library provides filter for user's authorization and UserAuthentication class wh
 
 To use the filter we need to add the following code in SecurityFilterChain:
 
-```
-.addFilterAt(userAuthFilter, UsernamePasswordAuthenticationFilter.class);
+```java
+http.addFilterAt(userAuthFilter, UsernamePasswordAuthenticationFilter.class);
 ```
 Create a feign client:
 ```java
@@ -104,7 +110,7 @@ public interface AuthService extends com.chatwave.authclient.client.AuthClient {
 ```
 
 And set up oauth2 client configuration in config files.
-An example:
+An example of full configuration:
 
 ```yaml
 spring:
@@ -121,7 +127,7 @@ spring:
             jwk-set-uri: http://auth-service:8081/oauth2/jwks
         registration:
           microservices:
-            client-id: service-name
+            client-id: micro-service
             client-secret: secret
             authorization-grant-type: client_credentials
             client-authentication-method: client_secret_post
@@ -137,8 +143,8 @@ spring:
 #### Exception Library
 The library provides common exception handler for all microservices.
 To use this library, we need to add the following annotation to the main class:
-```
-@ComponentScan({"com.chatwave.currentService","com.chatwave.exception"})
+```java
+@ComponentScan({"com.chatwave.microservice","com.chatwave.exception"})
 ```
 
 

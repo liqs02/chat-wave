@@ -5,7 +5,6 @@ import com.chatwave.authclient.domain.UserAuthenticationDetails;
 import com.chatwave.chatservice.client.AccountClient;
 import com.chatwave.chatservice.client.AuthClient;
 import com.chatwave.chatservice.domain.Message;
-import com.chatwave.chatservice.domain.dto.GetMessagesRequest;
 import com.chatwave.chatservice.domain.dto.MessageResponse;
 import com.chatwave.chatservice.domain.dto.SendMessageRequest;
 import com.chatwave.chatservice.repository.ChatRepository;
