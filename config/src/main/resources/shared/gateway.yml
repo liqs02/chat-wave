@@ -9,13 +9,14 @@ spring:
           uri: lb://auth-service
           predicates:
             - Path=/users/**
+            - Path=/sessions/**
+
         - id: account-route
           uri: lb://account-service
           predicates:
             - Path=/accounts/**
+
         - id: chat-route
           uri: lb://chat-service
           predicates:
             - Path=/chat/**
-            - Path=/topic/**
-            - Path=/ws/**
