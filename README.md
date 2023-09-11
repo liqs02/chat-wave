@@ -11,7 +11,9 @@ Still in active development.
 ## Functional services
 Chat wave is decomposed into three core microservices. All of them have own database and have a different business role.
 
-Each endpoint used by users are protected by csrf protection provided by spring boot. You can disable this protection by setting up a special spring profile on the service (however it is not recommended):
+![diagram showing the structure of the services](.doc/functional-services.png)
+
+Each endpoint used by users are protected by csrf protection. The following profile disables this protection (however it is not recommended):
 ```yaml
 spring.profiles.active: csrf_disable
 ```
@@ -19,26 +21,23 @@ spring.profiles.active: csrf_disable
 
 ### Auth Service
 
-An auth service implements easy common client and user authorization system for microservices.
+An auth service implements easy client and user authorization system for each microservice.
 
-Clients are authenticated by `client_secret_post` and authorized by `client_credentials` provided by spring boot.
-If you wish to add a new client, add the following lines to the configuration file:
+Clients are authenticated by `client_secret_post` and authorized by `client_credentials`.
+New clients are defined in the configuration file like below.
 ```yaml
 app:
   clients:
     - id: micro-service
       secret: secret
-      url: http://micro-service:8080
+      url: http://micro-service:port
 ```
 
-Users has custom authorization based on sessions. Client can create new session for user, then client receives `accessToken` and `refreshToken` which can send to user.
+User authorization is session based. Client can create new session for user, then client receives `accessToken` and `refreshToken` which can send to user.
 To use `accessToken` we have to send it in `User-Authorization` header with `Bearer ` prefix like below.  
 ```http
 User-Authorization: Bearer accessToken
 ```
-
-Service contains methods to operate with user and user's session. 
-User is authenticated by login and password. 
 
 | Method   | Path                                    | Description                                    | Authorization Type |
 |:---------|:----------------------------------------|------------------------------------------------|:-------------------|
@@ -54,7 +53,7 @@ User is authenticated by login and password.
 
 ### Account Service
 
-The accounts service stores non-sensitive user data. It communicates with the auth-service for user authentication.
+The accounts service stores non-sensitive user data.
 
 | Method | Path                             | Description                                | Authorization Type |
 |:-------|:---------------------------------|--------------------------------------------|:-------------------|
@@ -66,7 +65,7 @@ The accounts service stores non-sensitive user data. It communicates with the au
 
 ### Chat Service
 
-Chat service allows to send and gets messages from chats.
+Chat service allows to send and get messages from chat.
 
 | Method | Path                 | Description                                               | Authorization Type |
 |:-------|:---------------------|-----------------------------------------------------------|:-------------------|
@@ -74,11 +73,11 @@ Chat service allows to send and gets messages from chats.
 | `POST` | `/chat/{receiverId}` | Send message to user                                      | `USER`             |
 
 ## Infrastructure
-The distributed systems patterns are provided by spring boot.
+![diagram showing the structure of microservices' infrastructure](.doc/infrastructure.png)
 
 ### Config service
-Config services keeps config files in static directory.
-If the service has the appropriate docker-compose configuration, simply add the following code (with the changed service's name) to the application yaml file.
+Config service keeps configuration for each service.
+If the service has the appropriate docker-compose configuration, simply add the following code to the application configuration file.
 ```yaml
 spring:
   application:
@@ -88,7 +87,7 @@ spring:
 ```
 
 ### Gateway
-Gateway introduces easy access for customer to microservices from single place.
+Gateway introduces easy access from one place to each of the microservices.
 
 ### Registry
 Registry is a simple eureka server application that provides easy communication between services and many useful tools for tracking and managing microservices.
@@ -96,8 +95,7 @@ Registry is a simple eureka server application that provides easy communication 
 ## Common libraries
 
 ### Auth Client
-Library provides filter for user's authorization and UserAuthentication class which represents data of authorized user. 
-
+Provides filter for user's authorization and UserAuthentication class which represents data of authorized user. 
 To use the filter we need to add the following code in SecurityFilterChain:
 
 ```java
@@ -116,10 +114,6 @@ An example of full configuration:
 spring:
   security:
     oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://auth-service:8081
-          jwk-set-uri: http://auth-service:8081/oauth2/jwks
       client:
         provider:
           microservices:
@@ -141,16 +135,14 @@ spring:
 ```
 
 ### Exception Library
-The library provides common exception handler for all microservices.
+The library provides ExceptionHandler for all microservices.
 To use this library, we need to add the following annotation to the main class:
 ```java
 @ComponentScan({"com.chatwave.microservice","com.chatwave.exception"})
 ```
 
-
 ## Author
 - [Patryk Likus](https://www.linkedin.com/in/patryk-l-80186326b/)
-
 
 ## License
 All Rights Reserved
