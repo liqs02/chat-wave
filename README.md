@@ -9,10 +9,10 @@ Still in active development.
 **Deploying** `Docker` `Docker Compose`
 
 ## Functional services
-Chat wave is decomposed into three core microservices. All of them have own database and have a different business role.
+Chat wave is decomposed into three core microservices. All of them have own database and have a different business role. 
 
 ![diagram showing the structure of the services](.doc/functional-services.png)
-
+Services only accept and produce json.
 Each endpoint used by users are protected by csrf protection. The following profile disables this protection (however it is not recommended):
 ```yaml
 spring.profiles.active: csrf_disable
