@@ -8,7 +8,6 @@ spring:
         - id: auth-route
           uri: lb://auth-service
           predicates:
-            - Path=/users/**
             - Path=/sessions/**
 
         - id: account-route
