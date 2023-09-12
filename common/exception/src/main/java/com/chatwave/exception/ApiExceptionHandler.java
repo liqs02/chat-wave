@@ -38,7 +38,19 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             return new ResponseEntity<>(apiException, status);
         }
 
-        var apiException = new ApiException("", status);
+        var message = e.getMessage();
+        var startIndex = message.indexOf("\"message\":\"");
+        if(startIndex == -1)
+            return new ResponseEntity<>(new ApiException("", status), status);
+        startIndex += "\"message\":\"".length();
+
+        var endIndex = message.indexOf("\"", startIndex);
+        if(endIndex == -1)
+            return new ResponseEntity<>(new ApiException("", status), status);
+
+        message = message.substring(startIndex, endIndex);
+
+        var apiException = new ApiException(message, status);
         return new ResponseEntity<>(apiException, status);
     }
 
