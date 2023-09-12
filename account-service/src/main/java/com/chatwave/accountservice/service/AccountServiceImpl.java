@@ -5,14 +5,14 @@ import com.chatwave.accountservice.client.dto.*;
 import com.chatwave.accountservice.domain.Account;
 import com.chatwave.accountservice.domain.dto.PatchAccountRequest;
 import com.chatwave.accountservice.repository.AccountRepository;
+import feign.FeignException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import static org.springframework.http.HttpStatus.CONFLICT;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.*;
 
 @Service
 @RequiredArgsConstructor
@@ -26,14 +26,17 @@ public class AccountServiceImpl implements AccountService {
      */
     @Override
     @Transactional
-    public TokenSet createAccount(Account account, String loginName, String password) { // todo: change tests
+    public TokenSet createAccount(Account account, String loginName, String password) {
         if(repository.findByDisplayName(account.getDisplayName()).isPresent())
             throw new ResponseStatusException(CONFLICT, "Account with given displayName already exists");
 
-        var response = authClient.createUser(new RegisterRequest(loginName, password));
-        account.setId(response.userId());
+        try {
+            var response = authClient.createUser(new RegisterRequest(loginName, password));
+            account.setId(response.userId());
+        } catch (FeignException.FeignClientException.Conflict e) {
+            throw new ResponseStatusException(CONFLICT, "Account with given loginName already exists.");
+        }
         repository.save(account);
-
         return authClient.createSessions(new CreateSessionRequest(account.getId()));
     }
 
@@ -41,12 +44,15 @@ public class AccountServiceImpl implements AccountService {
      * {@inheritDoc}
      */
     @Override
-    public TokenSet authenticateAccount(AuthenticationRequest authentication) { // todo: change tests
-        var userId = authClient
-                .authenticateUser(authentication)
-                .userId();
-
-        return authClient.createSessions(new CreateSessionRequest(userId));
+    public TokenSet authenticateAccount(AuthenticationRequest authentication) {
+        try {
+            var userId = authClient
+                    .authenticateUser(authentication)
+                    .userId();
+            return authClient.createSessions(new CreateSessionRequest(userId));
+        } catch (FeignException.FeignClientException.Unauthorized e) {
+            throw new ResponseStatusException(UNAUTHORIZED, "Invalid login or password");
+        }
     }
 
     /**

@@ -24,7 +24,6 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import java.util.HashMap;
 
 import static com.chatwave.accountservice.utils.TestVariables.*;
-import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
