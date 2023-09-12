@@ -30,12 +30,8 @@ public class AccountServiceImpl implements AccountService {
         if(repository.findByDisplayName(account.getDisplayName()).isPresent())
             throw new ResponseStatusException(CONFLICT, "Account with given displayName already exists");
 
-        try {
-            var response = authClient.createUser(new RegisterRequest(loginName, password));
-            account.setId(response.userId());
-        } catch (FeignException.FeignClientException.Conflict e) {
-            throw new ResponseStatusException(CONFLICT, "Account with given loginName already exists.");
-        }
+        var response = authClient.createUser(new RegisterRequest(loginName, password));
+        account.setId(response.userId());
         repository.save(account);
         return authClient.createSessions(new CreateSessionRequest(account.getId()));
     }
@@ -45,14 +41,11 @@ public class AccountServiceImpl implements AccountService {
      */
     @Override
     public TokenSet authenticateAccount(AuthenticationRequest authentication) {
-        try {
-            var userId = authClient
-                    .authenticateUser(authentication)
-                    .userId();
-            return authClient.createSessions(new CreateSessionRequest(userId));
-        } catch (FeignException.FeignClientException.Unauthorized e) {
-            throw new ResponseStatusException(UNAUTHORIZED, "Invalid login or password");
-        }
+        var userId = authClient
+                .authenticateUser(authentication)
+                .userId();
+
+        return authClient.createSessions(new CreateSessionRequest(userId));
     }
 
     /**
