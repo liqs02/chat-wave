@@ -5,9 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b52ce3e4-3047-4dc8-a854-88fa60a134df" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/account-service/src/test/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/account-service/src/test/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/main/java/com/chatwave/accountservice/controller/AccountController.java" beforeDir="false" afterPath="$PROJECT_DIR$/account-service/src/main/java/com/chatwave/accountservice/controller/AccountController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/test/java/com/chatwave/accountservice/integration/controller/AccountControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/account-service/src/test/java/com/chatwave/accountservice/integration/controller/AccountControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/controller/SessionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/controller/SessionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/integration/controller/SessionControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/integration/controller/SessionControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/integration/controller/UserControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/integration/controller/UserControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/integration/securityConfig/UserAuthFilterTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/integration/securityConfig/UserAuthFilterTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/src/main/java/com/chatwave/chatservice/controller/ChatController.java" beforeDir="false" afterPath="$PROJECT_DIR$/chat-service/src/main/java/com/chatwave/chatservice/controller/ChatController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/src/main/resources/shared/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config/src/main/resources/shared/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/src/main/resources/shared/gateway.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config/src/main/resources/shared/gateway.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,7 +71,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
     "deletionFromPopupRequiresConfirmation": "false",
-    "git-widget-placeholder": "feature/new-integration-tests",
+    "git-widget-placeholder": "fix/consumer-value-in-controllers-annotation",
     "jdk.selected.JAVA_MODULE": "20",
     "last_opened_file_path": "/Users/patryklikus/Programowanie/ChatWave/chat-service/src/test/java/com/chatwave/chatservice",
     "node.js.detected.package.eslint": "true",
@@ -106,6 +115,9 @@
       <recent name="com.chatwave.accountservice.utils" />
       <recent name="com.chatwave.accountservice.client.dto" />
     </key>
+    <key name="ImportMappingsDialog.RecentPackages">
+      <recent name="" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="configurationTypes">
@@ -114,17 +126,17 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.account service">
-    <configuration name="ChatControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="chat-service" />
+  <component name="RunManager" selected="JUnit.chat-service">
+    <configuration name="ClientAuthTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="auth-service" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.chatwave.chatservice.integration.controller.*" />
+          <option name="PATTERN" value="com.chatwave.authservice.integration.securityConfig.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.chatwave.chatservice.integration.controller" />
-      <option name="MAIN_CLASS_NAME" value="com.chatwave.chatservice.integration.controller.ChatControllerTest" />
+      <option name="PACKAGE_NAME" value="com.chatwave.authservice.integration.securityConfig" />
+      <option name="MAIN_CLASS_NAME" value="com.chatwave.authservice.integration.securityConfig.ClientAuthTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -252,25 +264,36 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="development" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="envFilePath" value="" />
+          <option name="sourceFilePath" value="docker-compose.dev.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
     <list>
-      <item itemvalue="JUnit.ChatControllerTest" />
-      <item itemvalue="JUnit.chat-service" />
+      <item itemvalue="Docker.development" />
+      <item itemvalue="JUnit.ClientAuthTest" />
       <item itemvalue="JUnit.account service" />
       <item itemvalue="JUnit.auth service" />
-      <item itemvalue="Spring Boot.TestApplication" />
-      <item itemvalue="Spring Boot.ChatServiceApplication" />
-      <item itemvalue="Spring Boot.AuthServiceApplication" />
+      <item itemvalue="JUnit.chat-service" />
       <item itemvalue="Spring Boot.AccountServiceApplication" />
+      <item itemvalue="Spring Boot.AuthServiceApplication" />
+      <item itemvalue="Spring Boot.ChatServiceApplication" />
       <item itemvalue="Spring Boot.ConfigApplication" />
       <item itemvalue="Spring Boot.GatewayApplication" />
       <item itemvalue="Spring Boot.RegistryApplication" />
+      <item itemvalue="Spring Boot.TestApplication" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.account service" />
         <item itemvalue="JUnit.chat-service" />
-        <item itemvalue="JUnit.ChatControllerTest" />
+        <item itemvalue="JUnit.account service" />
         <item itemvalue="JUnit.auth service" />
+        <item itemvalue="Docker.development" />
+        <item itemvalue="JUnit.ClientAuthTest" />
       </list>
     </recent_temporary>
   </component>
@@ -305,6 +328,12 @@
       <workItem from="1694266361346" duration="21813000" />
       <workItem from="1694338338745" duration="340000" />
       <workItem from="1694347282140" duration="305000" />
+      <workItem from="1694381278056" duration="3688000" />
+      <workItem from="1694425380554" duration="1942000" />
+      <workItem from="1694464231951" duration="469000" />
+      <workItem from="1694544919621" duration="672000" />
+      <workItem from="1694545603539" duration="35000" />
+      <workItem from="1694545649125" duration="1683000" />
     </task>
     <servers />
   </component>

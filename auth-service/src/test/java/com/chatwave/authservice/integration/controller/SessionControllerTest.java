@@ -80,7 +80,6 @@ public class SessionControllerTest {
         public void t200() {
             var sessions = webTestClient.get()
                     .uri("/sessions")
-                    .header("Content-type", APPLICATION_JSON)
                     .header("User-Authorization", oauthUserService.getAuthHeader())
                     .exchange()
                     .expectStatus().isOk()
@@ -112,7 +111,6 @@ public class SessionControllerTest {
         public void t200() {
             var userAuthentication = webTestClient.get()
                     .uri("/sessions/authentication")
-                    .header("Content-type", APPLICATION_JSON)
                     .header("Authorization", oauthClientService.getAuthHeader())
                     .header("User-Authorization", oauthUserService.getAuthHeader())
                     .exchange()
@@ -141,7 +139,6 @@ public class SessionControllerTest {
         public void t200() {
             var tokenSet = webTestClient.post()
                     .uri("/sessions/refresh")
-                    .header("Content-type", APPLICATION_JSON)
                     .bodyValue(new RefreshSessionRequest(session1.getRefreshToken()))
                     .exchange()
                     .expectStatus().isOk()
@@ -172,7 +169,6 @@ public class SessionControllerTest {
         public void t200() {
             webTestClient.delete()
                     .uri("/sessions")
-                    .header("Content-type", APPLICATION_JSON)
                     .header("User-Authorization", oauthUserService.getAuthHeader())
                     .exchange()
                     .expectStatus().isOk();
@@ -197,7 +193,6 @@ public class SessionControllerTest {
         public void t200() {
             webTestClient.delete()
                     .uri("/sessions/{id}", session1.getId())
-                    .header("Content-type", APPLICATION_JSON)
                     .header("User-Authorization", oauthUserService.getAuthHeader())
                     .exchange()
                     .expectStatus().isOk();
@@ -213,7 +208,6 @@ public class SessionControllerTest {
         public void t404() {
             webTestClient.delete()
                     .uri("/sessions/{id}", session1.getId() + 1)
-                    .header("Content-type", APPLICATION_JSON)
                     .header("User-Authorization", oauthUserService.getAuthHeader())
                     .exchange()
                     .expectStatus().isNotFound();
