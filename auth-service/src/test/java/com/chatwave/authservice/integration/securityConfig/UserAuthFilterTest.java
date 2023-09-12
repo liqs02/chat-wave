@@ -51,7 +51,6 @@ public class UserAuthFilterTest {
     public void t1() {
         webTestClient.get()
                 .uri(ENDPOINT)
-                .header("Content-type", APPLICATION_JSON)
                 .header("User-Authorization", "Bearer " + ACCESS_TOKEN)
                 .exchange()
                 .expectStatus().isOk();

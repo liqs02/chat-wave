@@ -136,7 +136,6 @@ public class AccountControllerTest {
 
             var result = webTestClient.get()
                     .uri("/accounts/{id}/showcase", accountId)
-                    .header("Content-type", APPLICATION_JSON)
                     .header("User-Authorization", BEARER_TOKEN)
                     .exchange()
                     .expectStatus().isOk()

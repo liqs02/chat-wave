@@ -177,7 +177,6 @@ public class UserControllerTest {
         public void t200() {
             webTestClient.put()
                     .uri(ENDPOINT, userId)
-                    .header("Content-type", APPLICATION_JSON)
                     .header("Authorization", oauthClientService.getAuthHeader())
                     .bodyValue(new UpdatePasswordRequest(PASSWORD_2))
                     .exchange()
@@ -197,7 +196,6 @@ public class UserControllerTest {
         public void t400() {
             webTestClient.put()
                     .uri(ENDPOINT, userId)
-                    .header("Content-type", APPLICATION_JSON)
                     .header("Authorization", oauthClientService.getAuthHeader())
                     .bodyValue(new UpdatePasswordRequest(INVALID_PASSWORD))
                     .exchange()

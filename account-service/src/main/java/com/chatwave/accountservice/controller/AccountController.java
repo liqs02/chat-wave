@@ -16,20 +16,20 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
-@RequestMapping(value = "/accounts", consumes = APPLICATION_JSON, produces = APPLICATION_JSON)
+@RequestMapping(value = "/accounts", produces = APPLICATION_JSON)
 @RequiredArgsConstructor
 public class AccountController {
     private final AccountService service;
     private final AccountMapper mapper;
 
-    @PostMapping
+    @PostMapping(consumes = APPLICATION_JSON)
     @ResponseStatus(CREATED)
     public TokenSet createAccount(@Valid @RequestBody CreateAccountRequest body) {
         var account = mapper.toAccount(body);
         return service.createAccount(account, body.loginName(), body.password());
     }
 
-    @PostMapping("/authenticate")
+    @PostMapping(value = "/authenticate", consumes = APPLICATION_JSON)
     public TokenSet authenticateAccount(@RequestBody AuthenticationRequest body) {
         return service.authenticateAccount(body);
     }
@@ -46,7 +46,7 @@ public class AccountController {
         return mapper.toAccountShowcase(account);
     }
 
-    @PatchMapping("/{accountId}")
+    @PatchMapping(value = "/{accountId}", consumes = APPLICATION_JSON)
     @PreAuthorize("#accountId == authentication.principal")
     public void patchAccount(@PathVariable Integer accountId, @Valid @RequestBody PatchAccountRequest body) {
         service.patchAccount(accountId, body);

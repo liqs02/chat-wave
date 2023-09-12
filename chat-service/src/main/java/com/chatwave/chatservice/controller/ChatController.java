@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
+
 @RestController
-@RequestMapping("/chat")
+@RequestMapping(value = "/chat", produces = APPLICATION_JSON)
 @RequiredArgsConstructor
 @Slf4j
 public class ChatController {
@@ -37,7 +39,7 @@ public class ChatController {
                 .toList();
     }
 
-    @PostMapping("/{receiverId}")
+    @PostMapping(value = "/{receiverId}", consumes = APPLICATION_JSON)
     public void sendMessage(@Valid @RequestBody SendMessageRequest sendMessageRequest, @AuthenticationPrincipal Integer authorId, @PathVariable Integer receiverId) {
         var message = mapper.toMessage(sendMessageRequest, authorId, receiverId);
         service.sendMessage(message);

@@ -20,7 +20,7 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/sessions", consumes = APPLICATION_JSON, produces = APPLICATION_JSON)
+@RequestMapping(value = "/sessions", produces = APPLICATION_JSON)
 public class SessionController {
     private final SessionService service;
     private final SessionMapper mapper;
@@ -38,14 +38,14 @@ public class SessionController {
                 .toList();
     }
 
-    @PostMapping
+    @PostMapping(consumes = APPLICATION_JSON)
     @PreAuthorize("hasAuthority('SCOPE_server')")
     public TokenSetResponse createSessions(@Valid @RequestBody CreateSessionRequest body) {
         var session = service.createSession(body.userId());
         return mapper.toTokenSetResponse(session);
     }
 
-    @PostMapping("/refresh")
+    @PostMapping(value = "/refresh", consumes = APPLICATION_JSON)
     public TokenSetResponse refreshTokens(@Valid @RequestBody RefreshSessionRequest body) {
         var session = service.refreshSession(body.refreshToken());
         return mapper.toTokenSetResponse(session);
