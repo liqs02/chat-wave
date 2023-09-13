@@ -47,7 +47,7 @@ public class AccountServiceImpl implements AccountService {
                     .userId();
             return authClient.createSessions(new CreateSessionRequest(userId));
         } catch(FeignException.FeignClientException.Unauthorized e) {
-            throw new ResponseStatusException(UNAUTHORIZED, "Account with given login or password does not exist");
+            throw new ResponseStatusException(UNAUTHORIZED, "Invalid login or password");
         }
     }
 
