@@ -39,6 +39,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         }
 
         var message = e.getMessage();
+        log.debug("FeignException message: " + message);
+
         var startIndex = message.indexOf("\"message\":\"");
         if(startIndex == -1)
             return new ResponseEntity<>(new ApiException("", status), status);
