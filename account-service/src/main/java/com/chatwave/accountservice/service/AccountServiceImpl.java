@@ -41,11 +41,14 @@ public class AccountServiceImpl implements AccountService {
      */
     @Override
     public TokenSet authenticateAccount(AuthenticationRequest authentication) {
-        var userId = authClient
-                .authenticateUser(authentication)
-                .userId();
-
-        return authClient.createSessions(new CreateSessionRequest(userId));
+        try {
+            var userId = authClient
+                    .authenticateUser(authentication)
+                    .userId();
+            return authClient.createSessions(new CreateSessionRequest(userId));
+        } catch(FeignException.FeignClientException.Unauthorized e) {
+            throw new ResponseStatusException(UNAUTHORIZED, "Account with given login or password does not exist");
+        }
     }
 
     /**
