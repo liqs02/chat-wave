@@ -142,7 +142,7 @@ To use this library, we need to add the following annotation to the main class:
 ```
 
 ## Author
-- [Patryk Likus](https://www.linkedin.com/in/patryk-l-80186326b/)
+- [Patryk Likus](https://www.linkedin.com/in/patryklikus/)
 
 ## License
 All Rights Reserved
