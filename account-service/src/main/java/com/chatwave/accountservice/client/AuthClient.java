@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
-@FeignClient("auth-service")
+@FeignClient(name = "auth-service", url = "${auth-service.url:}")
 public interface AuthClient extends com.chatwave.authclient.client.AuthClient {
     @PostMapping(value = "/users", consumes = APPLICATION_JSON, produces = APPLICATION_JSON)
     RegisterResponse createUser(RegisterRequest registerRequest);

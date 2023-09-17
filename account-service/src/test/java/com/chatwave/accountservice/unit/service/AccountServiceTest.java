@@ -42,7 +42,7 @@ public class AccountServiceTest {
 
     @Test
     @DisplayName("createAccount() should create an account")
-    public void t1() { // todo: change test to new code
+    public void t1() {
         when(
             authService.createUser(REGISTER_REQUEST)
         ).thenReturn(new RegisterResponse(USER_ID));
