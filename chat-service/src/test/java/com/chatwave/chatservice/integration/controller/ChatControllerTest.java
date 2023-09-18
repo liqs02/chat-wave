@@ -2,22 +2,26 @@ package com.chatwave.chatservice.integration.controller;
 
 import com.chatwave.authclient.domain.UserAuthentication;
 import com.chatwave.authclient.domain.UserAuthenticationDetails;
-import com.chatwave.chatservice.client.AccountClient;
-import com.chatwave.chatservice.client.AuthClient;
 import com.chatwave.chatservice.domain.Message;
 import com.chatwave.chatservice.domain.dto.MessageResponse;
 import com.chatwave.chatservice.domain.dto.SendMessageRequest;
 import com.chatwave.chatservice.repository.ChatRepository;
+import com.github.tomakehurst.wiremock.WireMockServer;
+import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.time.LocalDateTime;
 
+import static com.chatwave.chatservice.utils.JsonUtils.toJson;
 import static com.chatwave.chatservice.utils.TestVariables.*;
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
@@ -31,10 +35,31 @@ public class ChatControllerTest {
     private WebTestClient webTestClient;
     @Autowired
     private ChatRepository chatRepository;
-    @MockBean
-    private AuthClient authClient;
-    @MockBean
-    private AccountClient accountClient;
+    private static WireMockServer mockAuthService;
+    private static WireMockServer mockAccountService;
+    @BeforeAll
+    static void startWireMock() {
+        mockAuthService = new WireMockServer(
+                WireMockConfiguration.wireMockConfig().dynamicPort()
+        );
+        mockAuthService.start();
+
+        mockAccountService = new WireMockServer(
+                WireMockConfiguration.wireMockConfig().dynamicPort()
+        );
+        mockAccountService.start();
+    }
+
+    @DynamicPropertySource
+    public static void overrideWebClientBaseUrl(DynamicPropertyRegistry registry) {
+        registry.add("auth-service.url", mockAuthService::baseUrl);
+        registry.add("account-service.url", mockAccountService::baseUrl);
+    }
+
+    @AfterAll
+    public static void stopWireMock() {
+        mockAuthService.stop();
+    }
 
     @BeforeEach
     public void setUp() {
@@ -42,9 +67,14 @@ public class ChatControllerTest {
         userAuthentication.setUserId(USER_ID);
         userAuthentication.setDetails(new UserAuthenticationDetails());
 
-        when(
-                authClient.getUserAuthentication(BEARER_TOKEN)
-        ).thenReturn(userAuthentication);
+        mockAuthService.stubFor(
+                get("/sessions/authentication")
+                        .withHeader("User-Authorization", equalTo(BEARER_TOKEN))
+                        .willReturn(
+                                aResponse()
+                                        .withHeader("Content-Type", APPLICATION_JSON)
+                                        .withBody(toJson(userAuthentication)))
+        );
     }
 
     @Nested
@@ -168,6 +198,10 @@ public class ChatControllerTest {
         @Test
         @DisplayName("should send a message if user exist")
         public void t1() {
+            mockAccountService.stubFor(
+                    get("/accounts/" + RECEIVER_ID + "/exist").willReturn(aResponse().withStatus(200))
+            );
+
             webTestClient.post()
                     .uri("/chat/{receiverId}", RECEIVER_ID)
                     .header("User-Authorization", BEARER_TOKEN)
@@ -188,6 +222,10 @@ public class ChatControllerTest {
         @Test
         @DisplayName("should send a message if user wants send message to himself")
         public void t2() {
+            mockAccountService.stubFor(
+                    get("/accounts/" + USER_ID + "/exist").willReturn(aResponse().withStatus(200))
+            );
+
             webTestClient.post()
                     .uri("/chat/{receiverId}", USER_ID)
                     .header("User-Authorization", BEARER_TOKEN)
@@ -203,6 +241,21 @@ public class ChatControllerTest {
             assertEquals(USER_ID, message.getReceiverId());
             assertEquals(MESSAGE_CONTENT, message.getContent());
             assertNotNull(message.getCreatedAt());
+        }
+
+        @Test
+        @DisplayName("should throw BAD_REQUEST if user with given ID does not exist in account-service")
+        public void t3() {
+            mockAccountService.stubFor(
+                    get("/accounts/" + USER_ID + "/exist").willReturn(aResponse().withStatus(404))
+            );
+
+            webTestClient.post()
+                    .uri("/chat/{receiverId}", USER_ID)
+                    .header("User-Authorization", BEARER_TOKEN)
+                    .bodyValue(new SendMessageRequest(MESSAGE_CONTENT))
+                    .exchange()
+                    .expectStatus().isBadRequest();
         }
     }
 }
