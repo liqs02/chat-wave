@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://account-postgres:5432/chatwave
+    url: jdbc:postgresql://account-postgres:5432/${POSTGRES_DB}
     driver-class-name: org.postgresql.Driver
-    username: postgres
+    username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
 
   jpa:
