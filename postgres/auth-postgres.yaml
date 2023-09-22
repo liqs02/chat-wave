@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-postgres-deployment
+  labels:
+    app: auth-postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth-postgres
+  template:
+    metadata:
+      labels:
+        app: auth-postgres
+    spec:
+      containers:
+        - name: auth-postgres
+          image: postgres:alpine3.18
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: chatwave
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: auth-postgres-secret
+                  key: username
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: auth-postgres-secret
+                  key: password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-postgres-service
+spec:
+  selector:
+    app: auth-postgres
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
