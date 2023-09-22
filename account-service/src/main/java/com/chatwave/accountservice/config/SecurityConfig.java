@@ -30,8 +30,7 @@ public class SecurityConfig {
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.ignoringRequestMatchers("/accounts/{accountId}/exist"))
                 .authorizeHttpRequests(auth ->
-                    auth.requestMatchers(GET, "/actuator/health").permitAll()
-                        .requestMatchers("/error").permitAll()
+                    auth.requestMatchers("/error").permitAll()
                         .requestMatchers(POST, "/accounts", "/accounts/authenticate").permitAll()
                         .anyRequest().authenticated()
             )
