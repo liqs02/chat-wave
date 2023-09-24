@@ -2,28 +2,44 @@
 Chat API in microservice infrastructure.
 Still in active development.
 
-[click here to jump to my anchor](#run_locally)
-
+## Table of Contents
+- [Tech Stack](#tech-stack)
+- [Functional Services](#functional-services)
+  - [Auth Service](#auth-service)
+  - [Account Service](#account-service)
+  - [Chat Service](#chat-service)
+- [Infrastructure](#infrastructure)
+  - [Gateway](#gateway)
+  - [Registry](#registry)
+- [Common Libraries](#common-libraries)
+  - [Auth Client](#auth-client)
+  - [Exception](#exception)
+- [Run Locally](#run-locally)
+- [Author](#author)
+- [License](#license)
 
 ## Tech Stack
-<a id="tech_stack"></a>
+<a id="tech-stack"></a>
 
 `Java` `Spring Boot` `PostgreSQL`
 
 `Docker` `Kubernetes`
 
-## Functional services
-Chat wave is decomposed into three core microservices. All of them have own database and have a different business role. 
+## Functional Services
+<a id="functional-services"></a>
+Chat wave is decomposed into three core microservices. 
+All of them have own database and have a different business role.
+These micro services only accept and produce json format.
+
 
 ![diagram showing the structure of the services](.doc/microservice-infrastructure.png)
-Services only accept and produce json.
-Each endpoint used by users are protected by csrf protection. The following environment variable disables this protection:
-```dotenv
-CSRF_ENABLED: false
-```
-You can change this environment variable for each micro service in main-configmap.yaml.
+
+Each endpoint used by users are protected by csrf protection. 
+You can disable it by `CSRF_ENABLED` environment variable (however it is not recommended):
+This variable is defined in main-configmap.yaml in kubernetes for each microservice.
 
 ### Auth Service
+<a id="auth-service"></a>
 
 An auth service implements easy client and user authorization system for each microservice.
 
@@ -56,6 +72,7 @@ User-Authorization: Bearer accessToken
 | `DELETE` | `/sessions/{sessionId}`                 | Expire specified session                       | `USER`             |
 
 ### Account Service
+<a id="account-service"></a>
 
 The accounts service stores non-sensitive user data.
 
@@ -68,7 +85,7 @@ The accounts service stores non-sensitive user data.
 | `PATCH`| `/accounts/{accountId}`          | Update user                                | `USER`             |
 
 ### Chat Service
-
+<a id="chat-service"></a>
 Chat service allows to send and get messages from chat.
 
 | Method | Path                 | Description                                               | Authorization Type |
@@ -77,16 +94,21 @@ Chat service allows to send and get messages from chat.
 | `POST` | `/chat/{receiverId}` | Send message to user                                      | `USER`             |
 
 ## Infrastructure
+<a id="infrastructure"></a>
 
 ### Gateway
+<a id="gateway"></a>
 Gateway introduces easy access from one place to each of the microservices.
 
 ### Registry
+<a id="registry"></a>
 Registry is a simple eureka server application that provides easy communication between services and many useful tools for tracking and managing microservices.
 
 ## Common libraries
+<a id="common-libraries"></a>
 
 ### Auth Client
+<a id="auth-client"></a>
 Provides filter for user's authorization and UserAuthentication class which represents data of authorized user. 
 To use the filter we need to add the following code in SecurityFilterChain:
 
@@ -109,8 +131,8 @@ spring:
       client:
         provider:
           microservices:
-            issuer-uri: http://auth-service:8081
-            jwk-set-uri: http://auth-service:8081/oauth2/jwks
+            issuer-uri: http://${AUTH_SERVICE_URL}:80
+            jwk-set-uri: http://${AUTH_SERVICE_URL}:80/oauth2/jwks
         registration:
           microservices:
             client-id: micro-service
@@ -126,7 +148,8 @@ spring:
         enabled: true
 ```
 
-### Exception Library
+### Exception
+<a id="exception"></a>
 The library provides ExceptionHandler for all microservices.
 To use this library, we need to add the following annotation to the main class:
 ```java
@@ -141,20 +164,18 @@ Clone the project
   git clone https://github.com/blackydev/ChatWave
 ```
 
-Go to the project directory
+Run kubernetes clusters
 
 ```bash
-  cd ChatWave
-```
-
-Run kubernetes clusters.
-
-```bash
-  ./k8s-run.sh
+  ./ChatWave/k8s-run.sh
 ```
 
 ## Author
-- [Patryk Likus](https://www.linkedin.com/in/patryklikus/)
+<a id="author"></a>
+Patryk Likus
+
+[![Patryk Likus linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/patryklikus/)
 
 ## License
+<a id="license"></a>
 All Rights Reserved
