@@ -3,19 +3,19 @@ kind: Deployment
 metadata:
   name: registry-deployment
   labels:
-    app: registry
+    app: registry-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: registry
+      app: registry-app
   template:
     metadata:
       labels:
-        app: registry
+        app: registry-app
     spec:
       containers:
-        - name: registry
+        - name: registry-app
           image:  patryklikus/chatwave-registry:1.0
           imagePullPolicy: Always
           ports:
@@ -27,7 +27,7 @@ metadata:
   name: registry-service
 spec:
   selector:
-    app: registry
+    app: registry-app
   ports:
     - protocol: TCP
       port: 8761

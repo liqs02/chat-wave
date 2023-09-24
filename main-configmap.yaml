@@ -3,6 +3,15 @@ kind: ConfigMap
 metadata:
   name: main-configmap
 data:
-  auth_db_url: auth-postgres-service
-  registry_url: registry-service
-  csrf_enabled: true
+  # databases urls
+  auth_db_url: "auth-postgres-service"
+  account_db_url: "account-postgres-service"
+  chat_db_url: "chat-postgres-service"
+
+  # microservices urls
+  registry_url: "registry-service"
+  auth_service_url: "auth-service"
+  account_service_url: "account-service"
+  chat_service_url: "chat-service"
+
+  csrf_enabled: "true"

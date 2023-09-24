@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: account-postgres-deployment
+  labels:
+    app: account-postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: account-postgres
+  template:
+    metadata:
+      labels:
+        app: account-postgres
+    spec:
+      containers:
+        - name: account-postgres
+          image: postgres:alpine3.18
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: account-postgres-configmap
+                  key: db_name
+
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: account-postgres-secret
+                  key: username
+                  
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: account-postgres-secret
+                  key: password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: account-postgres-service
+spec:
+  selector:
+    app: account-postgres
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432

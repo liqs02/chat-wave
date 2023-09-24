@@ -2,11 +2,11 @@ app:
   csrf.enabled: ${CSRF_ENABLED:true}
   clients:
     - id: account-service
-      secret: secret
+      secret: ${ACCOUNT_PASSWORD}
       url: http://${ACCOUNT_SERVICE_URL}:80
 
     - id: chat-service
-      secret: secret
+      secret: ${CHAT_PASSWORD}
       url: http://${CHAT_SERVICE_URL}:80
 
 spring:
