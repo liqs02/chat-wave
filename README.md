@@ -11,11 +11,11 @@ Still in active development.
 ## Functional services
 Chat wave is decomposed into three core microservices. All of them have own database and have a different business role. 
 
-![diagram showing the structure of the services](.doc/functional-services.png)
+![diagram showing the structure of the services](.doc/microservice-infrastructure.png)
 Services only accept and produce json.
 Each endpoint used by users are protected by csrf protection. The following profile disables this protection (however it is not recommended):
 ```yaml
-spring.profiles.active: csrf_disable
+app.csrf: false
 ```
 
 
@@ -30,7 +30,7 @@ app:
   clients:
     - id: micro-service
       secret: secret
-      url: http://micro-service:port
+      url: http://micro-service-url:port
 ```
 
 User authorization is session based. Client can create new session for user, then client receives `accessToken` and `refreshToken` which can send to user.
@@ -73,18 +73,6 @@ Chat service allows to send and get messages from chat.
 | `POST` | `/chat/{receiverId}` | Send message to user                                      | `USER`             |
 
 ## Infrastructure
-![diagram showing the structure of microservices' infrastructure](.doc/infrastructure.png)
-
-### Config service
-Config service keeps configuration for each service.
-If the service has the appropriate docker-compose configuration, simply add the following code to the application configuration file.
-```yaml
-spring:
-  application:
-    name: micro-service
-  config:
-    import: configserver:http://user:${CONFIG_PASSWORD}@config:8888
-```
 
 ### Gateway
 Gateway introduces easy access from one place to each of the microservices.
