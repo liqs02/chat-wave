@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "app.csrf.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Enable csrf protection.",
+      "defaultValue": true
+    }
+  ] }

@@ -1,15 +1,7 @@
-spring:
-  cloud.config.enabled: false
-  jpa.hibernate.ddl-auto: create-drop
-  profiles:
-    active: test, csrf_disable
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: auth-service
+app.csrf.enabled: false
 
+spring:
+  jpa.hibernate.ddl-auto: create-drop
+  security.oauth2.resourceserver.jwt.issuer-uri: auth-service
 
 eureka.client.enabled: false
-
-server.port: 8083

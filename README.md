@@ -2,22 +2,26 @@
 Chat API in microservice infrastructure.
 Still in active development.
 
+[click here to jump to my anchor](#run_locally)
+
+
 ## Tech Stack
+<a id="tech_stack"></a>
 
-**Backend:** `Java` `Spring Boot` `PostgreSQL`
+`Java` `Spring Boot` `PostgreSQL`
 
-**Deploying** `Docker` `Docker Compose`
+`Docker` `Kubernetes`
 
 ## Functional services
 Chat wave is decomposed into three core microservices. All of them have own database and have a different business role. 
 
 ![diagram showing the structure of the services](.doc/microservice-infrastructure.png)
 Services only accept and produce json.
-Each endpoint used by users are protected by csrf protection. The following profile disables this protection (however it is not recommended):
-```yaml
-app.csrf: false
+Each endpoint used by users are protected by csrf protection. The following environment variable disables this protection:
+```dotenv
+CSRF_ENABLED: false
 ```
-
+You can change this environment variable for each micro service in main-configmap.yaml.
 
 ### Auth Service
 
@@ -127,6 +131,26 @@ The library provides ExceptionHandler for all microservices.
 To use this library, we need to add the following annotation to the main class:
 ```java
 @ComponentScan({"com.chatwave.microservice","com.chatwave.exception"})
+```
+
+## Run Locally
+<a id="run_locally"></a>
+Clone the project
+
+```bash
+  git clone https://github.com/blackydev/ChatWave
+```
+
+Go to the project directory
+
+```bash
+  cd ChatWave
+```
+
+Run kubernetes clusters.
+
+```bash
+  ./k8s-run.sh
 ```
 
 ## Author

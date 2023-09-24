@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.UUID;
 
 import static jakarta.ws.rs.HttpMethod.POST;
-import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
@@ -36,7 +35,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final List<String> activeProfiles;
+    private final Boolean csrfEnabled;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationProvider authenticationProvider;
     private final UserAuthFilter userAuthFilter;
@@ -70,7 +69,7 @@ public class SecurityConfig {
             .authenticationProvider(authenticationProvider)
             .addFilterBefore(userAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
-        if(activeProfiles.contains("csrf_disable"))
+        if(!csrfEnabled)
             http.csrf(AbstractHttpConfigurer::disable);
 
         return http.build();

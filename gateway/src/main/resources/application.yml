@@ -1,5 +1,30 @@
 spring:
   application:
     name: gateway
-  config:
-    import: configserver:http://user:${CONFIG_PASSWORD}@config:8888
+  cloud:
+    gateway:
+      routes:
+        - id: auth-route
+          uri: lb://auth-service
+          predicates:
+            - Path=/sessions/**
+
+        - id: account-route
+          uri: lb://account-service
+          predicates:
+            - Path=/accounts/**
+
+        - id: chat-route
+          uri: lb://chat-service
+          predicates:
+            - Path=/chat/**
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${REGISTRY_URL}:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+server:
+  port: 80

@@ -23,8 +23,8 @@ public class AppConfig {
     }
 
     @Bean
-    public List<String> activeProfile(@Value("${spring.profiles.active}") List<String> activeProfile) {
-        return activeProfile;
+    public Boolean csrfEnabled(@Value("${app.csrf.enabled:true}") Boolean csrfEnabled) {
+        return csrfEnabled;
     }
 
     @Bean

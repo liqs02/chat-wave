@@ -16,7 +16,6 @@
         <module>auth-service</module>
         <module>chat-service</module>
 
-        <module>config</module>
         <module>gateway</module>
         <module>registry</module>
     </modules>

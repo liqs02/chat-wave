@@ -1,5 +1,38 @@
+app:
+  csrf.enabled: ${CSRF_ENABLED:true}
+  clients:
+    - id: account-service
+      secret: secret
+      url: http://${ACCOUNT_SERVICE_URL}:80
+
+    - id: chat-service
+      secret: secret
+      url: http://${CHAT_SERVICE_URL}:80
+
 spring:
   application:
     name: auth-service
-  config:
-    import: configserver:http://user:${CONFIG_PASSWORD}@config:8888
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_URL}:5432/${POSTGRES_DB}
+    driver-class-name: org.postgresql.Driver
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  profiles.active: csrf_disable
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${REGISTRY_URL}:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+server.port: 80

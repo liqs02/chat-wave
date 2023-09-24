@@ -1,5 +1,56 @@
+app.csrf.enabled: ${CSRF_ENABLED:true}
+
 spring:
-  application:
-    name: account-service
-  config:
-    import: configserver:http://user:${CONFIG_PASSWORD}@config:8888
+  application.name: account-service
+
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_URL}:5432/${POSTGRES_DB}
+    driver-class-name: org.postgresql.Driver
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://${AUTH_SERVICE_URL}:80
+          jwk-set-uri: http://${AUTH_SERVICE_URL}:80/oauth2/jwks
+      client:
+        provider:
+          microservices:
+            issuer-uri: http://${AUTH_SERVICE_URL}:80
+            jwk-set-uri: http://${AUTH_SERVICE_URL}:80/oauth2/jwks
+        registration:
+          microservices:
+            client-id: account-service
+            client-secret: secret
+            authorization-grant-type: client_credentials
+            client-authentication-method: client_secret_post
+            redirect-uri:  "{baseUrl}/login/oauth2/code/spring"
+            scope:
+              - openid
+              - server
+
+  cloud:
+    openfeign:
+      oauth2:
+        clientRegistrationId: microservices
+        enabled: true
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${REGISTRY_URL}:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+server.port: 80

@@ -12,9 +12,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import java.util.List;
-
-import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
@@ -22,7 +19,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final List<String> activeProfiles;
+    private final Boolean csrfEnabled;
     private final UserAuthFilter userAuthFilter;
 
     @Bean
@@ -39,7 +36,7 @@ public class SecurityConfig {
             )
             .addFilterAt(userAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
-        if(activeProfiles.contains("csrf_disable"))
+        if(!csrfEnabled)
             http.csrf(AbstractHttpConfigurer::disable);
 
         return http.build();

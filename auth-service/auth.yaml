@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-deployment
+  labels:
+    app: auth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+    spec:
+      containers:
+        - name: auth
+          image: patryklikus/chatwave-authservice:1.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          env:
+            - name: CSRF_ENABLED
+              valueFrom:
+                configMapKeyRef:
+                  name: main-configmap
+                  key: csrf_enabled
+
+
+            - name: REGISTRY_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: main-configmap
+                  key: registry_url
+
+            - name: POSTGRES_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: main-configmap
+                  key: auth_db_url
+
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: auth-postgres-configmap
+                  key: db_name
+
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: auth-postgres-secret
+                  key: username
+
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: auth-postgres-secret
+                  key: password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-service
+spec:
+  selector:
+    app: auth
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 30181

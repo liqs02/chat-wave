@@ -21,12 +21,17 @@ spec:
             - containerPort: 5432
           env:
             - name: POSTGRES_DB
-              value: chatwave
+              valueFrom:
+                configMapKeyRef:
+                  name: auth-postgres-configmap
+                  key: db_name
+
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
                   name: auth-postgres-secret
                   key: username
+                  
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
