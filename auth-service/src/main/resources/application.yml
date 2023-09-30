@@ -2,20 +2,19 @@ app:
   csrf.enabled: ${CSRF_ENABLED:true}
   clients:
     - id: account-service
-      secret: ${ACCOUNT_PASSWORD}
-      url: http://${ACCOUNT_SERVICE_URL}:80
+      secret: ${ACCOUNT_SERVICE_PASSWORD}
+      url: http://${ACCOUNT_SERVICE_IP}:${ACCOUNT_SERVICE_PORT:80}
 
     - id: chat-service
-      secret: ${CHAT_PASSWORD}
-      url: http://${CHAT_SERVICE_URL}:80
-
+      secret: ${CHAT_SERVICE_PASSWORD}
+      url: http://${CHAT_SERVICE_IP}:${ACCOUNT_SERVICE_PORT:80}
 spring:
   application:
     name: auth-service
   datasource:
-    url: jdbc:postgresql://${POSTGRES_URL}:5432/${POSTGRES_DB}
+    url: jdbc:postgresql://${POSTGRES_IP}:${POSTGRES_PORT:5432}/${POSTGRES_DB:postgres}
     driver-class-name: org.postgresql.Driver
-    username: ${POSTGRES_USER}
+    username: ${POSTGRES_USER:postgres}
     password: ${POSTGRES_PASSWORD}
 
   jpa:
@@ -26,12 +25,21 @@ spring:
         format_sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-  profiles.active: csrf_disable
+  security:
+    oauth2:
+      authorizationserver:
+        issuer: http://${IP}:80
+
+management:
+  endpoint.health.probes.enabled: true
+  health:
+    livenessState.enabled: true
+    readinessState.enabled: true
 
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://${REGISTRY_URL}:8761/eureka/
+      defaultZone: http://${REGISTRY_IP}:${REGISTRY_PORT:8761}/eureka/
   instance:
     prefer-ip-address: true
 

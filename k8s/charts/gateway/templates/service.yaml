@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.global.gateway.name }}-service
+spec:
+  selector:
+    app: {{ .Values.global.gateway.name }}
+  ports:
+    - name: {{ .Values.global.gateway.name }}-port
+      protocol: TCP
+      port: {{ .Values.service_port | default .Values.port }}
+      targetPort: {{ .Values.port }}

@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.global.auth.postgres.name }}-deployment
+  labels:
+    app: {{ .Values.global.auth.postgres.name }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.global.auth.postgres.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.global.auth.postgres.name }}
+    spec:
+      containers:
+        - name: {{ .Values.global.auth.postgres.name }}-container
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.port }}
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.global.auth.postgres.name }}-secret
+                  key: db_password
+

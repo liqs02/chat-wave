@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.global.registry.name }}-configmap
+data:
+  registry_service_ip: {{ .Values.global.registry.name }}-service
+  auth_service_ip: {{ .Values.global.auth.service.name }}-service
+  account_service_ip: {{ .Values.global.account.service.name }}-service
+  chat_service_ip: {{ .Values.global.chat.service.name }}-service

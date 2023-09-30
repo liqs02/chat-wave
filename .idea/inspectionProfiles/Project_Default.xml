@@ -8,5 +8,6 @@
         </set>
       </option>
     </inspection_tool>
+    <inspection_tool class="KubernetesUnknownValues" enabled="false" level="ERROR" enabled_by_default="false" />
   </profile>
 </component>

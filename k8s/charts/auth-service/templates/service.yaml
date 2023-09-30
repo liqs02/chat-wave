@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.global.auth.service.name }}-service
+spec:
+  selector:
+    app: {{ .Values.global.auth.service.name }}
+  ports:
+    - name: {{ .Values.global.auth.service.name }}-port
+      protocol: TCP
+      port: {{ .Values.service_port | default .Values.port }}
+      targetPort: {{ .Values.port }}

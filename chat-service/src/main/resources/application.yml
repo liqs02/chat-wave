@@ -5,9 +5,9 @@ spring:
     name: chat-service
 
   datasource:
-    url: jdbc:postgresql://${POSTGRES_URL}:5432/${POSTGRES_DB}
+    url: jdbc:postgresql://${POSTGRES_IP}:${POSTGRES_PORT:5432}/${POSTGRES_DB:postgres}
     driver-class-name: org.postgresql.Driver
-    username: ${POSTGRES_USER}
+    username: ${POSTGRES_USER:postgres}
     password: ${POSTGRES_PASSWORD}
 
   jpa:
@@ -24,8 +24,8 @@ spring:
       client:
         provider:
           microservices:
-            issuer-uri: http://${AUTH_SERVICE_URL}:80
-            jwk-set-uri: http://${AUTH_SERVICE_URL}:80/oauth2/jwks
+            issuer-uri: http://${AUTH_SERVICE_IP}:${AUTH_SERVICE_PORT:80}
+            jwk-set-uri: http://${AUTH_SERVICE_IP}:${AUTH_SERVICE_PORT:80}/oauth2/jwks
         registration:
           microservices:
             client-id: chat-service
@@ -42,5 +42,18 @@ spring:
       oauth2:
         clientRegistrationId: microservices
         enabled: true
+
+management:
+  endpoint.health.probes.enabled: true
+  health:
+    livenessState.enabled: true
+    readinessState.enabled: true
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${REGISTRY_IP}:${REGISTRY_PORT:8761}/eureka/
+  instance:
+    prefer-ip-address: true
 
 server.port: 80

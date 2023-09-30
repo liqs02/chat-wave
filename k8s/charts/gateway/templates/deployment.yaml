@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.global.gateway.name }}-deployment
+  labels:
+    app: {{ .Values.global.gateway.name }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.global.gateway.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.global.gateway.name }}
+    spec:
+      containers:
+        - name: {{ .Values.global.gateway.name }}-container
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.port }}
+          env:
+            # registry service
+            - name: REGISTRY_IP
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.global.registry.name }}-configmap
+                  key: registry_service_ip

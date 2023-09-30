@@ -7,5 +7,11 @@ eureka:
     register-with-eureka: false
     fetch-registry: false
 
+management:
+  endpoint.health.probes.enabled: true
+  health:
+    livenessState.enabled: true
+    readinessState.enabled: true
+
 server:
   port: 8761

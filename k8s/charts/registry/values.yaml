@@ -1,0 +1,7 @@
+image:
+  repository: patryklikus/chatwave-registry
+  pullPolicy: Always
+  tag: ""
+replicas: 1
+port: 8761
+service_port: ""

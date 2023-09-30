@@ -1,0 +1,51 @@
+apiVersion: v2
+name: chatwave
+description: A Parent Helm chart for Kubernetes
+type: application
+
+version: 1.0.0
+
+dependencies:
+  # Registry
+  - name: registry
+    repository: file://charts/registry
+    version: 1.0.0
+
+  # Gateway
+  - name: gateway
+    repository: file://charts/gateway
+    version: 1.0.0
+    condition: gateway.enabled
+
+  # Auth Application
+  - name: auth-service
+    repository: file://charts/auth-service
+    version: 1.0.0
+    condition: auth.enabled
+
+  - name: auth-postgres
+    repository: file://charts/auth-postgres
+    version: 1.0.0
+    condition: auth.enabled
+
+  # Account Application
+  - name: account-service
+    repository: file://charts/account-service
+    version: 1.0.0
+    condition: account.enabled
+
+  - name: account-postgres
+    repository: file://charts/account-postgres
+    version: 1.0.0
+    condition: account.enabled
+
+  # Chat Application
+  - name: chat-service
+    repository: file://charts/chat-service
+    version: 1.0.0
+    condition: chat.enabled
+
+  - name: chat-postgres
+    repository: file://charts/chat-postgres
+    version: 1.0.0
+    condition: chat.enabled

@@ -1,27 +1,231 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="SCOPE_TYPE" value="4" />
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b52ce3e4-3047-4dc8-a854-88fa60a134df" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/auth-service/auth-secret.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-init.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/postgres/account-postgres-configmap.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/postgres/account-postgres-secret.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/postgres/account-postgres.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/postgres/chat-postgres-configmap.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/postgres/chat-postgres-secret.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/postgres/chat-postgres.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/account-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/account-service/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/auth.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chat-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/chat-service/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/k8s-run.sh" beforeDir="false" afterPath="$PROJECT_DIR$/k8s-run.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main-configmap.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/main-configmap.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/registry/registry.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/registry/registry.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/k8s/charts/chat-postgres/Chart.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/k8s/charts/chat-postgres/templates/deployment.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/k8s/charts/chat-postgres/templates/secret.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/k8s/charts/chat-postgres/templates/service.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/k8s/charts/chat-postgres/values.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/k8s/charts/chat-service/Chart.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/k8s/charts/chat-service/templates/configmap.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/k8s/charts/chat-service/templates/deployment.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/k8s/charts/chat-service/templates/service.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/k8s/charts/chat-service/values.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/k8s/charts/gateway/Chart.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/k8s/charts/gateway/templates/deployment.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/k8s/charts/gateway/templates/ingress.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/k8s/charts/gateway/templates/service.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/k8s/charts/gateway/values.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/k8s/charts/registry/templates/configmap.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.doc/microservice-infrastructure.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitattributes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/.mvn/wrapper/maven-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/account-app.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/main/java/com/chatwave/accountservice/AccountServiceApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/main/java/com/chatwave/accountservice/client/AuthClient.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/main/java/com/chatwave/accountservice/client/dto/AuthenticationRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/main/java/com/chatwave/accountservice/client/dto/AuthenticationResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/main/java/com/chatwave/accountservice/client/dto/CreateSessionRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/main/java/com/chatwave/accountservice/client/dto/PatchUserRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/main/java/com/chatwave/accountservice/client/dto/RefreshSessionRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/main/java/com/chatwave/accountservice/client/dto/RegisterRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/main/java/com/chatwave/accountservice/client/dto/RegisterResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/main/java/com/chatwave/accountservice/client/dto/TokenSet.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/main/java/com/chatwave/accountservice/config/AppConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/main/java/com/chatwave/accountservice/config/SecurityConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/main/java/com/chatwave/accountservice/controller/AccountController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/main/java/com/chatwave/accountservice/domain/Account.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/main/java/com/chatwave/accountservice/domain/AccountMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/main/java/com/chatwave/accountservice/domain/dto/AccountResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/main/java/com/chatwave/accountservice/domain/dto/CreateAccountRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/main/java/com/chatwave/accountservice/domain/dto/PatchAccountRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/main/java/com/chatwave/accountservice/repository/AccountRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/main/java/com/chatwave/accountservice/service/AccountService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/main/java/com/chatwave/accountservice/service/AccountServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/main/resources/META-INF/additional-spring-configuration-metadata.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/main/resources/application.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/test/java/com/chatwave/accountservice/integration/AccountServiceApplicationTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/test/java/com/chatwave/accountservice/integration/UserAuthorizationTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/test/java/com/chatwave/accountservice/integration/controller/AccountControllerTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/test/java/com/chatwave/accountservice/integration/repository/AccountRepositoryTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/test/java/com/chatwave/accountservice/unit/domain/AccountMapperTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/test/java/com/chatwave/accountservice/unit/service/AccountServiceTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/test/java/com/chatwave/accountservice/utils/JsonUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/test/java/com/chatwave/accountservice/utils/TestVariables.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/test/resources/application.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/.mvn/wrapper/maven-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/auth-app.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/auth-secret.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/AuthServiceApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/config/AppConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/config/AuthConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/config/SecurityConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/config/UserAuthFilter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/controller/SessionController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/controller/UserController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/domain/Client.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/domain/dto/request/AuthenticationRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/domain/dto/request/CreateSessionRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/domain/dto/request/RefreshSessionRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/domain/dto/request/RegisterRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/domain/dto/request/UpdatePasswordRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/domain/dto/response/AuthenticationResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/domain/dto/response/GetSessionResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/domain/dto/response/RegisterResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/domain/dto/response/TokenSetResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/domain/session/Session.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/domain/session/SessionMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/domain/user/User.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/domain/user/UserAuthentication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/domain/user/UserAuthenticationDetails.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/domain/user/UserMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/repository/SessionRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/repository/UserRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/scheduler/SessionScheduler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/service/SessionService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/service/SessionServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/service/UserService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/service/UserServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/resources/META-INF/additional-spring-configuration-metadata.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/resources/application.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/integration/AuthServiceApplicationTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/integration/controller/SessionControllerTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/integration/controller/UserControllerTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/integration/exception/ExceptionHandlerTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/integration/repository/SessionRepositoryTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/integration/scheduler/SessionSchedulerTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/integration/securityConfig/ClientAuthTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/integration/securityConfig/UserAuthFilterTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/unit/config/AppConfigTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/unit/domain/SessionMapperTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/unit/domain/SessionTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/unit/domain/UserMapperTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/unit/service/SessionServiceTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/unit/service/UserServiceTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/utils/OAuthClientService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/utils/OAuthUserService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/utils/TestVariables.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/test/resources/application.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/.mvn/wrapper/maven-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/chat-app.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/src/main/java/com/chatwave/chatservice/ChatServiceApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/src/main/java/com/chatwave/chatservice/client/AccountClient.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/src/main/java/com/chatwave/chatservice/client/AuthClient.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/src/main/java/com/chatwave/chatservice/config/AppConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/src/main/java/com/chatwave/chatservice/config/SecurityConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/src/main/java/com/chatwave/chatservice/controller/ChatController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/src/main/java/com/chatwave/chatservice/domain/Message.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/src/main/java/com/chatwave/chatservice/domain/MessageMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/src/main/java/com/chatwave/chatservice/domain/dto/GetMessagesRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/src/main/java/com/chatwave/chatservice/domain/dto/MessageResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/src/main/java/com/chatwave/chatservice/domain/dto/SendMessageRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/src/main/java/com/chatwave/chatservice/repository/ChatRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/src/main/java/com/chatwave/chatservice/service/ChatService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/src/main/java/com/chatwave/chatservice/service/ChatServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/src/main/resources/META-INF/additional-spring-configuration-metadata.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/src/main/resources/application.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/src/test/java/com/chatwave/chatservice/integration/ChatServiceApplicationTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/src/test/java/com/chatwave/chatservice/integration/controller/ChatControllerTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/src/test/java/com/chatwave/chatservice/integration/repository/ChatRepositoryTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/src/test/java/com/chatwave/chatservice/unit/domain/MessageMapperTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/src/test/java/com/chatwave/chatservice/unit/service/ChatServiceTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/src/test/java/com/chatwave/chatservice/utils/JsonUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/src/test/java/com/chatwave/chatservice/utils/TestVariables.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/src/test/resources/application.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/auth-client/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/auth-client/.mvn/wrapper/maven-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/auth-client/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/auth-client/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/auth-client/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/auth-client/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/auth-client/src/main/java/com/chatwave/authclient/client/AuthClient.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/auth-client/src/main/java/com/chatwave/authclient/domain/UserAuthentication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/auth-client/src/main/java/com/chatwave/authclient/domain/UserAuthenticationDetails.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/auth-client/src/main/java/com/chatwave/authclient/filter/UserAuthFilter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/auth-client/src/test/java/com/chatwave/authclient/UserAuthFilterTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/exception/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/exception/.mvn/wrapper/maven-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/exception/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/exception/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/exception/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/exception/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/exception/src/main/java/com/chatwave/exception/ApiException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/exception/src/main/java/com/chatwave/exception/ApiExceptionHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/exception/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/exception/src/test/java/com/chatwave/exception/ApiExceptionHandlerTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/exception/src/test/java/com/chatwave/exception/FeignClientExceptionHandlerTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/exception/src/test/java/com/chatwave/exception/TestApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/exception/src/test/resources/application.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-init.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/.mvn/wrapper/maven-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/gateway-app.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/java/com/chatwave/gateway/GatewayApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/main/resources/application.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/test/java/com/chatwave/gateway/GatewayApplicationTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/src/test/resources/application.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/k8s-run.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main-configmap.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/postgres/account-postgres-configmap.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/postgres/account-postgres-secret.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/postgres/account-postgres.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/postgres/auth-postgres-configmap.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/postgres/auth-postgres-secret.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/postgres/auth-postgres.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/postgres/chat-postgres-configmap.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/postgres/chat-postgres-secret.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/postgres/chat-postgres.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/registry/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/registry/.mvn/wrapper/maven-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/registry/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/registry/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/registry/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/registry/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/registry/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/registry/registry-app.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/registry/src/main/java/com/chatwave/registry/RegistryApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/registry/src/main/resources/application.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/registry/src/test/java/com/chatwave/registry/RegistryApplicationTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/registry/src/test/resources/application.yml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,7 +252,15 @@
     </option>
   </component>
   <component name="KubernetesSettings">
-    <option name="contextName" value="minikube" />
+    <option name="contextName" value="docker-desktop" />
+    <option name="helmParameters">
+      <HelmParameters>
+        <option name="chartPath" value="$PROJECT_DIR$/k8s/auth-service" />
+        <option name="valuesFiles">
+          <option value="values.yaml" />
+        </option>
+      </HelmParameters>
+    </option>
   </component>
   <component name="MacroExpansionManager">
     <option name="directoryName" value="9yba7hhs" />
@@ -86,11 +298,12 @@
     "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
     "deletionFromPopupRequiresConfirmation": "false",
     "git-widget-placeholder": "feature/implement-kubernetes",
     "jdk.selected.JAVA_MODULE": "20",
-    "last_opened_file_path": "/Users/patryklikus/Programowanie/ChatWave",
+    "last_opened_file_path": "/Users/patryklikus/Desktop/Programowanie/ChatWave/k8s/charts",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
@@ -99,7 +312,7 @@
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "Errors",
+    "settings.editor.selected.configurable": "com.intellij.kubernetes.view.ui.settings.KubernetesViewConfigurable",
     "spring.configuration.checksum": "c98fe2b16375b46cbe5992b289483f2b",
     "vue.rearranger.settings.migration": "true"
   },
@@ -114,18 +327,18 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/account-service" />
-      <recent name="$PROJECT_DIR$/postgres" />
-      <recent name="$PROJECT_DIR$/.doc" />
-      <recent name="$PROJECT_DIR$/scripts" />
+      <recent name="$PROJECT_DIR$/k8s/charts" />
+      <recent name="$PROJECT_DIR$/k8s/charts/gateway/templates" />
+      <recent name="$PROJECT_DIR$/k8s" />
+      <recent name="$PROJECT_DIR$/k8s/charts/chatwave" />
+      <recent name="$PROJECT_DIR$/k8s/template" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/k8s/charts/chatwave" />
+      <recent name="$PROJECT_DIR$/k8s/charts" />
+      <recent name="$PROJECT_DIR$/k8s" />
+      <recent name="$PROJECT_DIR$/k8s/auth-app" />
       <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/scripts" />
-      <recent name="$PROJECT_DIR$/config" />
-      <recent name="$PROJECT_DIR$/secret" />
-      <recent name="$PROJECT_DIR$/postgres" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="com.chatwave.exception" />
@@ -150,18 +363,19 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.RegistryApplication">
-    <configuration name="ClientAuthTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.UserControllerTest.t22">
+    <configuration name="UserControllerTest.t22" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="auth-service" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.chatwave.authservice.integration.securityConfig.*" />
+          <option name="PATTERN" value="com.chatwave.authservice.integration.controller.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.chatwave.authservice.integration.securityConfig" />
-      <option name="MAIN_CLASS_NAME" value="com.chatwave.authservice.integration.securityConfig.ClientAuthTest" />
-      <option name="TEST_OBJECT" value="class" />
+      <option name="PACKAGE_NAME" value="com.chatwave.authservice.integration.controller" />
+      <option name="MAIN_CLASS_NAME" value="com.chatwave.authservice.integration.controller.UserControllerTest" />
+      <option name="METHOD_NAME" value="t22" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -226,19 +440,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="JetRunConfigurationType">
-      <module name="chat-service" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <module name="chat-service" />
-      <option name="filePath" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="AccountServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="account-service" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.chatwave.accountservice.AccountServiceApplication" />
@@ -299,7 +500,7 @@
     </configuration>
     <list>
       <item itemvalue="Docker.development" />
-      <item itemvalue="JUnit.ClientAuthTest" />
+      <item itemvalue="JUnit.UserControllerTest.t22" />
       <item itemvalue="JUnit.account service" />
       <item itemvalue="JUnit.auth service" />
       <item itemvalue="JUnit.chat-service" />
@@ -313,11 +514,11 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.UserControllerTest.t22" />
         <item itemvalue="Docker.development" />
         <item itemvalue="JUnit.chat-service" />
-        <item itemvalue="JUnit.account service" />
         <item itemvalue="JUnit.auth service" />
-        <item itemvalue="JUnit.ClientAuthTest" />
+        <item itemvalue="JUnit.account service" />
       </list>
     </recent_temporary>
   </component>
@@ -366,6 +567,19 @@
       <workItem from="1695312720303" duration="1000" />
       <workItem from="1695402732448" duration="32607000" />
       <workItem from="1695569314651" duration="5335000" />
+      <workItem from="1695575814331" duration="4820000" />
+      <workItem from="1695583108286" duration="4930000" />
+      <workItem from="1695634893892" duration="7193000" />
+      <workItem from="1695650427375" duration="3159000" />
+      <workItem from="1695654023775" duration="8687000" />
+      <workItem from="1695669199154" duration="4902000" />
+      <workItem from="1695724527178" duration="62000" />
+      <workItem from="1695727101184" duration="511000" />
+      <workItem from="1695727777705" duration="2031000" />
+      <workItem from="1695756016254" duration="26473000" />
+      <workItem from="1695853719956" duration="1783000" />
+      <workItem from="1695896139045" duration="73000" />
+      <workItem from="1695896233096" duration="41769000" />
     </task>
     <servers />
   </component>

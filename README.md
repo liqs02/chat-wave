@@ -14,7 +14,6 @@ Still in active development.
 - [Common Libraries](#common-libraries)
   - [Auth Client](#auth-client)
   - [Exception](#exception)
-- [Run Locally](#run-locally)
 - [Author](#author)
 - [License](#license)
 
@@ -36,7 +35,6 @@ These micro services only accept and produce json format.
 
 Each endpoint used by users are protected by csrf protection. 
 You can disable it by `CSRF_ENABLED` environment variable (however it is not recommended):
-This variable is defined in main-configmap.yaml in kubernetes for each microservice.
 
 ### Auth Service
 <a id="auth-service"></a>
@@ -154,20 +152,6 @@ The library provides ExceptionHandler for all microservices.
 To use this library, we need to add the following annotation to the main class:
 ```java
 @ComponentScan({"com.chatwave.microservice","com.chatwave.exception"})
-```
-
-## Run Locally
-<a id="run_locally"></a>
-Clone the project
-
-```bash
-  git clone https://github.com/blackydev/ChatWave
-```
-
-Run kubernetes clusters
-
-```bash
-  ./ChatWave/k8s-run.sh
 ```
 
 ## Author

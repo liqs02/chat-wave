@@ -1,0 +1,7 @@
+image:
+  repository: postgres
+  pullPolicy: IfNotPresent
+  tag: ""
+port: 5432
+replicas: 1
+service_port: ""

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.global.chat.postgres.name }}-service
+spec:
+  selector:
+    app: {{ .Values.global.chat.postgres.name }}
+  ports:
+    - name: {{ .Values.global.chat.postgres.name }}-port
+      protocol: TCP
+      port: {{ .Values.service_port | default .Values.port }}
+      targetPort: {{ .Values.port }}

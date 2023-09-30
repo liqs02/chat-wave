@@ -22,9 +22,15 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://${REGISTRY_URL}:8761/eureka/
+      defaultZone: http://${REGISTRY_IP}:8761/eureka/
   instance:
     prefer-ip-address: true
+
+management:
+  endpoint.health.probes.enabled: true
+  health:
+    livenessState.enabled: true
+    readinessState.enabled: true
 
 server:
   port: 80

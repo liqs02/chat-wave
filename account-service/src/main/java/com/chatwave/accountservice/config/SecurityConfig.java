@@ -12,6 +12,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static jakarta.ws.rs.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -27,7 +28,8 @@ public class SecurityConfig {
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.ignoringRequestMatchers("/accounts/{accountId}/exist"))
                 .authorizeHttpRequests(auth ->
-                    auth.requestMatchers("/error").permitAll()
+                    auth.requestMatchers(GET, "/actuator/health/**").permitAll()
+                        .requestMatchers("/error").permitAll()
                         .requestMatchers(POST, "/accounts", "/accounts/authenticate").permitAll()
                         .anyRequest().authenticated()
             )

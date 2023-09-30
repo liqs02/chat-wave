@@ -27,6 +27,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import java.util.List;
 import java.util.UUID;
 
+import static jakarta.ws.rs.HttpMethod.GET;
 import static jakarta.ws.rs.HttpMethod.POST;
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -59,7 +60,8 @@ public class SecurityConfig {
                         csrf.ignoringRequestMatchers("/users/**", "/sessions")
             )
             .authorizeHttpRequests(auth ->
-                    auth.requestMatchers(POST, "/sessions/refresh").permitAll()
+                    auth.requestMatchers(GET, "/actuator/health/**").permitAll()
+                        .requestMatchers(POST, "/sessions/refresh").permitAll()
                         .requestMatchers("/error").permitAll()
                         .anyRequest().authenticated()
             )
@@ -93,12 +95,5 @@ public class SecurityConfig {
                 .toList();
 
         return new InMemoryRegisteredClientRepository(registeredClients);
-    }
-
-    @Bean
-    public AuthorizationServerSettings authorizationServerSettings() {
-        return AuthorizationServerSettings.builder()
-                .issuer("http://auth-service:8081")
-                .build();
     }
 }

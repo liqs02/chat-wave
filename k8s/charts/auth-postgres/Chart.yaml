@@ -1,0 +1,8 @@
+apiVersion: v2
+name: auth-postgres
+description: Authorization service's postgres database.
+
+type: application
+
+version: 1.0.0
+appVersion: alpine3.18

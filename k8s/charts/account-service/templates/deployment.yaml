@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.global.account.service.name }}-deployment
+  labels:
+    app: {{ .Values.global.account.service.name }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.global.account.service.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.global.account.service.name }}
+    spec:
+      containers:
+        - name: {{ .Values.global.account.service.name }}-container
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.port }}
+          env:
+            # registry service
+            - name: REGISTRY_IP
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.global.registry.name }}-configmap
+                  key: registry_service_ip
+
+            # auth-service
+            - name: AUTH_SERVICE_IP
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.global.registry.name }}-configmap
+                  key: auth_service_ip
+
+            - name: AUTH_SERVICE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.global.auth.service.name }}-secret
+                  key: account_client_password
+
+            # database
+            - name: POSTGRES_IP
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.global.account.service.name }}-configmap
+                  key: postgres_service_ip
+
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.global.account.postgres.name }}-secret
+                  key: db_password
+
+            # csrf
+            - name: CSRF_ENABLED
+              value: {{ .Values.global.csrf.enabled }}

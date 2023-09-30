@@ -1,0 +1,48 @@
+# Registry
+gateway:
+  enabled: true
+# Auth Service
+auth:
+  enabled: true
+# Account Service
+account:
+  enabled: true
+# Chat Service
+chat:
+  enabled: true
+
+global:
+  csrf:
+    enabled: '"true"'
+
+  registry:
+    name: registry
+
+  gateway:
+    name: gateway
+
+  auth:
+    service:
+      name: authservice
+      clients:
+        account:
+          password: cGFzc3dvcmQ=
+        chat:
+          password: cGFzc3dvcmQ=
+    postgres:
+      name: authpostgres
+      password: cGFzc3dvcmQ=
+
+  account:
+    service:
+      name: accountservice
+    postgres:
+      name: accountpostgres
+      password: cGFzc3dvcmQ=
+
+  chat:
+    service:
+      name: chatservice
+    postgres:
+      name: chatpostgres
+      password: cGFzc3dvcmQ=
