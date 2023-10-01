@@ -5,12 +5,14 @@ import com.chatwave.authservice.domain.user.User;
 import com.chatwave.authservice.repository.SessionRepository;
 import com.chatwave.authservice.repository.UserRepository;
 import com.chatwave.authservice.scheduler.SessionScheduler;
+import com.chatwave.authservice.utils.ContainersConfig;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,10 +22,12 @@ import java.util.List;
 import static com.chatwave.authservice.utils.TestVariables.LOGIN_NAME;
 import static com.chatwave.authservice.utils.TestVariables.PASSWORD;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.testcontainers.shaded.org.awaitility.Awaitility.await;
 
 /**
  * It does not test a @Scheduled annotation.
  */
+@Import(ContainersConfig.class)
 @SpringBootTest
 public class SessionSchedulerTest {
     @Autowired
@@ -32,6 +36,8 @@ public class SessionSchedulerTest {
     private SessionRepository sessionRepository;
     @Autowired
     private SessionScheduler sessionScheduler;
+    private Long expiredSessionId;
+
 
     @BeforeEach
     void setUp() {
@@ -40,19 +46,19 @@ public class SessionSchedulerTest {
         user.setPassword(PASSWORD);
         userRepository.save(user);
 
-        var sessions = new ArrayList<Session>();
-
         // expired not cleaned session
         var session1 = new Session(user);
-        session1.setExpireDate(LocalDate.now());
+        session1.setExpireDate(LocalDate.now().minusDays(1));
 
         // not expired session with expired accessToken
         var session2 = new Session(user);
-        session2.setAccessTokenExpireDate(LocalDateTime.now());
+        session2.setAccessTokenExpireDate(LocalDateTime.now().minusSeconds(1));
 
         sessionRepository.saveAll(
                 List.of(session1, session2)
         );
+
+        expiredSessionId = session1.getId();
     }
 
     @AfterEach
@@ -65,13 +71,28 @@ public class SessionSchedulerTest {
     @DisplayName("should clean accessToken and refreshToken of expired sessions")
     public void t1() {
         sessionScheduler.cleanupExpiredSessions();
+
         var sessions = sessionRepository.findAll();
+
         assertEquals(2, sessions.size());
 
-        assertNull(sessions.get(0).getAccessToken());
-        assertNull(sessions.get(0).getRefreshToken());
+        var session1 = sessions.get(0);
+        var session2 = sessions.get(1);
 
-        assertNotNull(sessions.get(1).getAccessToken());
-        assertNotNull(sessions.get(1).getRefreshToken());
+        if(session1.getId().equals(expiredSessionId)) {
+            assertNull(session1.getAccessToken());
+            assertNull(session1.getRefreshToken());
+
+            assertNotNull(session2.getAccessToken());
+            assertNotNull(session2.getRefreshToken());
+        } else {
+            assertNotNull(session1.getAccessToken());
+            assertNotNull(session1.getRefreshToken());
+
+            assertNull(session2.getAccessToken());
+            assertNull(session2.getRefreshToken());
+        }
+
     }
 }
+

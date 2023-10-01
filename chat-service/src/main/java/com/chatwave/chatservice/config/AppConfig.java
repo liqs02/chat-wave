@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AppConfig {
     @Bean
-    public Boolean csrfEnabled(@Value("${app.csrf.enabled:true}") Boolean csrfEnabled) {
+    public Boolean csrfEnabled(@Value("${CSRF_ENABLED:true}") Boolean csrfEnabled) {
         return csrfEnabled;
     }
 

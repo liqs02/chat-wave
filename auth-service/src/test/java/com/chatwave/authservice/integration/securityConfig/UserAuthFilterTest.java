@@ -4,6 +4,7 @@ import com.chatwave.authservice.domain.session.Session;
 import com.chatwave.authservice.domain.user.User;
 import com.chatwave.authservice.repository.SessionRepository;
 import com.chatwave.authservice.repository.UserRepository;
+import com.chatwave.authservice.utils.ContainersConfig;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -11,11 +12,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static com.chatwave.authservice.utils.TestVariables.*;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 
+@Import(ContainersConfig.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
 @DisplayName("UserAuthFilter integration tests")

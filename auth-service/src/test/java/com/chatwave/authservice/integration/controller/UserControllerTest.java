@@ -7,11 +7,13 @@ import com.chatwave.authservice.domain.dto.response.AuthenticationResponse;
 import com.chatwave.authservice.domain.dto.response.RegisterResponse;
 import com.chatwave.authservice.domain.user.User;
 import com.chatwave.authservice.repository.UserRepository;
+import com.chatwave.authservice.utils.ContainersConfig;
 import com.chatwave.authservice.utils.OAuthClientService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
@@ -20,6 +22,7 @@ import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
+@Import(ContainersConfig.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @AutoConfigureWebTestClient
 @DisplayName("UserController integration tests")

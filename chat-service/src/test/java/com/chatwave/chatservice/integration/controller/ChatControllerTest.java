@@ -6,12 +6,14 @@ import com.chatwave.chatservice.domain.Message;
 import com.chatwave.chatservice.domain.dto.MessageResponse;
 import com.chatwave.chatservice.domain.dto.SendMessageRequest;
 import com.chatwave.chatservice.repository.ChatRepository;
+import com.chatwave.chatservice.utils.ContainersConfig;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
@@ -26,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
+@Import(ContainersConfig.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @AutoConfigureWebTestClient
 @DisplayName("ChatController integration tests")
@@ -80,6 +83,7 @@ public class ChatControllerTest {
     @DisplayName("GET /chat/{userId}")
     public class c1 {
         private LocalDateTime createdAt;
+        private final Integer GET_MESSAGE_TIME_DELAY = 1000; // in nanos
 
         @BeforeEach
         public void setUp() {
@@ -109,7 +113,7 @@ public class ChatControllerTest {
             var messages = webTestClient.get()
                     .uri(builder ->
                             builder.path("/chat/" + RECEIVER_ID)
-                                    .queryParam("since", createdAt.minusNanos(1))
+                                    .queryParam("since", createdAt.minusNanos(GET_MESSAGE_TIME_DELAY))
                                     .queryParam("newer", true)
                                     .build()
                     )
@@ -130,7 +134,7 @@ public class ChatControllerTest {
             var messages = webTestClient.get()
                     .uri(builder ->
                             builder.path("/chat/" + RECEIVER_ID)
-                                    .queryParam("since", createdAt.plusNanos(1))
+                                    .queryParam("since", createdAt.plusNanos(GET_MESSAGE_TIME_DELAY))
                                     .queryParam("newer", false)
                                     .build()
                     )
@@ -152,7 +156,7 @@ public class ChatControllerTest {
             var messages = webTestClient.get()
                     .uri(builder ->
                             builder.path("/chat/" + RECEIVER_ID)
-                                    .queryParam("since", createdAt.minusNanos(1))
+                                    .queryParam("since", createdAt.minusNanos(GET_MESSAGE_TIME_DELAY))
                                     .queryParam("newer", false)
                                     .build()
                     )
@@ -172,7 +176,7 @@ public class ChatControllerTest {
             var messages = webTestClient.get()
                     .uri(builder ->
                             builder.path("/chat/" + RECEIVER_ID)
-                                    .queryParam("since", createdAt.plusNanos(1))
+                                    .queryParam("since", createdAt.plusNanos(GET_MESSAGE_TIME_DELAY))
                                     .queryParam("newer", true)
                                     .build()
                     )

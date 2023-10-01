@@ -2,18 +2,21 @@ package com.chatwave.accountservice.integration.repository;
 
 import com.chatwave.accountservice.domain.Account;
 import com.chatwave.accountservice.repository.AccountRepository;
+import com.chatwave.accountservice.utils.ContainersConfig;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 
 import static com.chatwave.accountservice.utils.TestVariables.DISPLAY_NAME;
 import static com.chatwave.accountservice.utils.TestVariables.USER_ID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
+@Import(ContainersConfig.class)
 @SpringBootTest
 @DisplayName("AccountRepository")
 public class AccountRepositoryTest {

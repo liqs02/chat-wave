@@ -13,5 +13,4 @@ management:
     livenessState.enabled: true
     readinessState.enabled: true
 
-server:
-  port: 8761
+server.port: 8761

@@ -1,23 +1,13 @@
-app.csrf.enabled: ${CSRF_ENABLED:true}
-
 spring:
   application:
     name: chat-service
 
   datasource:
     url: jdbc:postgresql://${POSTGRES_IP}:${POSTGRES_PORT:5432}/${POSTGRES_DB:postgres}
-    driver-class-name: org.postgresql.Driver
     username: ${POSTGRES_USER:postgres}
     password: ${POSTGRES_PASSWORD}
 
-  jpa:
-    hibernate:
-      ddl-auto: create-drop
-    properties:
-      hibernate:
-        format_sql: true
-    database: postgresql
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  jpa.hibernate.ddl-auto: create
 
   security:
     oauth2:

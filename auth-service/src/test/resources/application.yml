@@ -1,10 +1,16 @@
+CSRF_ENABLED: false
 app:
-  csrf.enabled: false
   clients:
     - id: micro-service
       secret: secret
       url: http://micro-service:80
 
-spring.jpa.hibernate.ddl-auto: create-drop
+spring:
+  jpa:
+    hibernate.ddl-auto: create-drop
+    properties.hibernate:
+        format_sql: true
+    show-sql: true
+
 
 eureka.client.enabled: false

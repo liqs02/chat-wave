@@ -1,4 +1,4 @@
-app.csrf.enabled: false
+CSRF_ENABLED: false
 
 spring:
   jpa.hibernate.ddl-auto: create-drop

@@ -1,15 +1,7 @@
-# Registry
-gateway:
-  enabled: true
-# Auth Service
-auth:
-  enabled: true
-# Account Service
-account:
-  enabled: true
-# Chat Service
-chat:
-  enabled: true
+gateway.enabled: true
+auth.enabled: true
+account.enabled: true
+chat.enabled: true
 
 global:
   csrf:

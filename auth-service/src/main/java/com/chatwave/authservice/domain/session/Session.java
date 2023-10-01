@@ -27,13 +27,13 @@ public class Session {
     @JoinColumn(nullable=false, updatable = false)
     private User user;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = true)
     private String accessToken;
 
     @Column(nullable = false)
     private LocalDateTime accessTokenExpireDate; // The dateTime from which accessToken is expired and have to be refreshed.
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = true)
     private String refreshToken;
 
     @Column(nullable = false, columnDefinition = "DATE")

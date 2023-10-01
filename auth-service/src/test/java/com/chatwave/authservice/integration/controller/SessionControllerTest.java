@@ -7,12 +7,14 @@ import com.chatwave.authservice.domain.dto.response.TokenSetResponse;
 import com.chatwave.authservice.domain.session.Session;
 import com.chatwave.authservice.repository.SessionRepository;
 import com.chatwave.authservice.repository.UserRepository;
+import com.chatwave.authservice.utils.ContainersConfig;
 import com.chatwave.authservice.utils.OAuthClientService;
 import com.chatwave.authservice.utils.OAuthUserService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
@@ -25,6 +27,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 /**
  * Too deeper understanding tests look at {@link  OAuthUserService}
  */
+@Import(ContainersConfig.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @AutoConfigureWebTestClient
 @DisplayName("SessionController integration tests")
