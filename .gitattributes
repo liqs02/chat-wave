@@ -35,6 +35,3 @@ build/
 
 ### Mac OS ###
 .DS_Store
-
-*.tgz
-Chart.lock

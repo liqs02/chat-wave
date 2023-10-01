@@ -36,3 +36,7 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### HELM ###
+*.tgz
+Chart.lock
