@@ -77,7 +77,6 @@
                             <artifactId>lombok</artifactId>
                             <version>${lombok.version}</version>
                         </path>
-                        <!--Maps Struct compile preprocessor-->
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
