@@ -4,11 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b52ce3e4-3047-4dc8-a854-88fa60a134df" name="Changes" comment="few enhancements">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="b52ce3e4-3047-4dc8-a854-88fa60a134df" name="Changes" comment="fix">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/auth-client/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/common/auth-client/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/exception/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/common/exception/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/account-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/account-service/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/chat-service/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,12 +24,17 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
-  <component name="KubernetesApiProvider"><![CDATA[{
-  "isMigrated": true
-}]]></component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
   <component name="MacroExpansionManager">
     <option name="directoryName" value="9yba7hhs" />
   </component>
@@ -57,56 +62,63 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Maven.account-service [clean].executor": "Run",
-    "Maven.account-service [compile].executor": "Run",
-    "Maven.account-service [install].executor": "Run",
-    "Maven.account-service [org.apache.maven.plugins:maven-jar-plugin:3.3.0:jar].executor": "Run",
-    "Maven.account-service [verify].executor": "Run",
-    "Maven.auth-client [clean].executor": "Run",
-    "Maven.auth-client [compile].executor": "Run",
-    "Maven.auth-client [install].executor": "Run",
-    "Maven.auth-client [verify].executor": "Run",
-    "Maven.auth-service [compile].executor": "Run",
-    "Maven.auth-service [install].executor": "Run",
-    "Maven.chat-service [clean].executor": "Run",
-    "Maven.chat-service [compile].executor": "Run",
-    "Maven.chat-service [install].executor": "Run",
-    "Maven.chat-wave [clean].executor": "Run",
-    "Maven.chat-wave [compile].executor": "Run",
-    "Maven.chat-wave [install].executor": "Run",
-    "Maven.chat-wave [test].executor": "Run",
-    "Maven.config [compile].executor": "Run",
-    "Maven.exception [clean].executor": "Run",
-    "Maven.exception [compile].executor": "Run",
-    "Maven.exception [install].executor": "Run",
-    "Maven.gateway [compile].executor": "Run",
-    "Maven.registry [compile].executor": "Run",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "deletionFromPopupRequiresConfirmation": "false",
-    "git-widget-placeholder": "main",
-    "jdk.selected.JAVA_MODULE": "20",
-    "last_opened_file_path": "/Users/patryklikus/Programowanie/ChatWave/chat-service/src/test/java/com/chatwave/chatservice",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "onboarding.tips.debug.path": "/Users/patryklikus/Programowanie/ChatWave/common/src/main/java/org/example/Main.java",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "spring",
-    "spring.configuration.checksum": "c98fe2b16375b46cbe5992b289483f2b",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Maven.account-service [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.account-service [compile].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.account-service [install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.account-service [org.apache.maven.plugins:maven-jar-plugin:3.3.0:jar].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.account-service [verify].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.auth-client [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.auth-client [compile].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.auth-client [install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.auth-client [verify].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.auth-service [compile].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.auth-service [install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.chat-service [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.chat-service [compile].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.chat-service [install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.chat-wave [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.chat-wave [compile].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.chat-wave [install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.chat-wave [test].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.config [compile].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.config [install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.exception [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.exception [compile].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.exception [install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.gateway [compile].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.gateway [install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.registry [compile].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.registry [install].executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SONARLINT_PRECOMMIT_ANALYSIS&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;deletionFromPopupRequiresConfirmation&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;fix&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;20&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/patryklikus/Programowanie/ChatWave/chat-service/src/test/java/com/chatwave/chatservice&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;/Users/patryklikus/Programowanie/ChatWave/common/src/main/java/org/example/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;MavenSettings&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;c98fe2b16375b46cbe5992b289483f2b&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="ReactorSettings">
     <option name="notificationShown" value="true" />
   </component>
@@ -142,6 +154,9 @@
   <component name="RunDashboard">
     <option name="configurationTypes">
       <set>
+        <option value="KtorApplicationConfigurationType" />
+        <option value="MicronautRunConfigurationType" />
+        <option value="QuarkusRunConfigurationType" />
         <option value="SpringBootApplicationConfigurationType" />
       </set>
     </option>
@@ -317,6 +332,14 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-fdfe4dae3a2d-intellij.indexing.shared.core-IU-243.22562.145" />
+        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-IU-243.22562.145" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SpringProfilesService">
     <option name="activeProfiles">
@@ -354,11 +377,27 @@
       <workItem from="1694544919621" duration="672000" />
       <workItem from="1694545603539" duration="35000" />
       <workItem from="1694545649125" duration="1683000" />
+      <workItem from="1734626306744" duration="621000" />
+      <workItem from="1734803405097" duration="697000" />
+      <workItem from="1734804108301" duration="999000" />
     </task>
+    <task id="LOCAL-00001" summary="fix">
+      <option name="closed" value="true" />
+      <created>1734475756782</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1734475756782</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

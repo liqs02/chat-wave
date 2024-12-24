@@ -3,3 +3,4 @@ spring:
     name: chat-service
   config:
     import: configserver:http://user:${CONFIG_PASSWORD}@config:8888
+  profiles.active: csrf_disable
