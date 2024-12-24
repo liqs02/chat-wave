@@ -18,7 +18,7 @@ public class SessionScheduler {
     public void cleanupExpiredSessions() {
         var sessions =
                 repository.findAllExpiredNotCleaned()
-                .parallelStream()
+                .stream()
                 .peek(Session::expire)
                 .toList();
 

@@ -91,9 +91,7 @@ public class SessionServiceImpl implements SessionService {
         if(sessions.isEmpty()) return;
 
         sessionRepository.saveAll(
-                sessions.parallelStream()
-                        .peek(Session::expire)
-                        .toList()
+                sessions.stream().peek(Session::expire).toList()
         );
     }
 

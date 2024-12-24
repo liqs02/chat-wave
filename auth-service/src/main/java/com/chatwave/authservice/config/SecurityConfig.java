@@ -79,7 +79,7 @@ public class SecurityConfig {
 
     @Bean
     public RegisteredClientRepository registeredClientRepository() {
-        var registeredClients = clients.parallelStream()
+        var registeredClients = clients.stream()
                 .map(client ->
                         RegisteredClient.withId(UUID.randomUUID().toString())
                                 .clientId(client.getId())

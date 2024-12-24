@@ -4,19 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b52ce3e4-3047-4dc8-a854-88fa60a134df" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="b52ce3e4-3047-4dc8-a854-88fa60a134df" name="Changes" comment="fix chat endpoint, change parallels to basic streams">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/account-service/src/main/java/com/chatwave/accountservice/controller/AccountController.java" beforeDir="false" afterPath="$PROJECT_DIR$/account-service/src/main/java/com/chatwave/accountservice/controller/AccountController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/account-service/src/test/java/com/chatwave/accountservice/integration/controller/AccountControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/account-service/src/test/java/com/chatwave/accountservice/integration/controller/AccountControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/controller/SessionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/controller/SessionController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/integration/controller/SessionControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/integration/controller/SessionControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/integration/controller/UserControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/integration/controller/UserControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/integration/securityConfig/UserAuthFilterTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/test/java/com/chatwave/authservice/integration/securityConfig/UserAuthFilterTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chat-service/src/main/java/com/chatwave/chatservice/controller/ChatController.java" beforeDir="false" afterPath="$PROJECT_DIR$/chat-service/src/main/java/com/chatwave/chatservice/controller/ChatController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/src/main/resources/shared/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config/src/main/resources/shared/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/src/main/resources/shared/gateway.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config/src/main/resources/shared/gateway.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/src/main/java/com/chatwave/chatservice/repository/ChatRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/chat-service/src/main/java/com/chatwave/chatservice/repository/ChatRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chat-service/src/test/java/com/chatwave/chatservice/integration/repository/ChatRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/chat-service/src/test/java/com/chatwave/chatservice/integration/repository/ChatRepositoryTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,8 +23,20 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="JpbToolWindowState">
+    <option name="isToolWindowVisible" value="false" />
+  </component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
   <component name="MacroExpansionManager">
     <option name="directoryName" value="9yba7hhs" />
   </component>
@@ -43,7 +46,7 @@
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
-        <option name="mavenHome" value="Use Maven wrapper" />
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
       </MavenGeneralSettings>
     </option>
   </component>
@@ -63,16 +66,48 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "JUnit.chat-service.executor": "Run",
+    "JUnit.java in chat-service.executor": "Run",
+    "Maven.account-service [clean].executor": "Run",
+    "Maven.account-service [compile].executor": "Run",
+    "Maven.account-service [install].executor": "Run",
+    "Maven.account-service [org.apache.maven.plugins:maven-jar-plugin:3.3.0:jar].executor": "Run",
+    "Maven.account-service [verify].executor": "Run",
+    "Maven.auth-client [clean].executor": "Run",
+    "Maven.auth-client [compile].executor": "Run",
+    "Maven.auth-client [install].executor": "Run",
+    "Maven.auth-client [verify].executor": "Run",
+    "Maven.auth-service [compile].executor": "Run",
+    "Maven.auth-service [install].executor": "Run",
+    "Maven.chat-service [clean].executor": "Run",
+    "Maven.chat-service [compile].executor": "Run",
+    "Maven.chat-service [install].executor": "Run",
+    "Maven.chat-wave [clean].executor": "Run",
+    "Maven.chat-wave [compile].executor": "Run",
+    "Maven.chat-wave [install].executor": "Run",
+    "Maven.chat-wave [test].executor": "Run",
+    "Maven.config [compile].executor": "Run",
+    "Maven.config [install].executor": "Run",
+    "Maven.exception [clean].executor": "Run",
+    "Maven.exception [compile].executor": "Run",
+    "Maven.exception [install].executor": "Run",
+    "Maven.gateway [compile].executor": "Run",
+    "Maven.gateway [install].executor": "Run",
+    "Maven.registry [compile].executor": "Run",
+    "Maven.registry [install].executor": "Run",
     "RequestMappingsPanelOrder0": "0",
     "RequestMappingsPanelOrder1": "1",
     "RequestMappingsPanelWidth0": "75",
     "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SONARLINT_PRECOMMIT_ANALYSIS": "true",
     "WebServerToolWindowFactoryState": "false",
     "deletionFromPopupRequiresConfirmation": "false",
-    "git-widget-placeholder": "fix/consumer-value-in-controllers-annotation",
+    "git-widget-placeholder": "fix",
     "jdk.selected.JAVA_MODULE": "20",
+    "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/patryklikus/Programowanie/ChatWave/chat-service/src/test/java/com/chatwave/chatservice",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -80,9 +115,10 @@
     "nodejs_package_manager_path": "npm",
     "onboarding.tips.debug.path": "/Users/patryklikus/Programowanie/ChatWave/common/src/main/java/org/example/Main.java",
     "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "spring",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "run.configurations.included.in.services": "true",
+    "settings.editor.selected.configurable": "MavenSettings",
     "spring.configuration.checksum": "c98fe2b16375b46cbe5992b289483f2b",
     "vue.rearranger.settings.migration": "true"
   }
@@ -122,26 +158,14 @@
   <component name="RunDashboard">
     <option name="configurationTypes">
       <set>
+        <option value="KtorApplicationConfigurationType" />
+        <option value="MicronautRunConfigurationType" />
+        <option value="QuarkusRunConfigurationType" />
         <option value="SpringBootApplicationConfigurationType" />
       </set>
     </option>
   </component>
   <component name="RunManager" selected="JUnit.chat-service">
-    <configuration name="ClientAuthTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="auth-service" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.chatwave.authservice.integration.securityConfig.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.chatwave.authservice.integration.securityConfig" />
-      <option name="MAIN_CLASS_NAME" value="com.chatwave.authservice.integration.securityConfig.ClientAuthTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="account service" type="JUnit" factoryName="JUnit" temporary="true">
       <module name="account-service" />
       <extension name="net.ashald.envfile">
@@ -198,6 +222,14 @@
       <option name="METHOD_NAME" value="" />
       <option name="TEST_OBJECT" value="directory" />
       <dir value="$PROJECT_DIR$/chat-service/src/test/java/com/chatwave/chatservice" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="java in chat-service" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="chat-service" />
+      <option name="TEST_OBJECT" value="directory" />
+      <dir value="$PROJECT_DIR$/chat-service/src/test/java" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -275,7 +307,7 @@
     </configuration>
     <list>
       <item itemvalue="Docker.development" />
-      <item itemvalue="JUnit.ClientAuthTest" />
+      <item itemvalue="JUnit.java in chat-service" />
       <item itemvalue="JUnit.account service" />
       <item itemvalue="JUnit.auth service" />
       <item itemvalue="JUnit.chat-service" />
@@ -290,12 +322,20 @@
     <recent_temporary>
       <list>
         <item itemvalue="JUnit.chat-service" />
+        <item itemvalue="JUnit.java in chat-service" />
         <item itemvalue="JUnit.account service" />
         <item itemvalue="JUnit.auth service" />
         <item itemvalue="Docker.development" />
-        <item itemvalue="JUnit.ClientAuthTest" />
       </list>
     </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-fdfe4dae3a2d-intellij.indexing.shared.core-IU-243.22562.145" />
+        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-IU-243.22562.145" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SpringProfilesService">
@@ -334,11 +374,57 @@
       <workItem from="1694544919621" duration="672000" />
       <workItem from="1694545603539" duration="35000" />
       <workItem from="1694545649125" duration="1683000" />
+      <workItem from="1734626306744" duration="621000" />
+      <workItem from="1734803405097" duration="697000" />
+      <workItem from="1734804108301" duration="999000" />
+      <workItem from="1735049785990" duration="3705000" />
     </task>
+    <task id="LOCAL-00001" summary="fix">
+      <option name="closed" value="true" />
+      <created>1734475756782</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1734475756782</updated>
+    </task>
+    <task id="LOCAL-00002" summary="disable csrf">
+      <option name="closed" value="true" />
+      <created>1735049797666</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1735049797666</updated>
+    </task>
+    <task id="LOCAL-00003" summary="fix chat endpoint, change parallels to basic streams">
+      <option name="closed" value="true" />
+      <created>1735054358537</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1735054358537</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="fix" />
+    <MESSAGE value="disable csrf" />
+    <MESSAGE value="fix chat endpoint, change parallels to basic streams" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix chat endpoint, change parallels to basic streams" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

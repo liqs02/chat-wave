@@ -32,9 +32,8 @@ public class ChatController {
             @AuthenticationPrincipal Integer authorId,
             @PathVariable Integer memberId)
     {
-        return service
-                .getMessages(authorId, memberId, since, newer)
-                .parallelStream()
+        return service.getMessages(authorId, memberId, since, newer)
+                .stream()
                 .map(mapper::toMessageResponse)
                 .toList();
     }
