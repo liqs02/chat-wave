@@ -1,6 +1,5 @@
 # ChatWave
-Chat API in microservice infrastructure.
-Still in active development.
+Chat API in microservice infrastructure, created while learning java and spring.
 
 ## Tech Stack
 
@@ -13,7 +12,7 @@ Chat wave is decomposed into three core microservices. All of them have own data
 
 ![diagram showing the structure of the services](.doc/functional-services.png)
 Services only accept and produce json.
-Each endpoint used by users are protected by csrf protection. The following profile disables this protection (however it is not recommended):
+Each endpoint used by users are protected by csrf protection. The following profile disables this protection:
 ```yaml
 spring.profiles.active: csrf_disable
 ```

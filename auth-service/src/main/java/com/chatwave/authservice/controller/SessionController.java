@@ -33,7 +33,7 @@ public class SessionController {
     @GetMapping
     public List<GetSessionResponse> getActiveSessionsByUserId(@AuthenticationPrincipal Integer userId) {
         return service.getNotExpiredSessionsByUserId(userId)
-                .parallelStream()
+                .stream()
                 .map(mapper::toSessionResponse)
                 .toList();
     }

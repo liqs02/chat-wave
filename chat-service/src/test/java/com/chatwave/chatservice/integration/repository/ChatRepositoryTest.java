@@ -66,10 +66,10 @@ public class ChatRepositoryTest {
         var result = repository.findMessagesAfter(USER_ID, RECEIVER_ID, LocalDateTime.now().minusHours(1));
 
         assertEquals(4, result.size());
-        assertEquals(messages.get(0), result.get(0));
-        assertEquals(messages.get(1), result.get(1));
-        assertEquals(messages.get(2), result.get(2));
-        assertEquals(messages.get(3), result.get(3));
+        assertEquals(messages.get(3), result.get(0));
+        assertEquals(messages.get(2), result.get(1));
+        assertEquals(messages.get(1), result.get(2));
+        assertEquals(messages.get(0), result.get(3));
     }
 
     @Test
