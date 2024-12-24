@@ -4,14 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b52ce3e4-3047-4dc8-a854-88fa60a134df" name="Changes" comment="disable csrf">
+    <list default="true" id="b52ce3e4-3047-4dc8-a854-88fa60a134df" name="Changes" comment="fix chat endpoint, change parallels to basic streams">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/controller/SessionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/controller/SessionController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/scheduler/SessionScheduler.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/scheduler/SessionScheduler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/service/SessionServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/chatwave/authservice/service/SessionServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chat-service/src/main/java/com/chatwave/chatservice/controller/ChatController.java" beforeDir="false" afterPath="$PROJECT_DIR$/chat-service/src/main/java/com/chatwave/chatservice/controller/ChatController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/chat-service/src/main/java/com/chatwave/chatservice/repository/ChatRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/chat-service/src/main/java/com/chatwave/chatservice/repository/ChatRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/chat-service/src/test/java/com/chatwave/chatservice/integration/repository/ChatRepositoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/chat-service/src/test/java/com/chatwave/chatservice/integration/repository/ChatRepositoryTest.java" afterDir="false" />
     </list>
@@ -72,6 +66,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "JUnit.chat-service.executor": "Run",
     "JUnit.java in chat-service.executor": "Run",
     "Maven.account-service [clean].executor": "Run",
     "Maven.account-service [compile].executor": "Run",
@@ -170,7 +165,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.java in chat-service">
+  <component name="RunManager" selected="JUnit.chat-service">
     <configuration name="account service" type="JUnit" factoryName="JUnit" temporary="true">
       <module name="account-service" />
       <extension name="net.ashald.envfile">
@@ -326,8 +321,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.java in chat-service" />
         <item itemvalue="JUnit.chat-service" />
+        <item itemvalue="JUnit.java in chat-service" />
         <item itemvalue="JUnit.account service" />
         <item itemvalue="JUnit.auth service" />
         <item itemvalue="Docker.development" />
@@ -382,7 +377,7 @@
       <workItem from="1734626306744" duration="621000" />
       <workItem from="1734803405097" duration="697000" />
       <workItem from="1734804108301" duration="999000" />
-      <workItem from="1735049785990" duration="3070000" />
+      <workItem from="1735049785990" duration="3705000" />
     </task>
     <task id="LOCAL-00001" summary="fix">
       <option name="closed" value="true" />
@@ -400,16 +395,36 @@
       <option name="project" value="LOCAL" />
       <updated>1735049797666</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="fix chat endpoint, change parallels to basic streams">
+      <option name="closed" value="true" />
+      <created>1735054358537</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1735054358537</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="fix" />
     <MESSAGE value="disable csrf" />
-    <option name="LAST_COMMIT_MESSAGE" value="disable csrf" />
+    <MESSAGE value="fix chat endpoint, change parallels to basic streams" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix chat endpoint, change parallels to basic streams" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
